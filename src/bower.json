@@ -1,5 +1,5 @@
 {
-    "name": "counterwallet",
+    "name": "aspirewallet",
     "dependencies": {
         "jquery": "2.0.2",
         "jquery-ui": "1.10.3",

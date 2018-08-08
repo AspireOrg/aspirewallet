@@ -1,12 +1,12 @@
-Local Counterwallet Development Instructions
+Local Aspirewallet Development Instructions
 ============================================
 
 Introduction
 -------------------------------
 
-To develop on counterwallet locally, this folder contains configuration for a local nginx server that can proxy requests to a remote counterwallet instance.
+To develop on aspirewallet locally, this folder contains configuration for a local nginx server that can proxy requests to a remote aspirewallet instance.
 
-You may use your own remote counterwallet server or the public counterwallet server at wallet.counterwallet.io.
+You may use your own remote aspirewallet server.
 
 
 Usage
@@ -27,7 +27,7 @@ cd development
 ./run-dev-server.sh
 ```
 
-To customize the remote counterwallet host:
+To customize the remote aspirewallet host:
 ```
 cd development
 DEV_REMOTE_HOST="my.other-server.io" ./run-dev-server.sh

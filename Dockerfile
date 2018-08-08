@@ -1,6 +1,6 @@
-FROM counterparty/base
+FROM aspireorg/federatednode
 
-MAINTAINER Counterparty Developers <dev@counterparty.io>
+MAINTAINER Aspire Developers <admin@aspirecrypto.com>
 
 # install additional deps
 RUN apt-get update && apt-get -y install ssl-cert make libpcre3-dev libxslt1-dev libgd2-xpm-dev libgeoip-dev unzip zip build-essential libssl-dev libxslt1.1 libgeoip1 geoip-database libpcre3
@@ -40,10 +40,10 @@ RUN mkdir -p /var/lib/nginx/{body,fastcgi,proxy,scgi,uwsgi}
 # copy over nginx config
 RUN mkdir -p /etc/nginx/sites-enabled
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-# dont copy over docker/nginx/counterwallet.conf.template -- that is moved over at runtime in docker/start.sh
-COPY docker/nginx/counterblock_api.inc /etc/nginx/sites-enabled/counterblock_api.inc
-COPY docker/nginx/counterblock_api_cache.inc /etc/nginx/sites-enabled/counterblock_api_cache.inc
-COPY docker/nginx/counterblock_socketio.inc /etc/nginx/sites-enabled/counterblock_socketio.inc
+# dont copy over docker/nginx/aspirewallet.conf.template -- that is moved over at runtime in docker/start.sh
+COPY docker/nginx/aspireblock_api.inc /etc/nginx/sites-enabled/aspireblock_api.inc
+COPY docker/nginx/aspireblock_api_cache.inc /etc/nginx/sites-enabled/aspireblock_api_cache.inc
+COPY docker/nginx/aspireblock_socketio.inc /etc/nginx/sites-enabled/aspireblock_socketio.inc
 COPY docker/nginx/upgrade_root /var/www_upgrade_root
 RUN chmod -R 0755 /etc/nginx/nginx.conf /etc/nginx/sites-enabled /var/www_upgrade_root
 
@@ -53,11 +53,11 @@ RUN chmod a+x /usr/local/bin/start.sh
 # set up default SSL certs to be self-signed (can be replaced later)
 RUN apt-get update && apt-get -y install ssl-cert
 RUN mkdir /ssl_config
-RUN cp -a /etc/ssl/certs/ssl-cert-snakeoil.pem /ssl_config/counterwallet.pem
-RUN cp -a /etc/ssl/private/ssl-cert-snakeoil.key /ssl_config/counterwallet.key
+RUN cp -a /etc/ssl/certs/ssl-cert-snakeoil.pem /ssl_config/aspirewallet.pem
+RUN cp -a /etc/ssl/private/ssl-cert-snakeoil.key /ssl_config/aspirewallet.key
 
-# add bare counterblock share dir (which should be mounted over)
-RUN mkdir -p /counterblock_data/asset_img /counterblock_data/asset_img.testnet
+# add bare aspireblock share dir (which should be mounted over)
+RUN mkdir -p /aspireblock_data/asset_img /aspireblock_data/asset_img.testnet
 
 # Install newest stable nodejs
 # (the `nodejs` package includes `npm`)
@@ -73,9 +73,9 @@ ENV TRANSIFEX_PASSWORD ${TRANSIFEX_PASSWORD}
 RUN if [ -n "$TRANSIFEX_USER" ] && [ -n "$TRANSIFEX_PASSWORD" ]; then echo "$TRANSIFEX_USER:$TRANSIFEX_PASSWORD" > /root/.transifex; fi
 
 # Install project
-COPY . /counterwallet
-RUN rm -rf /counterwallet/build
-WORKDIR /counterwallet
+COPY . /aspirewallet
+RUN rm -rf /aspirewallet/build
+WORKDIR /aspirewallet
 RUN git rev-parse HEAD
 RUN npm -g install npm@4.6.1
 RUN npm config set strict-ssl false
@@ -84,7 +84,7 @@ RUN npm install -g bower grunt mocha-phantomjs
 RUN cd src; bower --allow-root --config.interactive=false update; cd ..
 RUN npm update
 RUN grunt build
-RUN cp -a /counterwallet/counterwallet.conf.json.example /counterwallet/counterwallet.conf.json
+RUN cp -a /aspirewallet/aspirewallet.conf.json.example /aspirewallet/aspirewallet.conf.json
 RUN rm -f /root/.transifex
 
 EXPOSE 80 443

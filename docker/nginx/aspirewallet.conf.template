@@ -2,17 +2,17 @@ upstream cache_server {
   server ${REDIS_HOST}:${REDIS_PORT};
   keepalive 128;
 }
-upstream counterblock_api_server {
-  server ${COUNTERBLOCK_HOST_MAINNET}:${COUNTERBLOCK_PORT_MAINNET};
+upstream aspireblock_api_server {
+  server ${ASPIREBLOCK_HOST_MAINNET}:${ASPIREBLOCK_PORT_MAINNET};
   keepalive 30;
 }
-upstream counterblock_t_api_server {
-  server ${COUNTERBLOCK_HOST_TESTNET}:${COUNTERBLOCK_PORT_TESTNET};
+upstream aspireblock_t_api_server {
+  server ${ASPIREBLOCK_HOST_TESTNET}:${ASPIREBLOCK_PORT_TESTNET};
   keepalive 30;
 }
 
 #Content Security Policy (CSP) header
-add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://query.yahooapis.com; img-src 'self' data: https://ssl.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://themes.googleusercontent.com https://fonts.gstatic.com; frame-src 'none'; object-src 'self'; connect-src 'self' wss://$host wss://*.counterwallet.io https://*.counterwallet.io https://api.rollbar.com https://bitcoinfees.earn.com https://apiv2.bitcoinaverage.com https://min-api.cryptocompare.com; report-uri /_report_csp/;";
+add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://ssl.google-analytics.com https://query.yahooapis.com; img-src 'self' data: https://ssl.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://themes.googleusercontent.com https://fonts.gstatic.com; frame-src 'none'; object-src 'self'; connect-src 'self' wss://$host wss://*.aspirewallet.io https://*.aspirewallet.io https://api.rollbar.com https://bitcoinfees.earn.com https://apiv2.bitcoinaverage.com https://min-api.cryptocompare.com; report-uri /_report_csp/;";
 
 server {
   listen 80 default_server deferred;
@@ -40,8 +40,8 @@ server {
   
   ###############
   # SSL (by default these are self-signed certs)
-  ssl_certificate      /ssl_config/counterwallet.pem;
-  ssl_certificate_key  /ssl_config/counterwallet.key;
+  ssl_certificate      /ssl_config/aspirewallet.pem;
+  ssl_certificate_key  /ssl_config/aspirewallet.key;
   
   # support FS, and BEAST protection - https://coderwall.com/p/ebl2qa
   # SSLv3 not supported, due to poodlebleed bug
@@ -74,26 +74,26 @@ server {
   location /_asset_img/ {
     access_log off;
     expires 1h;
-    alias /counterblock_data/asset_img;
+    alias /aspireblock_data/asset_img;
   }
   location /_t_asset_img/  {
     access_log off;
     expires 1h;
-    alias /counterblock_data/asset_img.testnet/;
+    alias /aspireblock_data/asset_img.testnet/;
   }
   location /src  {
     #For dev/testing (uses unminified resources)
     open_file_cache off;
     expires off;
-    alias /counterwallet/src/;
+    alias /aspirewallet/src/;
   }
-  location /counterwallet.conf.json  {
-    alias /counterwallet/counterwallet.conf.json;
+  location /aspirewallet.conf.json  {
+    alias /aspirewallet/aspirewallet.conf.json;
   }
   location /  {
     access_log off;
     expires 1h;
-    root /counterwallet/build/;
+    root /aspirewallet/build/;
     
     #Enable this during single server system updates
     #root /var/www_upgrade_root;
@@ -110,32 +110,32 @@ server {
       deny all;
     }
 
-    include /etc/nginx/sites-enabled/counterblock_api_cache.inc;
+    include /etc/nginx/sites-enabled/aspireblock_api_cache.inc;
     set $redis_db "${REDIS_DB}";
 
     # Send to app server if Redis could not answer the request
     error_page 404 405 550 = @wsgi_api;
   }
-  # PROXY TO COUNTERBLOCK API BACKEND (WSGI)
+  # PROXY TO ASPIREBLOCK API BACKEND (WSGI)
   location @wsgi_api {
-    include /etc/nginx/sites-enabled/counterblock_api.inc;
+    include /etc/nginx/sites-enabled/aspireblock_api.inc;
     rewrite ^/_api/?$ /api/?  break;    
-    proxy_pass   http://counterblock_api_server;
+    proxy_pass   http://aspireblock_api_server;
   }
-  # PROXY TO COUNTERBLOCK FEED BACKEND (socket.io)
+  # PROXY TO ASPIREBLOCK FEED BACKEND (socket.io)
   location ^~ /_feed {
-    include /etc/nginx/sites-enabled/counterblock_socketio.inc;
-    proxy_pass   http://${COUNTERBLOCK_HOST_MAINNET}:${COUNTERBLOCK_PORT_MAINNET_FEED}/socket.io;
+    include /etc/nginx/sites-enabled/aspireblock_socketio.inc;
+    proxy_pass   http://${ASPIREBLOCK_HOST_MAINNET}:${ASPIREBLOCK_PORT_MAINNET_FEED}/socket.io;
   }
-  # PROXY TO COUNTERBLOCK CHAT BACKEND (socket.io)
+  # PROXY TO ASPIREBLOCK CHAT BACKEND (socket.io)
   location ^~ /_chat {
-    include /etc/nginx/sites-enabled/counterblock_socketio.inc;
-    proxy_pass   http://${COUNTERBLOCK_HOST_MAINNET}:${COUNTERBLOCK_PORT_MAINNET_CHAT}/socket.io;
+    include /etc/nginx/sites-enabled/aspireblock_socketio.inc;
+    proxy_pass   http://${ASPIREBLOCK_HOST_MAINNET}:${ASPIREBLOCK_PORT_MAINNET_CHAT}/socket.io;
   }
   
   #####
   # TESTNET  
-  # PROXY TO COUNTERBLOCK API REQUESTS (WSGI) - try to hit the cache in redis first
+  # PROXY TO ASPIREBLOCK API REQUESTS (WSGI) - try to hit the cache in redis first
   location ^~ /_t_api
   {
     #reject everything except GET, POST and OPTIONS
@@ -143,32 +143,32 @@ server {
       deny all;
     }
 
-    include /etc/nginx/sites-enabled/counterblock_api_cache.inc;
+    include /etc/nginx/sites-enabled/aspireblock_api_cache.inc;
     set $redis_db "1";
 
     # Send to app server if Redis could not answer the request
     error_page 404 405 550 = @t_wsgi_api;
   }
-  # PROXY TO COUNTERBLOCK API BACKEND (WSGI)
+  # PROXY TO ASPIREBLOCK API BACKEND (WSGI)
   location @t_wsgi_api {
-    include /etc/nginx/sites-enabled/counterblock_api.inc;
+    include /etc/nginx/sites-enabled/aspireblock_api.inc;
     rewrite ^/_t_api/?$ /api/?  break;
-    proxy_pass   http://counterblock_t_api_server;
+    proxy_pass   http://aspireblock_t_api_server;
   }
-  # PROXY TO COUNTERBLOCK FEED BACKEND (socket.io)
+  # PROXY TO ASPIREBLOCK FEED BACKEND (socket.io)
   location ^~ /_t_feed {
-    include /etc/nginx/sites-enabled/counterblock_socketio.inc;
-    proxy_pass   http://${COUNTERBLOCK_HOST_TESTNET}:${COUNTERBLOCK_PORT_TESTNET_FEED}/socket.io;
+    include /etc/nginx/sites-enabled/aspireblock_socketio.inc;
+    proxy_pass   http://${ASPIREBLOCK_HOST_TESTNET}:${ASPIREBLOCK_PORT_TESTNET_FEED}/socket.io;
   }
-  # PROXY TO COUNTERBLOCK CHAT BACKEND (socket.io)
+  # PROXY TO ASPIREBLOCK CHAT BACKEND (socket.io)
   location ^~ /_t_chat {
-    include /etc/nginx/sites-enabled/counterblock_socketio.inc;
-    proxy_pass   http://${COUNTERBLOCK_HOST_TESTNET}:${COUNTERBLOCK_PORT_TESTNET_CHAT}/socket.io;
+    include /etc/nginx/sites-enabled/aspireblock_socketio.inc;
+    proxy_pass   http://${ASPIREBLOCK_HOST_TESTNET}:${ASPIREBLOCK_PORT_TESTNET_CHAT}/socket.io;
   }
   
   #####
   # CSP REPORTING (mainnet and testnet)
   location ^~ /_report_csp/ {
-    proxy_pass   http://counterblock_api_server;
+    proxy_pass   http://aspireblock_api_server;
   }
 }

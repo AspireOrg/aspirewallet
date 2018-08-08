@@ -1,28 +1,19 @@
-[![Build Status Travis](https://travis-ci.org/CounterpartyXCP/counterwallet.svg?branch=develop)](https://travis-ci.org/CounterpartyXCP/counterwallet)
-[![Build Status Circle](https://circleci.com/gh/CounterpartyXCP/counterwallet.svg?&style=shield)](https://circleci.com/gh/CounterpartyXCP/counterwallet)
-[![Slack Status](http://slack.counterparty.io/badge.svg)](http://slack.counterparty.io)
+[![Build Status Travis](https://travis-ci.org/AspireOrg/aspirewallet.svg?branch=develop)](https://travis-ci.org/AspireOrg/aspirewallet)
+[![Build Status Circle](https://circleci.com/gh/AspireOrg/aspirewallet.svg?&style=shield)](https://circleci.com/gh/AspireOrg/aspirewallet)
 
-Counterwallet
+Aspirewallet
 ================
 
-Online Webwallet for [Counterparty](http://www.counterparty.io).
+Online Webwallet for [Aspire](http://aspirecrypto.com).
 
 Originally based off of [Carbonwallet](http://www.carbonwallet.com) (however virtually all the original code has been removed or rewritten).
-
-
-Production Systems
--------------------
-
-* Main page: **[counterwallet.io](https://counterwallet.io/)**
-* Primary server -- Mainnet: **[wallet.counterwallet.io](https://wallet.counterwallet.io/)**
-* Primary server -- Testnet: **[wallet-testnet.counterwallet.io](https://wallet-testnet.counterwallet.io/)**
 
 
 Features
 ----------
 
 - Deterministic wallet addresses (BIP 32-based)
-- Supports the majority of Counterparty functionality
+- Supports the majority of Aspire functionality
 - Fully-AJAX driven
 - Anonymous
 - Runs in the browser, with keys created in memory
@@ -77,9 +68,9 @@ grunt freeze
 1. Create an account on [Transifex](https://www.transifex.com/)
 2. In your home directory, create a file named `.transifex` and put your Transifex username and password into it in this format: `user:password`
 3. Run `grunt build` to download translations
-4. Add the languages you want to support to `AVAILABLE_LANGUAGES` in **counterwallet.conf.json** - you can use **counterwallet.conf.json.example** as a template. The template file contains **only** the setting relevant to languages and does not replace the rest of variables required in that file (refer to Federeated Node documentation for additional details about `counterwallet.conf`).
+4. Add the languages you want to support to `AVAILABLE_LANGUAGES` in **aspirewallet.conf.json** - you can use **aspirewallet.conf.json.example** as a template. The template file contains **only** the setting relevant to languages and does not replace the rest of variables required in that file (refer to Federeated Node documentation for additional details about `aspirewallet.conf`).
 
-Setting up your own Counterwallet Server
+Setting up your own Aspirewallet Server
 -----------------------------------------
 
 See [this link](http://counterparty.io/docs/federated_node/) for more info.
@@ -87,10 +78,10 @@ See [this link](http://counterparty.io/docs/federated_node/) for more info.
 Development
 -----------
 
-The easiest way to develop locally is to install Federated Node in Docker environment. If you already have Bitcoin Core addrindex, Counterparty Server and Counterblock, then Counterwallet can be manually installed using either of these approaches:
+The easiest way to develop locally is to install Federated Node in Docker environment. If you already have Bitcoin Core addrindex, Aspire Server and Aspireblock, then Aspirewallet can be manually installed using either of these approaches:
 
-* Stand-alone Docker environment: refer to docker\start.sh in the Counterwallet source code. 
-* Manually: example based on the Docker template for Counterwallet on Ubuntu 16.04 is provided below.
+* Stand-alone Docker environment: refer to docker\start.sh in the Aspirewallet source code. 
+* Manually: example based on the Docker template for Aspirewallet on Ubuntu 16.04 is provided below.
 
 ### Manual installation in local environment (Ubuntu 16.04 x64):
 1. Download required release or branch (optionally check Pull Requests, if any). 
@@ -99,8 +90,8 @@ The easiest way to develop locally is to install Federated Node in Docker enviro
 4. Prepare: `npm install -g --save-dev bower grunt-cli`
 5. Download dependencies in the src subdirectory: `cd src; bower --allow-root --config.interactive=false update` 
 6. Prepublish `cd $PATH2SOURCE; mkdir build ; npm update`
-7. Build: Copy counterwallet.conf.json.example to counterwallet.conf.json. Use text editor to add `"http://wallet.counterwallet.io"` in between the square brackets in `servers` in counterwallet.conf.json. Then build: `grunt build --dontcheckdeps --dontminify && cp counterwallet.conf.json build/`. The application will be stored in the build subdirectory.
-8. Serve: Open a seperate terminal, install serve (`sudo npm install -g serve`) and in the build subdirectory start Counterwallet service: `cd build/; serve`. 
+7. Build: Copy aspirewallet.conf.json.example to aspirewallet.conf.json. Use text editor to add `"http://wallet.aspirewallet.io"` in between the square brackets in `servers` in aspirewallet.conf.json. Then build: `grunt build --dontcheckdeps --dontminify && cp aspirewallet.conf.json build/`. The application will be stored in the build subdirectory.
+8. Serve: Open a seperate terminal, install serve (`sudo npm install -g serve`) and in the build subdirectory start Aspirewallet service: `cd build/; serve`. 
 9. Use: Visit `http://localhost:3000` (or you can specify a different port for `serve` if you like)
 
 #### Notes:
@@ -109,7 +100,7 @@ The easiest way to develop locally is to install Federated Node in Docker enviro
 * the `--dontminify` makes your debugging life a bit easier
 * the `cp` is neccesary because grunt keeps clearing the `build` folder
 * If you want to test your local version on another device (or let another person test something) use https://ngrok.com to setup a tunnel to your local environment
-* If you want to use HTTPS, refer to additional steps required in the Counterwallet Docker start script
+* If you want to use HTTPS, refer to additional steps required in the Aspirewallet Docker start script
  
 ### Note concerning `npm install`
 `npm install` triggers a `prepublish` which is configured to do `grunt build` 
@@ -126,7 +117,7 @@ You can run tests in your browser by doing the above steps and;
 
 ### Development without a full node
 
-To work on counterwallet without running a full node and supporting services locally, please see the scripts located in the [local development folder](local-development).
+To work on aspirewallet without running a full node and supporting services locally, please see the scripts located in the [local development folder](local-development).
 
 
 License

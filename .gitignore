@@ -13,7 +13,7 @@ npm-debug.log
 servers.json
 src/bitcore.html
 src/bitcoinjs.html
-counterwallet.conf.json
+aspirewallet.conf.json
 src/js/jquery-timeago.i18n.js
-local-development/etc/includes/counterwallet.conf
+local-development/etc/includes/aspirewallet.conf
 local-development/var

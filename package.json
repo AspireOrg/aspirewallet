@@ -1,13 +1,13 @@
 {
-  "name": "counterwallet",
-  "description": "Counterwallet",
-  "author": "Counterparty development team",
+  "name": "aspirewallet",
+  "description": "Aspirewallet",
+  "author": "The Aspire Developers",
   "license": "(CDDL-1.0)",
   "version": "1.8.0",
   "main": "build/index.html",
   "repository": { 
     "type" : "git",
-    "url" : "https://github.com/CounterpartyXCP/counterwallet.git"
+    "url" : "https://github.com/AspireOrg/aspirewallet.git"
   },
   "dependencies": {
     "cryptojs": "2.5.3",
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "prepublish": "grunt",
-    "test": "./node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with counterwallet.io SSL cert"
+    "test": "./node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with aspirewallet.io SSL cert"
   },
   "engine": "node >= 0.10"
 }
