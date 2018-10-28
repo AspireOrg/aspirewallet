@@ -2,10 +2,10 @@
 <html lang="en-us" style="background-color:#FFF">
   <head>
     <meta charset="utf-8">
-    <title>Aspirewallet - Free Web Wallet for Aspire and AspireGas</title>
+    <title>Aspire - Web Wallet</title>
     <meta content="Open-source and client-side web wallet for Aspire (ASP) and AspireGas (GASP)" name="description">
     <meta content="Aspire Developers" name="author">
-
+    <meta content="Counterparty Developers" name="author">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <noscript>
@@ -305,10 +305,6 @@
       <h2 data-bind="locale: 'powered_by_counterparty'"></h2>
       <div id="form-well">
 
-        <div id="createNewAcctBtnPane">
-          <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-success btn-lg"></button>
-        </div>
-
         <div class="panel panel-info">
           <div class="panel-heading">
             <h3 class="panel-title">
@@ -350,6 +346,11 @@
             </div>
           </div>
         </div>
+
+        <div id="createNewAcctBtnPane">
+          <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-success btn-lg"></button>
+        </div>
+
       </div> <!-- form-well -->
 
        <div id="extra-info" class="container">
@@ -676,11 +677,11 @@
                 </div>
                 <div class="col col-sm-4">
                   <div class="btn-group" data-toggle="buttons">
-                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'BTC' }">
-                      <input type="radio" name="donationCurrency" value="BTC" data-bind="btnGroupChecked: donationCurrency">BTC
+                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'GASP' }">
+                      <input type="radio" name="donationCurrency" value="GASP" data-bind="btnGroupChecked: donationCurrency">GASP
                     </label>
-                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'XCP' }">
-                      <input type="radio" name="donationCurrency" value="XCP" data-bind="btnGroupChecked: donationCurrency">XCP
+                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'ASP' }">
+                      <input type="radio" name="donationCurrency" value="ASP" data-bind="btnGroupChecked: donationCurrency">ASP
                     </label>
                   </div>
                 </div>

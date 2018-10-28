@@ -29,8 +29,8 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.withMovement = ko.observable(false);
 
   self.assets = ko.observableArray([
-    new AssetViewModel({address: address, asset: "BTC"}), //will be updated with data loaded from insight
-    new AssetViewModel({address: address, asset: "XCP"})  //will be updated with data loaded from counterpartyd
+    new AssetViewModel({address: address, asset: "GASP"}), //will be updated with data loaded from insight
+    new AssetViewModel({address: address, asset: "ASP"})  //will be updated with data loaded from counterpartyd
   ]);
 
   self.assetFilter = ko.observable('');
@@ -39,7 +39,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return self.assets();
     } else if (self.assetFilter() == 'base') {
       return ko.utils.arrayFilter(self.assets(), function(asset) {
-        return asset.ASSET == 'BTC' || asset.ASSET == 'XCP';
+        return asset.ASSET == 'GASP' || asset.ASSET == 'ASP';
       });
 
     } else if (self.assetFilter() == 'mine') {
@@ -142,7 +142,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return item.ASSET === asset;
     });
 
-    if (asset == 'BTC' || asset == 'XCP') { //special case update
+    if (asset == 'GASP' || asset == 'ASP') { //special case update
       assert(match, 'was created when the address viewmodel was initialized...');
       match.rawBalance(initialRawBalance);
       match.escrowedBalance(escrowedBalance);
@@ -272,7 +272,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.createAsset = function() {
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
 
-    var xcpBalance = WALLET.getBalance(self.ADDRESS, 'XCP');
+    var xcpBalance = WALLET.getBalance(self.ADDRESS, 'ASP');
     CREATE_ASSET_MODAL.show(self.ADDRESS, xcpBalance, true);
   }
 
@@ -331,20 +331,20 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   }
 
   self.showBaseAssetsOnly = function() {
-    self.assetFilter('base'); //Show XCP and BTC only
+    self.assetFilter('base'); // Show ASP and GASP only
   }
 
   self.showMyAssetsOnly = function() {
-    self.assetFilter('mine'); //Show all my own assets
+    self.assetFilter('mine'); // Show all my own assets
   }
 
   self.showOthersAssetsOnly = function() {
-    self.assetFilter('others'); //Show other's (foreign) assets only
+    self.assetFilter('others'); // Show other's (foreign) assets only
   }
 
   self.getXCPBalance = function() {
     var xcpAsset = $.grep(self.assets(), function(value) {
-      return value.ASSET == 'XCP';
+      return value.ASSET == 'ASP';
     });
     return xcpAsset[0].normalizedBalance();
   }

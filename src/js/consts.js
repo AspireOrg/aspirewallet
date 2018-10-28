@@ -41,7 +41,7 @@ var DEFAULT_PREFERENCES = {
   'has_accepted_license': false
 };
 
-var COUNTERWALLET_CONF_LOCATION = "/counterwallet.conf.json";
+var COUNTERWALLET_CONF_LOCATION = "/aspirewallet.conf.json";
 
 var NUMERIC_ASSET_ID_MIN = bigInt(26).pow(12).add(1);
 var NUMERIC_ASSET_ID_MAX = bigInt(256).pow(8);

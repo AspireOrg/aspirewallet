@@ -90,7 +90,7 @@ function MessageFeed() {
     if (displayTx) {
       PENDING_ACTION_FEED.add(txHash, category, message['bindings']);
 
-      /*var asset1 = message['bindings']['asset'] || 'BTC';
+      /*var asset1 = message['bindings']['asset'] || 'GASP';
       WALLET.getAssetsDivisibility([asset1], function(divisibility) {
 
         message['bindings']['divisible'] = divisibility[asset1];
