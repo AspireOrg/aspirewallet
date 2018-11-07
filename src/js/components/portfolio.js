@@ -31,7 +31,7 @@ var AssetPortfolioViewModel = AssetLeaderboardViewModel.extend(function() {
         self.balancesByAsset[self.myAssets()[i]] = WALLET.getTotalBalance(self.myAssets()[i]);
       }
       var assetTotalBal = null, info = null;
-      for (var baseAsset in self.myGraphTables) { //XCP or BTC
+      for (var baseAsset in self.myGraphTables) { // ASP or GASP
         if (self.myGraphTables.hasOwnProperty(baseAsset)) {
           for (i = 0; i < self.myAssets().length; i++) {
             asset = self.myAssets()[i];

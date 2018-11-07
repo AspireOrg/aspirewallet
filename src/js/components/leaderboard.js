@@ -31,8 +31,8 @@ var AssetLeaderboardViewModel = CClass.create(function() {
     //Compose the table this has changed
     var i = null, j = null, marketInfo = null;
 
-    //label XCP marketcap positions
-    marketInfo = self.isLeaderboard ? self.marketInfo['xcp'] : self.marketInfo;
+    //label ASP marketcap positions
+    marketInfo = self.isLeaderboard ? self.marketInfo['asp'] : self.marketInfo;
     marketInfo.sort(
       function(l, r) {
         return l['market_cap_in_xcp'] == r['market_cap_in_xcp'] ? 0 : (l['market_cap_in_xcp'] < r['market_cap_in_xcp'] ? 1 : -1)
@@ -49,14 +49,14 @@ var AssetLeaderboardViewModel = CClass.create(function() {
         asset: marketInfo[i]['asset'],
         dispAsset: AssetLeaderboardViewModel.formulateExtendedAssetInfo(marketInfo[i]['asset'],
           marketInfo[i]['extended_image'], marketInfo[i]['extended_website']),
-        marketCap: marketInfo[i]['market_cap_in_xcp'] ? (smartFormat(marketInfo[i]['market_cap_in_xcp'], 100, 0) + ' XCP') : '',
-        price: marketInfo[i]['aggregated_price_as_xcp'] ? (smartFormat(marketInfo[i]['aggregated_price_as_xcp'], 10, 4) + ' XCP') : '',
+        marketCap: marketInfo[i]['market_cap_in_xcp'] ? (smartFormat(marketInfo[i]['market_cap_in_xcp'], 100, 0) + ' ASP') : '',
+        price: marketInfo[i]['aggregated_price_as_xcp'] ? (smartFormat(marketInfo[i]['aggregated_price_as_xcp'], 10, 4) + ' ASP') : '',
         supply: smartFormat(marketInfo[i]['total_supply'], 100, 4) + ' ' + marketInfo[i]['asset'],
         //volume: marketInfo[i]['24h_summary']['vol'] ? (smartFormat(marketInfo[i]['24h_summary']['vol'], 100, 4) + ' ' + marketInfo[i]['asset']) : '',
         //volume: (marketInfo[i]['24h_ohlc_in_xcp']['vol'] && marketInfo[i]['aggregated_price_in_xcp']) 
-        //  ? (smartFormat(marketInfo[i]['24h_ohlc_in_xcp']['vol'] * marketInfo[i]['aggregated_price_in_xcp'], 0, 4) + ' XCP') : '',
+        //  ? (smartFormat(marketInfo[i]['24h_ohlc_in_xcp']['vol'] * marketInfo[i]['aggregated_price_in_xcp'], 0, 4) + ' ASP') : '',
         volume: (marketInfo[i]['24h_summary'] && marketInfo[i]['24h_summary']['vol'] && marketInfo[i]['aggregated_price_in_xcp'])
-          ? (smartFormat(marketInfo[i]['24h_summary']['vol'] * marketInfo[i]['aggregated_price_in_xcp'], 10, 4) + ' XCP') : '',
+          ? (smartFormat(marketInfo[i]['24h_summary']['vol'] * marketInfo[i]['aggregated_price_in_xcp'], 10, 4) + ' ASP') : '',
         pctChange: marketInfo[i]['24h_vol_price_change_in_xcp'] ? (smartFormat(marketInfo[i]['24h_vol_price_change_in_xcp'], 0, 2) + ' %') : '',
         pctChangeColorClass: marketInfo[i]['24h_vol_price_change_in_xcp'] > 0 ? 'txt-color-green' : (marketInfo[i]['24h_vol_price_change_in_xcp'] < 0 ? 'txt-color-red' : 'initial'),
         history: marketInfo[i]['7d_history_in_xcp'],

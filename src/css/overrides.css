@@ -53,15 +53,16 @@ span.logoText {
     position: relative !important;
     /*bottom: 8px !important;  */
     vertical-align: middle !important;
+    z-index: 1000 !important;
 }
 
 #logo {
     width: auto  !important; /* + 20px */
     /*margin-top: 13px !important;*/
-    height: 49px !important;
-    line-height: 49px !important;
+    height: 50px !important;
+    line-height: 50px !important;
     margin: 0 !important;
-    background: url(../images/logo-small.png) no-repeat 10px 8px;
+    background: url(../images/logo-small.png) no-repeat 10px 2px;
     padding-left: 65px;
 }
 #logo span.logoText {
@@ -72,7 +73,7 @@ span.logoText {
     margin: 0 !important;
 }
 
-/* Make Counterwallet word invisible in black top bar for low resolution */
+/* Make Aspirewallet word invisible in black top bar for low resolution */
 @media only screen and (max-width : 665px) {
   #logo span.logoText {
     display: none !important;

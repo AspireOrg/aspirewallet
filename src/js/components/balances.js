@@ -1376,14 +1376,14 @@ function SweepModalViewModel() {
             sendData['_assset_divisible'] = !(selectedAsset.RAW_BALANCE == selectedAsset.NORMALIZED_BALANCE); //if the balances match, the asset is NOT divisible
             PENDING_ACTION_FEED.add(sendTxHash, "sends", sendData);
 
-            // here we adjust the BTC balance whith the change output
+            // here we adjust the GASP balance whith the change output
             if (selectedAsset.ASSET != 'GASP') {
               var newBtcBalance = CWBitcore.extractChangeTxoutValue(sendData.source, unsignedTxHex);
-              $.jqlog.debug("New BTC balance: " + newBtcBalance);
+              $.jqlog.debug("New GASP balance: " + newBtcBalance);
               self.btcBalanceForPrivateKey(newBtcBalance);
             }
 
-            //For non BTC/XCP assets, also take ownership (iif the address we are sweeping from is the asset's owner')
+            //For non GASP/ASP assets, also take ownership (iif the address we are sweeping from is the asset's owner')
             if (selectedAsset.ASSET != 'ASP'
               && selectedAsset.ASSET != 'GASP'
               && selectedAsset.ASSET_INFO['owner'] == self.addressForPrivateKey()) {

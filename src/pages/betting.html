@@ -140,7 +140,7 @@
                           <div class="row">
                             <label class="col col-lg-4 control-label font-medlg"><span data-bind="locale: 'wager'"></span>:</label>
                             <div class="col col-lg-8">
-                              <input type="text"  name="wager" class="number form-control"  data-bind="value: $parent.wager, valueUpdate: 'input'" /> XCP
+                              <input type="text"  name="wager" class="number form-control"  data-bind="value: $parent.wager, valueUpdate: 'input'" /> ASP
                               <br /><span class="invalid" data-bind="validationMessage: $parent.wager"></span>
                             </div>
                           </div> 
@@ -170,7 +170,7 @@
                           <div class="row" data-bind="visible: $parent.showAdvancedOptions || ($parent.counterBets().length == 0 && $parent.operatorOdds()==false)"> 
                             <label class="col col-lg-4 control-label font-medlg"><span data-bind="locale: 'odds'"></span>:</label> 
                             <div class="col col-lg-8">                
-                              <input name="odd" class="number form-control" data-bind="value: $parent.odd, valueUpdate: 'input'" type="text"/> XCP
+                              <input name="odd" class="number form-control" data-bind="value: $parent.odd, valueUpdate: 'input'" type="text"/> ASP
                               <span class="invalid" data-bind="validationMessage: $parent.odd"></span>
                               <br /><div class="note" data-bind="locale: 'odds_note'"></div>
                             </div>                      
@@ -222,19 +222,19 @@
                           </div>
                           <div>          
                             <label><span data-bind="locale: 'winnings'"></span>:</label>
-                            <span data-bind="text: $parent.counterwager + ' XCP'"></span>  
+                            <span data-bind="text: $parent.counterwager + ' ASP'"></span>  
                           </div>
                           <div>              
                             <label><span data-bind="locale: 'fee'"></span>:</label> 
-                            <span data-bind="text: $parent.fee + ' XCP'"></span>  
+                            <span data-bind="text: $parent.fee + ' ASP'"></span>  
                           </div> 
                           <div>              
                             <label><span data-bind="locale: 'matching'"></span>:</label> 
-                            <span data-bind="text: $parent.matchingVolume + ' XCP'"></span>  
+                            <span data-bind="text: $parent.matchingVolume + ' ASP'"></span>  
                           </div> 
                           <div>              
                             <label><span data-bind="locale: 'open'"></span>:</label> 
-                            <span data-bind="text: $parent.openingVolume + ' XCP'"></span>  
+                            <span data-bind="text: $parent.openingVolume + ' ASP'"></span>  
                           </div>
                         </div>
 
@@ -252,7 +252,7 @@
                             </tr>
                             <tr>
                               <td><b><span data-bind="locale: 'wager'"></span>:</b></td>
-                              <td><b><span data-bind="text: $parent.wager + ' XCP'"></span></b></td>
+                              <td><b><span data-bind="text: $parent.wager + ' ASP'"></span></b></td>
                             </tr>
                             <tr data-bind="visible: info_data.type=='binary'">          
                               <td><b><span data-bind="locale: 'topic'"></span>:</b></td>
@@ -274,7 +274,7 @@
                             </tr>
                             <tr data-bind="visible: $parent.fee>=0">              
                               <td><b><span data-bind="locale: 'fee'"></span>:</b></td> 
-                              <td><b><span data-bind="text: $parent.fee + ' XCP'"></span></b></td>  
+                              <td><b><span data-bind="text: $parent.fee + ' ASP'"></span></b></td>  
                             </tr>
                           </tbody>
                         </table>

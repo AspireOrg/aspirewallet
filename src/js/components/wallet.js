@@ -292,9 +292,9 @@ function WalletViewModel() {
   }
 
   self.refreshCounterpartyBalances = function(addresses, onSuccess) {
-    //update all counterparty asset balances for the specified address (including XCP)
-    //Note: after login, this normally never needs to be called (except when adding a watch address),
-    // as counterparty asset balances are updated automatically via the messages feed
+    // update all aspire asset balances for the specified address (including ASP)
+    // Note: after login, this normally never needs to be called (except when adding a watch address),
+    // as aspire asset balances are updated automatically via the messages feed
     failoverAPI("get_normalized_balances", {'addresses': addresses},
       function(balancesData, endpoint) {
         $.jqlog.debug("Got initial balances: " + JSON.stringify(balancesData));

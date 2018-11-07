@@ -271,9 +271,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
   self.createAsset = function() {
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
-
-    var xcpBalance = WALLET.getBalance(self.ADDRESS, 'ASP');
-    CREATE_ASSET_MODAL.show(self.ADDRESS, xcpBalance, true);
+    CREATE_ASSET_MODAL.show(self.ADDRESS, WALLET.getBalance(self.ADDRESS, 'ASP'), true);
   }
 
   self.payDividend = function() {

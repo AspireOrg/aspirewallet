@@ -159,7 +159,7 @@ function makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError)
 }
 
 function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSuccess, onError, httpMethod) {
-  /*Makes a JSON RPC API call to a specific counterpartyd/counterblockd endpoint.
+  /*Makes a JSON RPC API call to a specific aspired/aspireblockd endpoint.
    
     -endpoints: The specific API endpoint URL string to make the API request to.
      If a list of endpoint URLs are specified instead of a single URL, then we attempt the request
@@ -176,12 +176,12 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
   if (typeof(httpMethod) === 'undefined') httpMethod = "POST"; //default to POST
   assert(httpMethod == "POST" || httpMethod == "GET", "Invalid HTTP method");
 
-  //make JSON API call to counterblockd
-  if (destType == "counterblockd") {
+  //make JSON API call to aspireblockd
+  if (destType == "aspireblockd") {
     makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError);
-  } else if (destType == "counterpartyd") {
-    //make JSON API call to counterblockd, which will proxy it to counterpartyd
-    makeJSONRPCCall(endpoints, "proxy_to_counterpartyd", {
+  } else if (destType == "aspired") {
+    //make JSON API call to aspireblockd, which will proxy it to aspired
+    makeJSONRPCCall(endpoints, "proxy_to_aspired", {
       "method": method,
       "params": params
     }, timeout, onSuccess, onError);
@@ -190,7 +190,7 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
 
 function _getDestTypeFromMethod(method) {
   //based on the method, determine the endpoints list to use
-  var destType = "counterpartyd";
+  var destType = "aspired";
   if (['is_ready', 'get_reflected_host_info', 'is_chat_handle_in_use', 'record_btc_open_order',
       'get_messagefeed_messages_by_index', 'get_normalized_balances', 'get_required_btcpays',
       'get_chain_address_info', 'get_chain_block_height', 'get_chain_txns_status',
@@ -205,13 +205,13 @@ function _getDestTypeFromMethod(method) {
       'get_pubkey_for_address', 'create_armory_utx', 'convert_armory_signedtx_to_raw_hex', 'create_support_case',
       'get_escrowed_balances', 'proxy_to_autobtcescrow', 'get_vennd_machine', 'get_script_pub_key', 'get_assets_info', 'broadcast_tx',
       'get_latest_wallet_messages', 'get_optimal_fee_per_kb', 'get_assets_names_and_longnames'].indexOf(method) >= 0) {
-    destType = "counterblockd";
+    destType = "aspireblockd";
   }
   return destType;
 }
 
 function supportUnconfirmedChangeParam(method) {
-  return method.split("_").shift() == "create" && _getDestTypeFromMethod(method) == "counterpartyd";
+  return method.split("_").shift() == "create" && _getDestTypeFromMethod(method) == "aspired";
 }
 
 function _multiAPIPrimative(method, params, onFinished) {
@@ -247,7 +247,7 @@ function _multiAPIPrimative(method, params, onFinished) {
 
           if (method != "is_ready") {
             //525 DETECTION (needed here and in failoverAPI() as failoverAPI() doesn't use this primative)
-            //detect a special case of all servers returning code 525, which would mean counterpartyd had a reorg and/or we are upgrading
+            //detect a special case of all servers returning code 525, which would mean aspired had a reorg and/or we are upgrading
             var allNotCaughtUp = true;
             for (var j = 0; j < gatheredResults.length; j++) {
               if (!gatheredResults['jqXHR'] || gatheredResults['jqXHR'].status != '525') {
@@ -274,10 +274,10 @@ function _multiAPIPrimative(method, params, onFinished) {
 /*
  AVAILABLE API CALL METHODS:
  * nonFailoverAPI: Used only by message feed requests currently (as the sequence numbers can theoritically change across multiple CW servers slightly due to mempool propagation differences)
- * failoverAPI: Used for all counterpartyd get_ API requests (for now...later we may want to move to multiAPINewest)
- * multiAPI: Used for storing counterblockd state data (store_preferences, store_chat_handle, etc)
- * multiAPINewest: Used for fetching state data from counterblockd (e.g. get_preferences, get_chat_handle)
- * multiAPIConsensus: Used for all counterpartyd create_ API requests
+ * failoverAPI: Used for all aspired get_ API requests (for now...later we may want to move to multiAPINewest)
+ * multiAPI: Used for storing aspireblockd state data (store_preferences, store_chat_handle, etc)
+ * multiAPINewest: Used for fetching state data from aspireblockd (e.g. get_preferences, get_chat_handle)
+ * multiAPIConsensus: Used for all aspired create_ API requests
 */
 
 function nonFailoverAPI(method, params, onSuccess, onError) {
@@ -293,7 +293,7 @@ function nonFailoverAPI(method, params, onSuccess, onError) {
 
   //525 DETECTION (needed here and in _multiAPIPrimative) - wrap onError (so that this works even for user supplied onError)
   var onErrorOverride = function(jqXHR, textStatus, errorThrown, endpoint) {
-    //detect a special case of all servers returning code 525, which would mean counterpartyd had a reorg and/or we are upgrading
+    //detect a special case of all servers returning code 525, which would mean aspired had a reorg and/or we are upgrading
     //TODO: this is not perfect in this failover case now because we only see the LAST error. We are currently assuming
     // that if a) the LAST server returned a 525, and b) all servers are erroring out or down, that all servers are
     // probably returning 525s or updating (or messed up somehow) and we should just log the client out to be safe about it.
@@ -327,7 +327,7 @@ function failoverAPI(method, params, onSuccess, onError) {
   }
   //525 DETECTION (needed here and in _multiAPIPrimative) - wrap onError (so that this works even for user supplied onError)
   var onErrorOverride = function(jqXHR, textStatus, errorThrown, endpoint) {
-    //detect a special case of all servers returning code 525, which would mean counterpartyd had a reorg and/or we are upgrading
+    //detect a special case of all servers returning code 525, which would mean aspired had a reorg and/or we are upgrading
     //TODO: this is not perfect in this failover case now because we only see the LAST error. We are currently assuming
     // that if a) the LAST server returned a 525, and b) all servers are erroring out or down, that all servers are
     // probably returning 525s or updating (or messed up somehow) and we should just log the client out to be safe about it.
