@@ -62,7 +62,7 @@ function produceCWServerList() {
     return element;
   }));
   cwAPIUrls(jQuery.map(cwURLs(), function(element) {
-    return element + (USE_TESTNET ? '/_t_api' : '/_api');
+    return element + '/api/';
   }));
 }
 

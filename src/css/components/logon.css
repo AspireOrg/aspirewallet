@@ -1,6 +1,9 @@
 /* 
  * Logon page specific
  */
+ .panel-body {
+  background: #1d1d1d;
+ }
 #logon {
   padding-top: 120px;
   background: black; 

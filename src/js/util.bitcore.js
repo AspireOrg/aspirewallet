@@ -4,7 +4,35 @@ var bitcore = require('bitcore-lib');
 var bitcoreMessage = require('bitcore-message'); // this also binds itself to bitcore.Message as soon as it's require'd
 
 // this 'global' is overwritten by tests!
-var NETWORK = USE_TESTNET ? bitcore.Networks.testnet : bitcore.Networks.livenet;
+// var NETWORK = USE_TESTNET ? bitcore.Networks.testnet : bitcore.Networks.livenet;
+
+bitcore.Networks.add({
+  name: 'aspiregas',
+  alias: 'gasp-mainnet',
+  pubkeyhash: 0x09,
+  privatekey: 0x0f,
+  scripthash: 0x0a,
+  xpubkey: 0x0488b21e,
+  xprivkey: 0x0488ade4,
+  networkMagic: 0xe4cfcce2,
+  port: 11374,
+  dnsSeeds: []
+});
+
+bitcore.Networks.add({
+  name: 'aspiregas-testnet',
+  alias: 'gasp-testnet',
+  pubkeyhash: 0x25,
+  privatekey: 0x2a,
+  scripthash: 0x26,
+  xpubkey: 0x043587cf,
+  xprivkey: 0x04358394,
+  networkMagic: 0xe4cfcce3,
+  port: 21374,
+  dnsSeeds: []
+});
+
+var NETWORK = USE_TESTNET ? bitcore.Networks.get('aspiregas-testnet') : bitcore.Networks.get('aspiregas');
 
 var CWHierarchicalKey = function(passphrase, password) {
   checkArgType(passphrase, "string");

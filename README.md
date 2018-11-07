@@ -78,7 +78,7 @@ See [this link](http://counterparty.io/docs/federated_node/) for more info.
 Development
 -----------
 
-The easiest way to develop locally is to install Federated Node in Docker environment. If you already have Bitcoin Core addrindex, Aspire Server and Aspireblock, then Aspirewallet can be manually installed using either of these approaches:
+The easiest way to develop locally is to install Federated Node in Docker environment. If you already have AspireGasp addrindex, Aspire Server and Aspireblock, then Aspirewallet can be manually installed using either of these approaches:
 
 * Stand-alone Docker environment: refer to docker\start.sh in the Aspirewallet source code. 
 * Manually: example based on the Docker template for Aspirewallet on Ubuntu 16.04 is provided below.

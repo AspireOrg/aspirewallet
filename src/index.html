@@ -305,7 +305,7 @@
       <h2 data-bind="locale: 'powered_by_counterparty'"></h2>
       <div id="form-well">
 
-        <div class="panel panel-info">
+        <div class="panel panel-danger">
           <div class="panel-heading">
             <h3 class="panel-title">
               <b data-bind="visible: USE_TESTNET, locale: 'log_into_your_testnet_wallet'"></b>
@@ -313,8 +313,8 @@
               <span data-bind="fadeVisibleInOnly: IS_DEV" class="label label-warning pull-right margin-left-5 padding-5 display-none">
                 <i class="fa-fw fa fa-warning"></i> <span data-bind="locale: 'dev_mode_enabled'"></span>
               </span>
-              <span data-bind="fadeVisibleInOnly: USE_TESTNET" class="label label-info pull-right margin-left-5 padding-5 display-none">
-                <i class="fa-fw fa fa-info"></i> <b data-bind="locale: 'testnet_in_use'"></b>
+              <span data-bind="fadeVisibleInOnly: USE_TESTNET" class="label label-danger pull-right margin-left-5 padding-5 display-none">
+                <i class="fa-fw fa fa-danger"></i> <b data-bind="locale: 'testnet_in_use'"></b>
               </span>
             </h3>
           </div>
