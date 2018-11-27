@@ -1,10 +1,10 @@
 [![Build Status Travis](https://travis-ci.org/AspireOrg/aspirewallet.svg?branch=develop)](https://travis-ci.org/AspireOrg/aspirewallet)
 [![Build Status Circle](https://circleci.com/gh/AspireOrg/aspirewallet.svg?&style=shield)](https://circleci.com/gh/AspireOrg/aspirewallet)
 
-Aspirewallet
+Aspire Wallet
 ================
 
-Online Webwallet for [Aspire](http://aspirecrypto.com).
+Online Web Wallet for [Aspire](http://aspirecrypto.com).
 
 Originally based off of [Carbonwallet](http://www.carbonwallet.com) (however virtually all the original code has been removed or rewritten).
 
@@ -40,22 +40,45 @@ Notably, Internet Explorer is **not** supported, due to its lack of full Content
 - Firefox for Android 26+
 
 
-Build Instructions
+Ubuntu 16.04 Build Instructions
 -------------------
 
-### Before running the build system:
+### Initial Setup
 ```
-sudo npm install -g grunt-cli bower
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install build-essential libssl-dev nginx -y
+
+sudo adduser aspire --disabled-password
 ```
 
-### To build:
+### Setup node
 ```
-cd src; bower install; cd ..
+sudo su aspire
+
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+source ~/.profile
+nvm install v8.11.3
+nvm use v8.11.3
+nvm alias default v8.11.3
+npm install -g grunt-cli bower
+```
+
+## Setup aspire wallet
+```
+sudo su aspire
+cd /home/aspire
+git clone https://github.com/AspireOrg/aspirewallet.git
+cd aspirewallet/src
+bower install
+cd ..
 npm install
 ```
 
-### To (re)build the static (i.e. minified) site:
+### Build static site
 ```
+sudo su aspire
+cd /home/aspire
 grunt build
 ```
 
@@ -64,38 +87,42 @@ grunt build
 grunt freeze
 ```
 
+### Running tests from CLI (using phantomjs headless browser)
+```
+sudo su aspire
+cd /home/aspire
+npm test
+```
+
+### Running in development
+- Install serve to deliver site easily
+```
+npm install -g serve
+```
+- Copy default conf file
+```
+cp aspirewallet.conf.json.example aspirewallet.conf.json
+```
+- Review and change aspirewallet.conf.json accordingly
+- Build static site
+```
+grunt build --dontcheckdeps --dontminify && cp aspirewallet.conf.json build/
+```
+- Serve static site
+```
+cd build/; serve
+```
+- visit `http://localhost:3000`
+
+
 ### To enable localizations (optional):
 1. Create an account on [Transifex](https://www.transifex.com/)
 2. In your home directory, create a file named `.transifex` and put your Transifex username and password into it in this format: `user:password`
 3. Run `grunt build` to download translations
 4. Add the languages you want to support to `AVAILABLE_LANGUAGES` in **aspirewallet.conf.json** - you can use **aspirewallet.conf.json.example** as a template. The template file contains **only** the setting relevant to languages and does not replace the rest of variables required in that file (refer to Federeated Node documentation for additional details about `aspirewallet.conf`).
 
-Setting up your own Aspirewallet Server
------------------------------------------
-
-See [this link](http://counterparty.io/docs/federated_node/) for more info.
-
-Development
------------
-
-The easiest way to develop locally is to install Federated Node in Docker environment. If you already have AspireGasp addrindex, Aspire Server and Aspireblock, then Aspirewallet can be manually installed using either of these approaches:
-
-* Stand-alone Docker environment: refer to docker\start.sh in the Aspirewallet source code. 
-* Manually: example based on the Docker template for Aspirewallet on Ubuntu 16.04 is provided below.
-
-### Manual installation in local environment (Ubuntu 16.04 x64):
-1. Download required release or branch (optionally check Pull Requests, if any). 
-2. Enter the archive directory: `cd $PATH2SOURCE`
-3. Install NodeJS and create a symlink if needed: `sudo apt-get install nodejs ; sudo ln -s /usr/bin/nodejs /usr/bin/node`
-4. Prepare: `npm install -g --save-dev bower grunt-cli`
-5. Download dependencies in the src subdirectory: `cd src; bower --allow-root --config.interactive=false update` 
-6. Prepublish `cd $PATH2SOURCE; mkdir build ; npm update`
-7. Build: Copy aspirewallet.conf.json.example to aspirewallet.conf.json. Use text editor to add `"http://wallet.aspirewallet.io"` in between the square brackets in `servers` in aspirewallet.conf.json. Then build: `grunt build --dontcheckdeps --dontminify && cp aspirewallet.conf.json build/`. The application will be stored in the build subdirectory.
-8. Serve: Open a seperate terminal, install serve (`sudo npm install -g serve`) and in the build subdirectory start Aspirewallet service: `cd build/; serve`. 
-9. Use: Visit `http://localhost:3000` (or you can specify a different port for `serve` if you like)
 
 #### Notes:
-
 * the `--dontcheckdeps` speeds up the process and avoids having to do `grunt freeze` everytime you make a change to a dependency during development
 * the `--dontminify` makes your debugging life a bit easier
 * the `cp` is neccesary because grunt keeps clearing the `build` folder
