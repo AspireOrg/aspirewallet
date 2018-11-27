@@ -5,13 +5,15 @@ var CWBitcoinQuote = (function() {
   var defaultQuote = 0
 
   exports.getQuote = function(cb) {
-    getCache(function() {
-      if (quoteCache !== null) {
-        cb(quoteCache)
-        return
-      }
-      cb(defaultQuote)
-    })
+    cb("0.5")
+    return
+    // getCache(function() {
+    //   if (quoteCache !== null) {
+    //     cb(quoteCache)
+    //     return
+    //   }
+    //   cb(defaultQuote)
+    // })
   }
 
   function getCache(cb) {

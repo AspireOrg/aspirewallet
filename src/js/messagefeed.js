@@ -219,7 +219,7 @@ function MessageFeed() {
       }
     } else if (category == "broadcasts") {
       //TODO
-    } else if (category == "burns") {
+    } else if (category == "proofofwork") {
     } else if (category == "cancels") {
 
       if (WALLET.getAddressObj(message['source'])) {

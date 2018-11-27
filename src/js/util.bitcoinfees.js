@@ -11,13 +11,13 @@ var CWBitcoinFees = (function() {
       offset: 0,
       fee: 101,
       minDelay: 1,
-      maxDelay: 9999
+      maxDelay: 2
     },
     {
       offset: 1,
-      fee: 201,
+      fee: 102,
       minDelay: 1,
-      maxDelay: 1000
+      maxDelay: 2
     }
   ]
 
@@ -67,28 +67,28 @@ var CWBitcoinFees = (function() {
   }
 
   function refreshCache(cb) {
-    $.ajax({
-      method: "GET",
-      url: "https://bitcoinfees.earn.com/api/v1/fees/list",
-      dataType: 'json',
-      success: function(apiResponse) {
-        buildFeesFromResponse(apiResponse);
-        if (typeof cb == 'function') {
-          cb(feesCache)
-          return
-        }
-      },
-      error: function(jqxhr, textSatus, errorThrown) {
-        $.jqlog.warn('bitcoinfees quote failed: '+textSatus+' '+errorThrown);
-        if (typeof cb == 'function') {
-          if (feesCache == null) {
-            feesCache = defaultFees
-          }
-          cb(feesCache)
-        }
-        return
-      }
-    });
+    // $.ajax({
+    //   method: "GET",
+    //   url: "https://bitcoinfees.earn.com/api/v1/fees/list",
+    //   dataType: 'json',
+    //   success: function(apiResponse) {
+    //     buildFeesFromResponse(apiResponse);
+    //     if (typeof cb == 'function') {
+    //       cb(feesCache)
+    //       return
+    //     }
+    //   },
+    //   error: function(jqxhr, textSatus, errorThrown) {
+    //     $.jqlog.warn('bitcoinfees quote failed: '+textSatus+' '+errorThrown);
+    //     if (typeof cb == 'function') {
+    //       if (feesCache == null) {
+    //         feesCache = defaultFees
+    //       }
+    //       cb(feesCache)
+    //     }
+    //     return
+    //   }
+    // });
   }
 
   function buildFeesFromResponse(apiResponse) {

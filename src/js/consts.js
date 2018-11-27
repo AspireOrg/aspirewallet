@@ -50,19 +50,19 @@ var SUBASSET_MAX_DISP_LENGTH = 20;
 
 var IS_MOBILE_OR_TABLET = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var MAX_INT = Math.pow(2, 63) - 1;
-var UNIT = 100000000; //# satoshis in whole
-var MIN_FEE = 20000; // in satoshis (== .0002 BTC)
+var UNIT = 100000000;
+var MIN_FEE = 1000; // in satoshis
 var REGULAR_DUST_SIZE = 5430;
 var MULTISIG_DUST_SIZE = 7800;
-var MIN_BALANCE_FOR_ACTION = 50000; //in satoshis ... == .0005
-var ASSET_CREATION_FEE_XCP = 0.5; //in normalized XCP
-var SUBASSET_CREATION_FEE_XCP = 0.25; //in normalized XCP
+var MIN_BALANCE_FOR_ACTION = 10000; //in satoshis ... == .0005
+var ASSET_CREATION_FEE_XCP = 0.5; // in normalized ASP
+var SUBASSET_CREATION_FEE_XCP = 0.25; // in normalized ASP
 var DIVIDEND_FEE_PER_HOLDER = 0.0002
-var MAX_ASSET_DESC_LENGTH = 41; //42, minus a null term character?
-var FEE_FRACTION_REQUIRED_DEFAULT_PCT = .9;   //0.90% of total order
-var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   //1.00% of total order
-var FEE_FRACTION_DEFAULT_FILTER = .95;
-var BTC_ORDER_MIN_AMOUNT = 0.01;
+var MAX_ASSET_DESC_LENGTH = 41; // 42, minus a null term character
+var FEE_FRACTION_REQUIRED_DEFAULT_PCT = 1;   // 0.90% of total order
+var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   // 1.00% of total order
+var FEE_FRACTION_DEFAULT_FILTER = 1;
+var BTC_ORDER_MIN_AMOUNT = 0.0001;
 var B26_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var ORIG_REFERER = document.referrer;
 
@@ -73,7 +73,7 @@ var ENTITY_NAMES = {
   'sends': 'Send',
   'orders': 'Order',
   'order_matches': 'Order Match',
-  'btcpays': 'BTCPay',
+  'btcpays': 'GASPay',
   'issuances': 'Issuance',
   'broadcasts': 'Broadcast',
   'bets': 'Bet',
