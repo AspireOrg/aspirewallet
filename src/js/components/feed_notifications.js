@@ -140,8 +140,8 @@ NotificationViewModel.calcText = function(category, message) {
     } else if (WALLET.getAddressObj(message['tx1_address'])) {
       desc = i18n.t("notif_bet_match_expired", getAddressLabel(message['tx1_address']), getAddressLabel(message['tx0_address']));
     }
-
-
+  } else {
+    console.log('feed_notifications.js:146 - unknown category "', category, '"');
   }
 
   if (desc) {
