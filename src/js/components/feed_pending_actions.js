@@ -38,8 +38,8 @@ PendingActionViewModel.calcText = function(category, data) {
     }
   }
 
-  if (category == 'burns') {
-    desc = i18n.t("pend_or_unconf_burn", pending, normalizeQuantity(data['quantity']));
+  if (category == 'proofofwork') {
+    desc = i18n.t("pend_or_unconf_proofofwork", pending, normalizeQuantity(data['mined']));
   } else if (category == 'sends') {
     desc = i18n.t("pend_or_unconf_send", pending, numberWithCommas(normalizeQuantity(data['quantity'], divisible)),
       asset_longname || data['asset'],
@@ -128,7 +128,7 @@ function PendingActionFeedViewModel() {
   self.entries = ko.observableArray([]); //pending actions beyond pending BTCpays
   self.lastUpdated = ko.observable(new Date());
   self.ALLOWED_CATEGORIES = [
-    'sends', 'orders', 'issuances', 'broadcasts', 'bets', 'dividends', 'burns', 'cancels', 'btcpays', 'order_matches'
+    'sends', 'orders', 'issuances', 'broadcasts', 'bets', 'dividends', 'proofofwork', 'cancels', 'btcpays', 'order_matches'
     //^ pending actions are only allowed for these categories
   ];
 
@@ -296,11 +296,11 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
   }
 
   var addressObj = null;
-  if (category == 'burns') {
+  if (category == 'proofofwork') {
 
     addressObj = WALLET.getAddressObj(data['source']);
     addressObj.getAssetObj('ASP').balanceChangePending(flagSetting);
-    updateUnconfirmedBalance(data['source'], 'GASP', data['quantity'] * -1);
+    updateUnconfirmedBalance(data['source'], 'GASP', data['quantity']);
 
 
   } else if (category == 'sends') {

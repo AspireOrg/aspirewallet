@@ -669,9 +669,7 @@ function WalletViewModel() {
 
     var verifyDestAddr = data['destination'] || data['transfer_destination'] || data['feed_address'] || data['destBtcPay'] || data['source'];
     delete data['destBtcPay'];
-    if (action == "create_burn") {
-      verifyDestAddr = TESTNET_UNSPENDABLE;
-    } else if (action == "create_dividend" && data['dividend_asset'] == 'GASP') {
+    if (action == "create_dividend" && data['dividend_asset'] == 'GASP') {
       verifyDestAddr = data['_btc_dividend_dests'];
       delete data['_btc_dividend_dests'];
     }

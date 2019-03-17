@@ -101,15 +101,6 @@ function AssetViewModel(props) {
     SHOW_ASSET_INFO_MODAL.show(self);
   };
 
-  self.testnetBurn = function() {
-    if (!self.availableBalance()) {
-      bootbox.alert(i18n.t("not_available_asset_to_burn", self.ASSET, getAddressLabel(self.ADDRESS)));
-      return;
-    }
-    if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
-    TESTNET_BURN_MODAL.show(self.ADDRESS);
-  };
-
   self.issueAdditional = function() {
     assert(self.isMine() && !self.locked());
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;

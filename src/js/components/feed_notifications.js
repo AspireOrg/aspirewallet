@@ -52,8 +52,8 @@ NotificationViewModel.calcText = function(category, message) {
   } else if (category == "btcpays" && (WALLET.getAddressObj(message['source']) || WALLET.getAddressObj(message['destination']))) {
     desc = i18n.t("notif_btcpay_from", getAddressLabel(message['source']), getAddressLabel(message['destination']),
       smartFormat(normalizeQuantity(message['btc_amount'])));
-  } else if (category == "burns" && WALLET.getAddressObj(message['source'])) {
-    desc = i18n.t("notif_burn", getAddressLabel(message['source']), smartFormat(normalizeQuantity(message['burned'])),
+  } else if (category == "proofofwork" && WALLET.getAddressObj(message['source'])) {
+    desc = i18n.t("notif_proofofwork", getAddressLabel(message['source']), smartFormat(normalizeQuantity(message['mined'])),
       smartFormat(normalizeQuantity(message['earned'])));
   } else if (category == "cancels" && WALLET.getAddressObj(message['source'])) {
     desc = i18n.t("notif_order_cancelled", message['tx_index'], getAddressLabel(message['source']));

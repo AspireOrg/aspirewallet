@@ -166,8 +166,8 @@ function TransactionHistoryItemViewModel(data) {
   self.dispDescription = function() {
     //TODO: this display of data is very elementary and basic. IMPROVE greatly in the future...
     var desc = "";
-    if (self.RAW_TX_TYPE == 'burns') {
-      desc = i18n.t("hist_burn", normalizeQuantity(self.DATA['burned']), smartFormat(normalizeQuantity(self.DATA['earned'])));
+    if (self.RAW_TX_TYPE == 'proofofwork') {
+      desc = i18n.t("hist_proofofwork", normalizeQuantity(self.DATA['mined']), smartFormat(normalizeQuantity(self.DATA['mined'])));
     } else if (self.RAW_TX_TYPE == 'sends') {
       desc = i18n.t("hist_send", smartFormat(normalizeQuantity(self.DATA['quantity'],
         self.DATA['_asset_divisible'])), self.DATA['_asset_longname'] || self.DATA['asset'],

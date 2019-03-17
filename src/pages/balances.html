@@ -583,46 +583,6 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-<!-- modal for testnet burning -->
-<div data-bind="showModal: shown" id="testnetBurnModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="testnetBurnModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" data-bind="click: hide" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" data-bind="locale: 'burn_btc_testnet'"></h4>
-      </div>
-      <div class="modal-body no-padding">
-        <p class="formPadded">
-          <span data-bind="locale: 'create_xcp_testnet'"></span><br/><br/>
-          <span data-bind="visible: 1 - btcAlreadyBurned() > 0">
-            <b data-bind="locale: 'burn_up_to', localeArgs: maxPossibleBurn()"></b>
-          </span>
-          <span data-bind="visible: 1 - btcAlreadyBurned() <= 0">
-            <b class="errorColor"><span data-bind="locale: 'already_burned'"></span></b>
-          </span>
-       </p>
-       <form class="smart-form" data-bind="submit: doAction"><fieldset>
-          <section><div class="row">
-            <label class="control-label col col-sm-2" data-bind="locale: 'btc_to_burn'"></label>
-            <div class="col col-sm-10">
-                <label class="input"><i class="icon-append fa fa-fire"></i>
-                    <input name="additionalIssue" data-bind="value: btcBurnQuantity, valueUpdate: 'input'" type="text"/>
-                </label>
-            </div>
-          </div></section>
-        </fieldset></form>
-        <p class="formPaddedBot bold" data-bind="fadeVisibleInOnly: validationModel.isValid(), locale: 'after_burning', localeArgs: dispQuantityXCPToBeCreated"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bind="click: hide, locale: 'cancel'"></button>
-        <button type="button" data-bind="click: submitForm, locale: 'burn'" class="btn btn-success"></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
 <!-- modal for display private key -->
 <div data-bind="showModal: shown" id="displayPrivateKeyModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="displayPrivateKeyModal" aria-hidden="true">
   <div class="modal-dialog">

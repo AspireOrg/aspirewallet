@@ -95,19 +95,6 @@ function makeQRCode(addr) {
   return qr.createImgTag(4);
 }
 
-function testnetBurnDetermineEarned(blockHeight, burned) {
-  //burned is the quantity of GASP to burn (as a float -- normalized value)
-  //ASP quantity returned is as a float -- normalized value
-  return 0;
-
-  // burned = denormalizeQuantity(burned);
-  // var total_time = TESTNET_BURN_END - TESTNET_BURN_START;
-  // var partial_time = TESTNET_BURN_END - blockHeight;
-  // var multiplier = 1000 * (1 + .5 * (partial_time / total_time)); //will be approximate
-  // var earned = Decimal.round(new Decimal(burned).mul(multiplier), 8, Decimal.MidpointRounding.ToEven).toFloat();
-  // return normalizeQuantity(earned);
-}
-
 // from bitcoinjs-lib
 function bytesToBase64(bytes) {
   var base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'

@@ -67,7 +67,7 @@ var B26_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var ORIG_REFERER = document.referrer;
 
 var ENTITY_NAMES = {
-  'burns': 'Burn',
+  'proofofwork': 'Proof-of-Work',
   'debits': 'Debit',
   'credits': 'Credit',
   'sends': 'Send',
@@ -93,7 +93,7 @@ var ENTITY_NAMES = {
 };
 
 var ENTITY_ICONS = {
-  'burns': 'fa-fire',
+  'proofofwork': 'fa-fire',
   'debits': 'fa-minus',
   'credits': 'fa-plus',
   'sends': 'fa-share',
@@ -119,7 +119,7 @@ var ENTITY_ICONS = {
 };
 
 var ENTITY_NOTO_COLORS = {
-  'burns': 'bg-color-yellow',
+  'proofofwork': 'bg-color-yellow',
   'debits': 'bg-color-red',
   'credits': 'bg-color-green',
   'sends': 'bg-color-orangeDark',
@@ -183,8 +183,6 @@ var LEVERAGE_UNIT = 5040;
 
 var MAINNET_UNSPENDABLE = '1CounterpartyXXXXXXXXXXXXXXXUWLpVr';
 var TESTNET_UNSPENDABLE = 'mvCounterpartyXXXXXXXXXXXXXXW24Hef';
-var TESTNET_BURN_START = 154908;
-var TESTNET_BURN_END = 4017708;
 
 /***********
  * DYNAMICALLY SET
