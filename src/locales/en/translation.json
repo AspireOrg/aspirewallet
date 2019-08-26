@@ -39,7 +39,7 @@
   "open_wallet": "Open Wallet",
   "login": "Login",
   "login_problems": "Problems logging in?",
-  "counterwallet_desc_1": "This is a free web-wallet for <a href=\"http://www.aspire.io\" target=\"_blank\">AspireGas</a> and <a href=\"http://www.aspire.io\" target=\"_blank\">Aspire</a>",
+  "counterwallet_desc_1": "This is a free web-wallet for <a href=\"http://www.gaspwallets.com\" target=\"_blank\">gAsp</a> and <a href=\"http://www.aspirecrypto.com\" target=\"_blank\">Aspire</a>",
   "counterwallet_desc_2": "All transactions made with Aspire Web Wallet use an automatic escrow system to keep them secure, with no middleman required.",
   "counterwallet_desc_3": "Secure",
   "counterwallet_desc_4": "All encryption is handled client-side. Neither your passphrase nor any of your private information ever leaves your browser.",
