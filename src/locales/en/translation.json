@@ -211,7 +211,7 @@
   "asset_length_invalid": "Asset name is too long, or too short",
   "asset_name_invalid": "Asset name invalid",
   "token_desc_too_long": "Token description is more than %s bytes long.",
-  "token_name_rules": "Must contain between 4 and 12 uppercase letters only (A-Z), and cannot start with 'A'.",
+  "token_name_rules": "Must contain between 4 and 12 uppercase letters only (B-Z), and cannot start with 'A'.",
   "token_subname_rules": "Subasset name must be < 255 characters, may contain A-Z, a-z, 0-9, or characters .-_@! and must not end with a period",
   "free_token_name_rules": "Must start with 'A', followed by a large random number.",
   "issuance_quantity_too_high": "The quantity desired to be issued for this token is too high.",
