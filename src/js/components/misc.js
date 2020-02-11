@@ -5,7 +5,7 @@ function SupportModalViewModel() {
   self.type = ko.observable(null);
 
   self.show = function(type) {
-    assert(['general', 'balancesPage', 'exchangePage'].indexOf(type) !== -1, "Unknown support modal type");
+    assert(['general', 'balancesPage'].indexOf(type) !== -1, "Unknown support modal type");
     self.type(type);
     self.shown(true);
   }

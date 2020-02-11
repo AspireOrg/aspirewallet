@@ -195,11 +195,6 @@ function MessageFeed() {
 
     if (_.startsWith(message['_status'], 'invalid'))
       return; //ignore message
-    if (message['_status'] == 'expired') {
-      //ignore expired orders and bets, but we have order_expirations and bet_expiration inserts that we DO look at
-      assert(category == "orders" || category == "bets", "Got an 'expired' message for a category of: " + category);
-      return;
-    }
 
     //notify the user in the notification pane
     NOTIFICATION_FEED.add(category, message);
@@ -209,28 +204,16 @@ function MessageFeed() {
     // address with potential change in escrowed balance
     var refreshEscrowedBalance = [];
 
-    //Have the action take effect (i.e. everything besides notifying the user in the notifcations pane, which was done above)
+    // Have the action take effect (i.e. everything besides notifying the user in the notifcations pane, which was done above)
     if (category == "balances") {
-      //DO NOTHING
+      // DO NOTHING
     } else if (category == "credits" || category == "debits") {
       if (WALLET.getAddressObj(message['address'])) {
         WALLET.updateBalance(message['address'], message['asset'], message['_balance']);
         refreshEscrowedBalance.push(message['address']);
       }
     } else if (category == "broadcasts") {
-      //TODO
     } else if (category == "proofofwork") {
-    } else if (category == "cancels") {
-
-      if (WALLET.getAddressObj(message['source'])) {
-        //Remove the canceled order from the open orders list
-        // NOTE: this does not apply as a pending action because in order for us to issue a cancellation,
-        // it would need to be confirmed on the blockchain in the first place
-        self.removeOrder(message['offer_hash']);
-        //TODO: If for a bet, do nothing for now.
-        refreshEscrowedBalance.push(message['source']);
-      }
-
     } else if (category == "dividends") {
     } else if (category == "issuances") {
       //the 'asset' field is == asset_longname for subassets
@@ -247,62 +230,6 @@ function MessageFeed() {
 
     } else if (category == "sends") {
       //the effects of a send are handled based on the credit and debit messages it creates, so nothing to do here
-    } else if (category == "orders") {
-      if (message['_btc_below_dust_limit'])
-        return; //ignore any order involving BTC below the dust limit
-
-      //valid order statuses: open, filled, invalid, cancelled, and expired
-      //update the give/get remaining numbers in the open orders listing, if it already exists
-      var match = ko.utils.arrayFirst(self.OPEN_ORDERS, function(item) {
-        return item['tx_hash'] == message['tx_hash'];
-      });
-      if (match) {
-        if (message['_status'] != 'open') { //order is filled, expired, or cancelled, remove it from the listing
-          self.removeOrder(message['tx_hash']);
-        }
-      } else if (WALLET.getAddressObj(message['source'])) {
-        //order is not in the open orders listing, but should be
-        self.OPEN_ORDERS.push(message);
-      }
-      refreshEscrowedBalance.push(message['source']);
-
-    } else if (category == "order_matches") {
-
-      if (message['_btc_below_dust_limit'])
-        return; //ignore any order match involving BTC below the dust limit
-
-      refreshEscrowedBalance.push(message['tx0_address']);
-      refreshEscrowedBalance.push(message['tx1_address']);
-
-    } else if (category == "order_expirations") {
-      //Remove the order from the open orders list
-      self.removeOrder(message['order_hash']);
-
-      refreshEscrowedBalance.push(message['source']);
-
-    } else if (category == "order_match_expirations") {
-
-      refreshEscrowedBalance.push(message['tx0_address']);
-      refreshEscrowedBalance.push(message['tx1_address']);
-
-    } else if (category == "bets") {
-
-      refreshEscrowedBalance.push(message['source']);
-
-    } else if (category == "bet_matches") {
-
-      refreshEscrowedBalance.push(message['tx0_address']);
-      refreshEscrowedBalance.push(message['tx1_address']);
-
-    } else if (category == "bet_expirations") {
-
-      refreshEscrowedBalance.push(message['source']);
-
-    } else if (category == "bet_match_expirations") {
-
-      refreshEscrowedBalance.push(message['tx0_address']);
-      refreshEscrowedBalance.push(message['tx1_address']);
-
     } else {
       $.jqlog.error("Unknown message category: " + category);
     }

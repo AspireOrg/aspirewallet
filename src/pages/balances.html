@@ -52,12 +52,6 @@
     <a href="https://counterpartytalk.org/t/is-it-possible-to-create-list-of-addresses-and-private-keys-from-counterwallet-pass-phrase/1223" target="_blank" data-bind="locale: 'old_wallet_more_info'"></a>.
 </div>
 
-<div class="alert alert-info" id="alertBuyXcp">
-    <i class="fa-fw fa fa-exchange"></i>
-<!--     <span data-bind="visible: !QUICK_BUY_ENABLE, locale: 'want_to_buy_xcp'"></span>
-    <span data-bind="visible: QUICK_BUY_ENABLE, locale: 'want_to_buy_xcp_with_quick_buy'"></span> -->
-</div>
-
 <div id="gettingStartedNotice" data-bind="fadeVisibleInOnly: WALLET.isNew() && !WALLET.isOldWallet() && window._BALANCES_HAS_LOADED_ALREADY === undefined" class="alert alert-success alert-block">
     <a class="close" data-dismiss="alert" href="#">×</a>
     <h4 class="alert-heading padding-bottom-10"><span data-bind="locale: 'welcome'"></span>!</h4>
@@ -111,11 +105,11 @@
                         </ul>
                   </li>
 
-                  <li class="divider"></li><!--<li class="dropdown-header" data-bind="locale: 'issuance'"></li>-->
+                  <li class="divider"></li>
                   <li data-bind="visible: !IS_WATCH_ONLY"><a data-bind="click: createAsset, locale: 'create_a_token'" href="#"></a></li>
                   <li data-bind="visible: !IS_WATCH_ONLY && FEATURE_DIVIDEND"><a data-bind="click: payDividend, locale: 'pay_distribution'" href="#"></a></li>
 
-                  <li class="divider"></li><!--<li class="dropdown-header" data-bind="locale: 'betting'"></li>-->
+                  <li class="divider"></li>
                   <li data-bind="visible: !IS_WATCH_ONLY"><a data-bind="click: broadcast, locale: 'feed_broadcast'" href="#"></a></li>
                 </ul>
               </div>

@@ -558,3 +558,32 @@ div.showSupport {
   color: #333;
   border: 1px solid #333;
 }
+
+
+
+
+
+/*
+ * Matts
+ */
+
+#allContent {
+  height: 100%;
+}
+
+#newWalletButton {
+
+}
+
+.btn {
+  border-radius: 1px !important;
+}
+
+.panel {
+  border-radius: 1px !important;
+}
+
+.panel-heading {
+  border-top-right-radius: 1px !important;
+  border-top-left-radius: 1px !important;
+}

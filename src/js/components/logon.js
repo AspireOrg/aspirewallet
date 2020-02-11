@@ -158,14 +158,6 @@ function LogonViewModel() {
 
         // set user country
         USER_COUNTRY = data['country'];
-        if (RESTRICTED_AREA['pages/betting.html'].indexOf(USER_COUNTRY) != -1) {
-          BETTING_ENABLE = false;
-        }
-
-        // set quote assets
-        QUOTE_ASSETS = data['quote_assets']
-
-        QUICK_BUY_ENABLE = data['quick_buy_enable'];
 
         //Grab preferences
         multiAPINewest("get_preferences", {

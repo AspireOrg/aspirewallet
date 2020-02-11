@@ -189,15 +189,13 @@ function createSharedKnockoutValidators() {
     message: i18n.t('must_be_valid_custom_fee')
   };
 
-  ko.validation.rules['isValidUrlOrValidBitcoinAdressOrJsonBet'] = {
+  ko.validation.rules['isValidUrlOrValidBitcoinAdress'] = {
     validator: function(val, self) {
       if (!val) return false;
       // regex to check url, make freeze Chrome when checking btc address
       // TODO: change the way to check an url
       // return CWBitcore.isValidAddress(val) || isValidURL(val);
-      if (val.length > 50 || val.lastIndexOf('=') == val.length - 1) {
-        return typeof(decodeJsonBet(val)) == 'object';
-      } else if (val.indexOf('http://') == 0 || val.indexOf('https://') == 0) {
+      if (val.indexOf('http://') == 0 || val.indexOf('https://') == 0) {
         return isValidURL(val);
       } else {
         return CWBitcore.isValidAddress(val) || CWBitcore.isValidMultisigAddress(val);

@@ -5,7 +5,7 @@
     <title>Aspire - Web Wallet</title>
     <meta content="Open-source and client-side web wallet for Aspire and gAsp" name="description">
     <meta content="Aspire Developers" name="author">
-    <meta content="Counterparty Developers" name="author">
+    <meta content="Aspire Developers" name="author">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <noscript>
@@ -33,9 +33,6 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/misc.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/components/logon.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/components/balances.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/components/exchange.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/components/betting.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/components/simplebuy.css">
     <!-- endbuild -->
 
     <!-- FAVICONS -->
@@ -152,60 +149,12 @@
             </a>
           </li>          
 
-          <li class="">
-            <a href="#">
-              <i class="fa fa-lg fa-fw fa-exchange"></i> <span class="menu-item-parent" data-bind="locale: 'exchange'"></span>
-            </a>
-            <ul>
-              <li>
-                <a href="pages/exchange.html">
-                  <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span data-bind="locale: 'markets'"></span>
-                </a>
-              </li>
-              <li>
-                <a href="pages/openorders.html">
-                  <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_orders'"></span>
-                </a>
-              </li>
-              <li>
-                <a href="pages/ordermatches.html">
-                  <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_order_history'"></span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li data-bind="visible: QUICK_BUY_ENABLE">
-            <a href="pages/simplebuy.html">
-              <i class="fa fa-lg fa-fw fa-rocket"></i> <span data-bind="locale: 'quick_buy'"></span>
-            </a>
-          </li>
-          <li class="" data-bind="visible: FEATURE_BETTING && BETTING_ENABLE">
-            <a href="#">
-              <i class="fa fa-lg fa-fw fa-bullseye"></i> <span class="menu-item-parent" data-bind="locale: 'betting'"></span>
-            </a>
-            <ul>
-              <li>
-                <a href="pages/betting.html">
-                  <i class="fa fa-lg fa-fw fa-share"></i> <span data-bind="locale: 'make_a_bet'"></span>
-                </a>
-              </li>
-              <li>
-                <a href="pages/openbets.html">
-                  <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_bets'"></span>
-                </a>
-              </li>
-              <li>
-                <a href="pages/matchedbets.html">
-                  <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_bet_history'"></span>
-                </a>
-              </li>
-            </ul>
-          </li>
           <li class="" data-bind="visible: FEATURE_HISTORY">
             <a href="pages/history.html">
               <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
             </a>
           </li>
+
           <!-- disable these for now -->
           <!-- <li data-bind="visible: FEATURE_PORTFOLIO">
             <a href="pages/portfolio.html">
@@ -258,19 +207,18 @@
               <p class="createWalletHeaderText" data-bind="locale: 'passphrase_created'"></p> 
 
               <div class="width-max margin-bottom-10">
+                <br />
                 <span id="generated" data-bind="text: generatedPassphrase"></span>
-                <button id="generated-regenerate" data-toggle="tooltip" data-bind="click: generatePassphrase, localeAttr: {'title': 'click_to_generate_passphrase'}" class="pull-right btn btn-default" type="button"><i class="fa fa-repeat"></i></button>
+                <br />
               </div>
+
               <div class="alert alert-danger" class="margin-top-10">
                 <p class="logonWarningLine1" data-bind="locale: 'write_your_passphrase'"></p>
-                <p class="logonWarningOtherLines" data-bind="locale: 'if_you_lose_passphrase'"></p>
-                <p class="logonWarningOtherLines" data-bind="locale: 'if_someone_get_passphrase'"></p>
-                <p class="logonWarningOtherLines" data-bind="locale: 'we_do_not_store_your_passphrase'"></p>
               </div>
-              <div class="width-max">
-                <input type="checkbox" name="passphraseSaved" value="1" data-bind="checked: passphraseSaved" />
-                <label data-bind="locale: 'i_have_written_passphrase'"></label>
-              </div>
+
+              <p class="logonWarningOtherLines" data-bind="locale: 'if_you_lose_passphrase'"></p>
+              <p class="logonWarningOtherLines" data-bind="locale: 'if_someone_get_passphrase'"></p>
+              <p class="logonWarningOtherLines" data-bind="locale: 'we_do_not_store_your_passphrase'"></p>
             </div>
             <div class="width-max" data-bind="visible: step() == 2">
               <p class="createWalletHeaderText" data-bind="locale: 'quick_access_intro_1'"></p>
@@ -286,11 +234,21 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bind="visible: step()==1, click: hide, locale: 'cancel'"></button>
-            <button id="continueWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 1, enable: passphraseSaved, click: goToStep2, locale: 'continue'"></button>
-            <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && !showQuickAccessFrame(), click: showQuickAccessURLGUI, locale: 'create_quick_access'"></button>
-            <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && !showQuickAccessFrame(), click: createWallet, locale: 'skip_this_step'"></button>
-            <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && showQuickAccessFrame(), click: createWallet, locale: 'create_wallet'"></button>
+            <div class="width-max" data-bind="visible: step() == 1">
+              <input type="checkbox" name="passphraseSaved" value="1" data-bind="checked: passphraseSaved" />
+              <label data-bind="locale: 'i_have_written_passphrase'"></label>
+            </div>
+            <br />
+            <div class='footer-boi'>
+              <button id="generated-regenerate" data-toggle="tooltip" data-bind="visible: step() == 1, click: generatePassphrase, localeAttr: {'title': 'click_to_generate_passphrase'}" class="pull-right btn btn-default" type="button"><i class="fa fa-repeat"></i></button>
+              <div style="width: 100%;">
+                <button type="button" class="btn btn-default" data-bind="visible: step()==1, click: hide, locale: 'cancel'"></button>
+                <button id="continueWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 1, enable: passphraseSaved, click: createWallet, locale: 'continue'"></button> <!-- click: goToStep2 -->
+                <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && !showQuickAccessFrame(), click: showQuickAccessURLGUI, locale: 'create_quick_access'"></button>
+                <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && !showQuickAccessFrame(), click: createWallet, locale: 'skip_this_step'"></button>
+                <button id="finishWalletCreation" type="button" class="btn btn-primary" data-bind="visible: step() == 2 && showQuickAccessFrame(), click: createWallet, locale: 'create_wallet'"></button>
+              </div>
+            </div>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -302,9 +260,8 @@
         <span data-bind="locale: 'welcome'"></span>
         <span data-bind="visible: USE_TESTNET, locale: 'testnet'"></span>
       </h1>
-      <h2 data-bind="locale: 'powered_by_counterparty'"></h2>
+      <!-- <h2 data-bind="locale: 'powered_by_aspire'"></h2> -->
       <div id="form-well">
-
         <div class="panel panel-danger">
           <div class="panel-heading">
             <h3 class="panel-title">
@@ -348,7 +305,7 @@
         </div>
 
         <div id="createNewAcctBtnPane">
-          <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-success btn-lg"></button>
+          <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-primary"></button>
         </div>
 
       </div> <!-- form-well -->
@@ -616,26 +573,6 @@
                   <a href="#" class="showCreateSupportCase" data-bind="locale: 'open_a_ticket'"></a>.
                 </h5>
             </div>
-            <div data-bind="visible: type == 'exchangePage'">
-                <h5 data-bind="locale: 'answers_to_common_questions'"></h5>
-                <ul>
-                    <li><a href="https://counterpartytalk.org/t/how-to-read-the-combined-asset-token-currency-pairs-such-as-btcxcp-in-dex/2072" target="_blank" data-bind="locale: 'answer_9'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/when-is-a-dex-order-considered-active-and-how-can-i-cancel-it/1180" target="_blank" data-bind="locale: 'answer_11'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142/1" target="_blank" data-bind="locale: 'answer_12'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/what-is-the-difference-between-miners-fee-and-redeemable-fee/1188" target="_blank" data-bind="locale: 'answer_13'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/what-btc-sellers-on-the-counterparty-distributed-exchange-need-to-know/1183" target="_blank" data-bind="locale: 'answer_14'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/about-the-counterwallet-support-category/29" target="_blank" data-bind="locale: 'answer_8'"></a></li>
-                </ul>
-                <h5 class="margin-bottom-0">
-                  <span data-bind="locale: 'for_other_questions'"></span>
-                  <a href="https://counterpartytalk.org/c/support" target="_blank" data-bind="locale: 'counterparty_forums'"></a>.
-                </h5>
-                <h5>
-                  <span data-bind="locale: 'for_bugs'"></span> 
-                  <a href="#" class="showCreateSupportCase" data-bind="locale: 'open_a_ticket'"></a>.
-                </h5>
-            </div>
-
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-bind="click: hide, locale: 'close'"></button>
@@ -896,14 +833,11 @@
     <script src="js/components/feed_pending_actions.js"></script>
     <script src="js/components/balances.js"></script>
     <script src="js/components/balances_assets.js"></script>
-    <script src="js/components/exchange.js"></script>
     <script src="js/components/history.js"></script>
     <script src="js/components/leaderboard.js"></script>
     <script src="js/components/portfolio.js"></script>
     <script src="js/components/stats.js"></script>
-    <script src="js/components/betting.js"></script>
     <script src="js/components/donate.js"></script>
-    <script src="js/components/simplebuy.js"></script>
 
     <script src="js/smartadmin.app.js"></script> <!-- custom app.js -->
     <!-- ^ unfortunately we have to mod the file itself, instead of dynamically override o_O -->

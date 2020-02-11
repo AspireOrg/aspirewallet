@@ -134,7 +134,7 @@ function TransactionHistoryItemViewModel(data) {
   var self = this;
   self.DATA = data;
   self.TX_INDEX = self.DATA['tx_index'] || self.DATA['tx1_index'] || '';
-  self.TX_HASH = self.DATA['tx_hash'] || self.DATA['order_hash'] || self.DATA['id'] || '';
+  self.TX_HASH = self.DATA['tx_hash'] || self.DATA['id'] || '';
   self.BLOCK_INDEX = self.DATA['block_index'] || self.DATA['tx1_block_index'];
   self.BLOCK_TIME = self.DATA['_block_time'];
   self.RAW_TX_TYPE = self.DATA['_category'];
@@ -172,22 +172,6 @@ function TransactionHistoryItemViewModel(data) {
       desc = i18n.t("hist_send", smartFormat(normalizeQuantity(self.DATA['quantity'],
         self.DATA['_asset_divisible'])), self.DATA['_asset_longname'] || self.DATA['asset'],
         getLinkForCPData('address', self.DATA['destination'], getAddressLabel(self.DATA['destination'])));
-    } else if (self.RAW_TX_TYPE == 'orders') {
-      desc = i18n.t("hist_sell", smartFormat(normalizeQuantity(self.DATA['give_quantity'], self.DATA['_give_asset_divisible'])),
-        self.DATA['_give_asset_longname'] || self.DATA['give_asset'],
-        smartFormat(normalizeQuantity(self.DATA['get_quantity'], self.DATA['_get_asset_divisible'])),
-        self.DATA['_get_asset_longname'] || self.DATA['get_asset']);
-    } else if (self.RAW_TX_TYPE == 'order_matches') {
-      desc = i18n.t("hist_order_match", getAddressLabel(self.DATA['tx0_address']),
-        smartFormat(normalizeQuantity(self.DATA['forward_quantity'], self.DATA['_forward_asset_divisible'])),
-        self.DATA['_forward_asset_longname'] || self.DATA['forward_asset'], getAddressLabel(self.DATA['tx1_address']),
-        smartFormat(normalizeQuantity(self.DATA['backward_quantity'], self.DATA['_backward_asset_divisible'])),
-        self.DATA['_backward_asset_longname'] || self.DATA['backward_asset']);
-      if (self.DATA['forward_asset'] == 'GASP' || self.DATA['backward_asset'] == 'GASP') {
-        desc += " <b>(" + i18n.t("pending GASP pay") + ")</b>";
-      }
-    } else if (self.RAW_TX_TYPE == 'btcpays') {
-      desc = i18n.t("hist_btcpay", smartFormat(normalizeQuantity(self.DATA['btc_amount'])));
     } else if (self.RAW_TX_TYPE == 'issuances') {
       if (self.DATA['transfer']) {
         desc = i18n.t("hist_transfer", self.DATA['_asset_longname'] || self.DATA['asset'],
@@ -200,36 +184,13 @@ function TransactionHistoryItemViewModel(data) {
       }
     } else if (self.RAW_TX_TYPE == 'broadcasts') {
       desc = i18n.t("hist_broadcast", self.DATA['text'], self.DATA['value']);
-    } else if (self.RAW_TX_TYPE == 'bets') {
-      desc = i18n.t("hist_bet", BET_TYPES[self.DATA['bet_type']],
-        getLinkForCPData('address', self.DATA['feed_address'], getAddressLabel(self.DATA['feed_address'])),
-        reduce(self.DATA['wager_quantity'], self.DATA['counterwager_quantity']).join('/'),
-        smartFormat(normalizeQuantity(self.DATA['wager_quantity'])),
-        smartFormat(normalizeQuantity(self.DATA['counterwager_quantity'])));
-    } else if (self.RAW_TX_TYPE == 'bet_matches') {
-      desc = i18n.t("hist_bet_match", getLinkForCPData('address', self.DATA['feed_address'], getAddressLabel(self.DATA['feed_address'])),
-        getAddressLabel(self.DATA['tx0_address']),
-        smartFormat(normalizeQuantity(self.DATA['forward_quantity'])),
-        getAddressLabel(self.DATA['tx1_address']),
-        smartFormat(normalizeQuantity(self.DATA['backward_quantity'])));
     } else if (self.RAW_TX_TYPE == 'dividends') {
       desc = i18n.t("hist_dividend", smartFormat(normalizeQuantity(self.DATA['quantity_per_unit'])),
         self.DATA['_dividend_asset_longname'] || self.DATA['dividend_asset'], self.DATA['_asset_longname'] || self.DATA['asset']);
-    } else if (self.RAW_TX_TYPE == 'cancels') {
-      desc = i18n.t("hist_cancellation", data['offer_hash']);
-    } else if (self.RAW_TX_TYPE == 'bet_expirations') {
-      desc = i18n.t("hist_bet_expired", self.DATA['bet_index']);
-    } else if (self.RAW_TX_TYPE == 'order_expirations') {
-      desc = i18n.t("hist_order_expired", self.DATA['order_index']);
-    } else if (self.RAW_TX_TYPE == 'bet_match_expirations') {
-      desc = i18n.t("hist_bet_match_expired", self.DATA['bet_match_id']);
-    } else if (self.RAW_TX_TYPE == 'order_match_expirations') {
-      desc = i18n.t("hist_order_match_expired", self.DATA['order_match_id']);
     } else if (self.RAW_TX_TYPE == 'credits' || self.RAW_TX_TYPE == 'debits') {
       var tx_type = (self.RAW_TX_TYPE == 'credits' ? i18n.t('hist_credited_with') : i18n.t('hist_debited_for'))
       desc = i18n.t("hist_credit_debit", getLinkForCPData('address', self.DATA['address'], getAddressLabel(self.DATA['address'])), tx_type,
         smartFormat(normalizeQuantity(self.DATA['quantity'], self.DATA['_asset_divisible'])), self.DATA['_asset_longname'] || self.DATA['asset']);
-
     } else {
       desc = i18n.t("hist_unknown");
     }
