@@ -29,8 +29,8 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.withMovement = ko.observable(false);
 
   self.assets = ko.observableArray([
-    new AssetViewModel({address: address, asset: "GASP"}), //will be updated with data loaded from insight
-    new AssetViewModel({address: address, asset: "ASP"})  //will be updated with data loaded from counterpartyd
+    new AssetViewModel({address: address, asset: "GASP"}), // will be updated with data loaded from aspiregas insight
+    new AssetViewModel({address: address, asset: "ASP"})  // will be updated with data loaded from aspire
   ]);
 
   self.assetFilter = ko.observable('');
@@ -84,19 +84,6 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       assets.push(asset.ASSET);
     });
     return assets;
-  }
-
-  self.updateEscrowedBalances = function() {
-    failoverAPI("get_escrowed_balances", {'addresses': [self.ADDRESS]}, function(escrowedBalances) {
-      if (escrowedBalances[self.ADDRESS]) {
-        for (var asset in escrowedBalances[self.ADDRESS]) {
-          var assetObj = self.getAssetObj(asset);
-          if (assetObj) {
-            assetObj.escrowedBalance(escrowedBalances[self.ADDRESS][asset])
-          }
-        }
-      }
-    });
   }
 
   self.initDropDown = function(asset) {

@@ -2,7 +2,7 @@ function WalletViewModel() {
   //The user's wallet
   var self = this;
   self.BITCOIN_WALLET = null; // CWHierarchicalKey instance
-  self.autoRefreshBTCBalances = true; //auto refresh BTC balances every 5 minutes
+  self.autoRefreshGASPBalances = true; //auto refresh BTC balances every 5 minutes
 
   self.identifier = ko.observable(null); //set when logging in
   self.networkBlockHeight = ko.observable(null); //stores the current network block height. refreshed when we refresh the BTC balances
@@ -281,7 +281,7 @@ function WalletViewModel() {
     return _.uniq(assets);
   }
 
-  self.refreshCounterpartyBalances = function(addresses, onSuccess) {
+  self.refreshAspireBalances = function(addresses, onSuccess) {
     // update all aspire asset balances for the specified address (including ASP)
     // Note: after login, this normally never needs to be called (except when adding a watch address),
     // as aspire asset balances are updated automatically via the messages feed
@@ -295,66 +295,28 @@ function WalletViewModel() {
           for (var i in addresses) {
             WALLET.getAddressObj(addresses[i]).addOrUpdateAsset('ASP', {}, 0, 0);
           }
-          if (onSuccess) return onSuccess(); //user has no balance (i.e. first time logging in)
+          if (onSuccess) return onSuccess(); // user has no balance (i.e. first time logging in)
           else return;
         }
-
 
         var i = null, j = null;
         var numBalProcessed = 0;
         var assets = [];
-        //Make a unique list of assets
+        // Make a unique list of assets
         for (i = 0; i < balancesData.length; i++) {
           addressAsset[balancesData[i]['address'] + '_' + balancesData[i]['asset']] = true;
           if (assets.indexOf(balancesData[i]['asset']) == -1) {
             assets.push(balancesData[i]['asset']);
           }
         }
-        // TODO: optimize: assets infos already fetched in get_normalized_balances() in counterblockd
-        failoverAPI("get_escrowed_balances", {'addresses': addresses}, function(escrowedBalances) {
 
-          // add asset with all fund escrowed
-          for (var addr in escrowedBalances) {
-            for (var ass in escrowedBalances[addr]) {
-              if (!((addr + '_' + ass) in addressAsset)) {
-                balancesData.push({'address': addr, 'asset': ass, 'quantity': 0});
-                addressAsset[addr + '_' + ass] = true;
-              }
-              if (assets.indexOf(ass) == -1) {
-                assets.push(ass);
-              }
-            }
-          }
-
-          failoverAPI("get_assets_info", {'assetsList': assets}, function(assetsInfo, endpoint) {
-
-            for (i = 0; i < assetsInfo.length; i++) {
-              for (j = 0; j < balancesData.length; j++) {
-                if (balancesData[j]['asset'] != assetsInfo[i]['asset']) continue;
-                var address = balancesData[j]['address'];
-                var asset = assetsInfo[i]['asset'];
-                var escrowedBalance = 0;
-                if (address in escrowedBalances && asset in escrowedBalances[address]) {
-                  escrowedBalance = escrowedBalances[address][asset];
-                }
-                WALLET.getAddressObj(address).addOrUpdateAsset(asset, assetsInfo[i], balancesData[j]['quantity'], escrowedBalance);
-              }
-            }
-            if (onSuccess) return onSuccess();
-          });
-
-        });
-
-      }
-
-    );
-
-
+        if (onSuccess) return onSuccess();
+      });
   }
 
-  self.refreshBTCBalances = function(isRecurring, addresses, onSuccess) {
+  self.refreshGASPBalances = function(isRecurring, addresses, onSuccess) {
     if (typeof(isRecurring) === 'undefined') isRecurring = false;
-    //^ if isRecurring is set to true, we will update BTC balances every 5 min as long as self.autoRefreshBTCBalances == true
+    //^ if isRecurring is set to true, we will update BTC balances every 5 min as long as self.autoRefreshGASPBalances == true
 
     //update all BTC balances (independently, so that one addr with a bunch of txns doesn't hold us up)
     if (addresses == undefined || addresses == null) {
@@ -398,7 +360,7 @@ function WalletViewModel() {
           addressObj.numPrimedTxouts(data[i]['numPrimedTxouts']);
           addressObj.numPrimedTxoutsIncl0Confirms(data[i]['numPrimedTxoutsIncl0Confirms']);
 
-          $.jqlog.debug("refreshBTCBalances: Address " + data[i]['addr'] + " -- confirmed bal = " + data[i]['confirmedRawBal']
+          $.jqlog.debug("refreshGASPBalances: Address " + data[i]['addr'] + " -- confirmed bal = " + data[i]['confirmedRawBal']
             + "; unconfirmed bal = " + data[i]['unconfirmedRawBal'] + "; numPrimedTxouts = " + data[i]['numPrimedTxouts']
             + "; numPrimedTxoutsIncl0Confirms = " + data[i]['numPrimedTxoutsIncl0Confirms']);
 
@@ -417,9 +379,9 @@ function WalletViewModel() {
         }
       }
 
-      if (isRecurring && self.autoRefreshBTCBalances) {
+      if (isRecurring && self.autoRefreshGASPBalances) {
         setTimeout(function() {
-          if (self.autoRefreshBTCBalances) { self.refreshBTCBalances(true); }
+          if (self.autoRefreshGASPBalances) { self.refreshGASPBalances(true); }
         }, 60000 * 5);
       }
 
@@ -438,9 +400,9 @@ function WalletViewModel() {
       $.jqlog.warn(i18n.t("btc_sync_error", textStatus));
       //bootbox.alert(i18n.t("btc_sync_error", textStatus));
 
-      if (isRecurring && self.autoRefreshBTCBalances) {
+      if (isRecurring && self.autoRefreshGASPBalances) {
         setTimeout(function() {
-          if (self.autoRefreshBTCBalances) { self.refreshBTCBalances(true); }
+          if (self.autoRefreshGASPBalances) { self.refreshGASPBalances(true); }
         }, 60000 * 5);
       }
     });

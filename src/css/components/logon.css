@@ -6,6 +6,10 @@
   background: #1d1d1d;
 }*/
 
+#allContent {
+  min-height: 100vh;
+}
+
 #logon {
   padding-top: 120px;
   background: white; 

@@ -371,7 +371,7 @@
   "hist_credit_debit": "Address <Ad>%s</Ad> %s <Am>%s</Am> <As>%s</As>",
   "hist_unknown": "UNKNOWN TRANSACTION TYPE",
 
-  "no_counterparty_error": "No aspire servers are currently available. Please try again later. ERROR: %s",
+  "no_aspireblock_error": "No aspire block servers are currently available. Please try again later. <br /><br /><div class=\"alert alert-danger margin-top-10\" style=\"margin-bottom: 0; margin-top: 1rem;\">%s</div>",
   "multi_connection": "<b class='errorColor'>You appear to be logged into Aspirewallet elsewhere.</b> It's not safe to be logged into the same wallet account from multiple devices at the same time. If you are sure that this is not the case, press Continue. Otherwise, please press Cancel, logout from your other device, and try again.",
   "confirm_connection": "Confirm connection",
   "default_address_label": "My Address #%s",

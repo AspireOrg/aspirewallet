@@ -54,7 +54,7 @@ NotificationViewModel.calcText = function(category, message) {
       smartFormat(normalizeQuantity(message['earned'])));
   } else if (category == "dividend") {
     //See if any of our addresses own any of the specified asset, and if so, notify them of the callback or dividend
-    // NOTE that counterpartyd has automatically already adusted the balances of all asset holders...we just need to notify
+    // NOTE that aspire has automatically already adusted the balances of all asset holders...we just need to notify
     var addressesWithAsset = WALLET.getAddressesWithAsset(message['asset']);
     if (!addressesWithAsset.length) return;
     desc = i18n.t("notif_dividend_done", message['_dividend_asset_longname'] || message['dividend_asset'],
@@ -134,7 +134,7 @@ function NotificationFeedViewModel(initialCount) {
     //if the number of entries are over 40, remove the oldest one
     if (self.entries().length > 40) self.entries.pop();
     self.lastUpdated(new Date());
-    WALLET.refreshBTCBalances();
+    WALLET.refreshGASPBalances();
 
     //Also notify the user via a CSS popup, so the action completing is more appearent.
     //noty({type: 'success', text: noto.MESSAGE_TEXT, timeout: 10000});

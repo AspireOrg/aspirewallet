@@ -381,8 +381,8 @@ function CreateNewAddressModalViewModel() {
 
     //save prefs to server
     WALLET.storePreferences(function(data, endpoint) {
-      WALLET.refreshCounterpartyBalances([newAddress], function() {
-        WALLET.refreshBTCBalances(false, null, function() {
+      WALLET.refreshAspireBalances([newAddress], function() {
+        WALLET.refreshGASPBalances(false, null, function() {
           self.shown(false);
           setTimeout(checkURL, 300);
         });
@@ -1166,7 +1166,7 @@ function SweepModalViewModel() {
 
           if (match != null) {
             $.jqlog.debug(arguments[1]);
-            // if insufficient bitcoins we retry with estimated fees return by counterpartyd
+            // if insufficient bitcoins we retry with estimated fees return by aspire
             var minEstimateFee = denormalizeQuantity(parseFloat(match[1])) - (self.btcBalanceForPrivateKey() - self.mergeCost);
             $.jqlog.debug('Insufficient fees. Need approximately ' + normalizeQuantity(minEstimateFee));
 
@@ -1348,7 +1348,7 @@ function SweepModalViewModel() {
       pubkey: pubkey,
       allow_unconfirmed_inputs: true
     };
-    multiAPIConsensus("create_send", sendData, //can send both BTC and counterparty assets
+    multiAPIConsensus("create_send", sendData, // can send both GASP and Aspire assets
       function(unsignedTxHex, numTotalEndpoints, numConsensusEndpoints) {
 
         key.checkAndSignRawTransaction(unsignedTxHex, [self.destAddress()], function(err, signedHex) {

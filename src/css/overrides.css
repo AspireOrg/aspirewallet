@@ -41,11 +41,6 @@ p.formPaddedBot, div.formPaddedBot {
 /*
  * LOGO AND ACTIVITY LOG INTERFACE MODIFICATIONS
  */
-span.logoText {
-    font-size: 1.6em;
-    color: white;
-
-}
 
 #logo img { /* need to use !important here because the google skin has its own logo img style that borks things up */
     width: auto !important;
@@ -57,36 +52,16 @@ span.logoText {
 }
 
 #logo {
-    width: auto  !important; /* + 20px */
-    /*margin-top: 13px !important;*/
-    height: 54px !important;
-    line-height: 54px !important;
-    margin: 0 !important;
-    background: url(../images/logo-small.png) no-repeat 10px 2px;
-    padding-left: 65px;
-}
-#logo span.logoText {
-
-    height: 49px !important;
-    line-height: 49px !important;
-    display: inline-block !important;
-    margin: 0 !important;
+    height: 50px !important;
+    background: url(../images/Aspire.svg) no-repeat;
+    padding-left: 2rem;
 }
 
 /* Make Aspirewallet word invisible in black top bar for low resolution */
 @media only screen and (max-width : 665px) {
-  #logo span.logoText {
-    display: none !important;
-  }
-
-  #logo img {
-    /*bottom:5px !important;*/
-  }
-
   #logo-group {
     width: auto !important;
   }
-
 }
 
 /* Fix notification windows "nipples" */
@@ -120,9 +95,6 @@ span.logoText {
 }
 #header>:first-child {
     width: 400px; /* + 160px */
-}
-.smart-style-0 #header span.logoText { /* override for a specific style */
-    color: black;
 }
 .page-title {
     margin-top: 0px;
@@ -568,11 +540,7 @@ div.showSupport {
  */
 
 #allContent {
-  height: 100%;
-}
-
-#newWalletButton {
-
+  background: white;
 }
 
 .btn {
@@ -586,4 +554,60 @@ div.showSupport {
 .panel-heading {
   border-top-right-radius: 1px !important;
   border-top-left-radius: 1px !important;
+}
+
+.smart-style-2 #header, .smart-style-2 .inbox-footer, .smart-style-2 .superbox-show {
+  background-image:none;
+  background-color: white;
+  box-shadow: inset -1px 0 0 0 #e5e5e5;
+  min-height: 100vh !important;
+}
+
+.menu-border-bottom {
+  box-shadow: inset 0 -1px 0 0 #e5e5e5 !important;
+}
+
+#left-panel {
+  top: 0 !important;
+  z-index: 1005 !important;
+  background: white !important;
+  width: 20rem !important;
+  padding: 15px 1px !important;
+  height: 100vh !important;
+  box-shadow: inset -1px 0 0 0 #e5e5e5;
+}
+
+#header {
+  position: relative !important;
+  display: none !important;
+}
+
+#main {
+  width: calc(100% - 20rem - 1px);
+  margin: 0 !important;
+  margin-left: 20rem !important;
+}
+
+.page-title {
+  margin-bottom: 0;
+}
+
+#notificationFeed {
+  margin-left: 25px !important;
+}
+
+#logo-group {
+  margin-left: 1.3rem !important;
+}
+
+#logo {
+  display: block !important;
+  margin: auto !important;
+  height: 8rem !important;
+  width: 13rem !important;
+}
+
+nav ul li.active>a:before {
+  color: #c70000;
+  right: -20px;
 }

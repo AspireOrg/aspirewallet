@@ -75,10 +75,10 @@
     </div>
 
     <!-- HEADER -->
-    <header id="header" style="display: none">
+    <header id="header">
       <div id="logo-group">
 
-        <span id="logo"><span class="logoText" data-bind="locale: 'counterwallet'"></span></span>
+        <span id="logo" style="background: none; height: 0px;"></span>
 
         <span id="notificationFeed" class="activity-parent" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
             <span class="activity-dropdown">
@@ -104,8 +104,6 @@
 
       </div> <!-- logo-group -->
 
-      <span id="noticeTestnet" data-bind="visible: USE_TESTNET, locale: 'testnet_in_use'"></span>
-
       <div class="pull-right" id="headerBtsRight"> <!-- pulled right: nav area -->
         <div id="logout" class="btn-header transparent pull-right"> <!-- logout button -->
           <span> <a href="pages/logon.html" title="Sign Out"><i class="fa fa-sign-out"></i></a> </span>
@@ -119,9 +117,9 @@
             <span> <a href="#" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
         </div> <!-- end fullscreen button -->
 
-        <div id="showOptions" class="btn-header transparent pull-right"> <!-- options button -->
-            <span> <a href="#" title="Show Options"><i class="fa fa-gear"></i></a> </span>
-        </div> <!-- end options button -->
+        <!-- <div id="showOptions" class="btn-header transparent pull-right"> --> <!-- options button -->
+            <!-- <span> <a href="#" title="Show Options"><i class="fa fa-gear"></i></a> </span> -->
+        <!-- </div> --> <!-- end options button -->
 
         <span id="noticeDevMode" data-bind="visible: IS_DEV" class="label label-warning pull-right modeIndicator">
           <i class="fa-fw fa fa-warning"></i> <span data-bind="locale: 'dev_mode_enabled'"></span>
@@ -143,6 +141,8 @@
         traditional href="" links. See documentation for details.
         -->
         <ul>
+          <li><span id="logo"></span> </li>
+
           <li class="">
             <a href="pages/balances.html">
               <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
@@ -168,12 +168,12 @@
           </li> -->
           <li data-bind="visible: FEATURE_STATS">
               <a href="pages/stats.html">
-                <i class="fa fa-lg fa-fw fa-crosshairs"></i> <span data-bind="locale: 'network_stats'"></span>
+                <i class="fa fa-lg fa-fw fa-crosshairs"></i> <span class="menu-item-parent" data-bind="locale: 'network_stats'"></span>
               </a>
           </li>
         </ul>
       </nav>
-      <span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+      <!-- <span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span> -->
     </aside>
     <!-- END NAVIGATION -->
 
@@ -555,18 +555,9 @@
             <div data-bind="visible: type == 'balancesPage'">
                 <h5 data-bind="locale: 'answers_to_common_questions'"></h5>
                 <ul>
-                    <li><a href="https://counterpartytalk.org/t/i-logged-in-and-my-address-is-different-and-i-have-no-balance-help/1684" target="_blank" data-bind="locale: 'answer_1'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/how-do-i-participate-in-crowdfunding-of-projects-issued-on-counterparty/1153" target="_blank" data-bind="locale: 'answer_2'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/i-sent-btc-xcp-token-a-while-ago-but-the-transaction-hasnt-gone-through-why/1854" target="_blank" data-bind="locale: 'answer_3'"></a></li>
-                    <br/>
-                    <li><a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142/1" target="_blank" data-bind="locale: 'answer_4'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/my-address-in-counterwallet-disappeared/1222" target="_blank" data-bind="locale: 'answer_5'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/does-counterwallet-have-two-factor-authentication-2fa/2071" target="_blank" data-bind="locale: 'answer_6'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/about-the-counterwallet-support-category/29" target="_blank" data-bind="locale: 'answer_8'"></a></li>
                 </ul>
                 <h5 class="margin-bottom-0">
                   <span data-bind="locale: 'for_other_questions'"></span> 
-                  <a href="https://counterpartytalk.org/c/support" target="_blank" data-bind="locale: 'counterparty_forums'"></a>.
                 </h5>
                 <h5>
                   <span data-bind="locale: 'for_bugs'"></span>
@@ -629,7 +620,7 @@
                   <span class="sellColor" data-bind="text: quantity"></span>
                   <span class="sellColor" data-bind="text: donationCurrency"></span>
                 </b>
-                <span data-bind="locale: 'to_support_counterparty'"></span>
+                <span data-bind="locale: 'to_support_aspire'"></span>
               </p>
             </fieldset></form>
             <p class="formPaddedBot">

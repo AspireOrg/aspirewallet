@@ -142,7 +142,7 @@ function PendingActionFeedViewModel() {
 
     self.lastUpdated(new Date());
     PendingActionFeedViewModel.modifyBalancePendingFlag(category, data, true);
-    WALLET.refreshBTCBalances();
+    WALLET.refreshGASPBalances();
 
     if(showNotifyPopup) {
       //Also notify the user via a CSS popup, so the action completing is more appearent.
@@ -162,8 +162,8 @@ function PendingActionFeedViewModel() {
     if (match) {
       //if the magically hackish btcRefreshSpecialLogic flag is specified, then do a few custom checks
       // that prevent us from removing events whose txns we see as recent txns, but are actually NOT btc
-      // send txns (e.g. is a counterparty asset send, or asset issuance, or something the BTC balance refresh
-      // routine should NOT be deleting. This hack is a consequence of managing BTC balances synchronously like we do)
+      // send txns (e.g. is an aspire asset send, or asset issuance, or something the GASP balance refresh
+      // routine should NOT be deleting. This hack is a consequence of managing GASP balances synchronously like we do)
       if (btcRefreshSpecialLogic) {
         assert(category == "sends");
         if (match['CATEGORY'] != category || match['DATA']['asset'] != 'GASP')

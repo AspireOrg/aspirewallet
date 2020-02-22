@@ -219,8 +219,7 @@ AssetLeaderboardViewModel.formulateExtendedAssetInfo = function(asset, hasImage,
   var dispAsset = asset;
   if (asset == 'ASP' || asset == 'GASP') {
     dispAsset = '<img src="assets/' + asset + '.png" />&nbsp;';
-    var website = asset == 'ASP' ? "http://www.counterparty.co" : "http://www.bitcoin.org";
-    dispAsset += '<a href="' + website + '" target="_blank">' + asset + '</a>';
+    dispAsset += '<a href="http://www.aspirecrypto.com" target="_blank">' + asset + '</a>';
   } else if (hasImage) {
     dispAsset = '<img src="' + (USE_TESTNET ? '/_t_asset_img/' : '/_asset_img/') + asset + '.png" />&nbsp;';
     //dispAsset += website ? ('<a href="' + website + '" target="_blank">' + asset + '</a>') : asset;

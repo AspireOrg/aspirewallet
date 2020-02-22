@@ -152,7 +152,7 @@ function LogonViewModel() {
         WALLET.networkBlockHeight(data['block_height']);
 
         //Initialize the message feed (polls the server and notifies us of new
-        //events, as counterparty processes confirmed blocks and tx in mempool)
+        //events, as aspire processes confirmed blocks and tx in mempool)
         MESSAGE_FEED.init(data['last_message_index'], data['cw_last_message_seq']);
         //^ set the "starting" message_index, under which we will ignore if received on the messages feed
 
@@ -169,7 +169,7 @@ function LogonViewModel() {
       },
       function(jqXHR, textStatus, errorThrown, endpoint) {
         var message = describeError(jqXHR, textStatus, errorThrown);
-        bootbox.alert(i18n.t("no_counterparty_error", message));
+        bootbox.alert(i18n.t("no_aspireblock_error", message));
       });
   }
 
@@ -271,7 +271,7 @@ function LogonViewModel() {
 
     }
 
-    WALLET.refreshBTCBalances(false, moreAddresses, function() {
+    WALLET.refreshGASPBalances(false, moreAddresses, function() {
 
       var generateAnotherAddress = false;
       var totalAddresses = WALLET.addresses().length;
@@ -302,9 +302,9 @@ function LogonViewModel() {
 
   self.updateBalances = function(additionalBTCAddresses, onSuccess) {
     //updates all balances for all addesses, creating the asset objects on the address if need be
-    WALLET.refreshBTCBalances(true, additionalBTCAddresses, function() {
+    WALLET.refreshGASPBalances(true, additionalBTCAddresses, function() {
       //^ specify true here to start a recurring get BTC balances timer chain
-      WALLET.refreshCounterpartyBalances(WALLET.getAddressesList(), onSuccess);
+      WALLET.refreshAspireBalances(WALLET.getAddressesList(), onSuccess);
     });
   }
 
@@ -358,7 +358,6 @@ function LogonViewModel() {
     $('#main').show();
 
     PENDING_ACTION_FEED.restoreFromLocalStorage(function() {});
-    MESSAGE_FEED.restoreOrder();
 
     //record some metrics...
     trackEvent("Login", "Wallet", "Size", PREFERENCES['num_addresses_used']);
