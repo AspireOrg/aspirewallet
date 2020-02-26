@@ -467,8 +467,8 @@ function WalletViewModel() {
     failoverAPI("get_chain_address_info", {"addresses": [address], "with_uxtos": false, "with_last_txn_hashes": 0},
       function(data, endpoint) {
         return onSuccess(
-          parseInt(data[0]['info']['balanceSat'] || 0), //confirmed BTC balance
-          parseInt(data[0]['info']['unconfirmedBalanceSat'] || 0) //unconfirmed BTC balance
+          parseInt(Math.abs(data[0]['info']['balanceSat'] || 0)), //confirmed BTC balance
+          parseInt(Math.abs(data[0]['info']['unconfirmedBalanceSat'] || 0)) //unconfirmed BTC balance
         );
       },
       onError || defaultErrorHandler);
@@ -502,8 +502,8 @@ function WalletViewModel() {
           results.push({
             'addr': data[i]['addr'],
             'blockHeight': data[i]['block_height'],
-            'confirmedRawBal': parseInt(data[i]['info']['balanceSat'] || 0),
-            'unconfirmedRawBal': parseInt(data[i]['info']['unconfirmedBalanceSat'] || 0),
+            'confirmedRawBal': parseInt(Math.abs(data[i]['info']['balanceSat'] || 0)),
+            'unconfirmedRawBal': parseInt(Math.abs(data[i]['info']['unconfirmedBalanceSat'] || 0)),
             'numPrimedTxouts': Math.min(numSuitableUnspentTxouts, Math.floor(totalBalance / MIN_BALANCE_FOR_ACTION)),
             'numPrimedTxoutsIncl0Confirms': Math.min(numPrimedTxoutsIncl0Confirms, Math.floor(totalBalance / MIN_BALANCE_FOR_ACTION)),
             'lastTxns': data[i]['last_txns'],

@@ -138,25 +138,26 @@ function getLinkForCPData(type, dataID, dataTitle, htmlize) {
   if (typeof(dataTitle) === 'undefined' || dataTitle === null) dataTitle = dataID;
   if (typeof(htmlize) === 'undefined' || htmlize === null) htmlize = true;
   if (typeof(type) === 'undefined') type = 'tx';
-  var url = null;
-  if (type == 'address') { //dataID is an address
-    url = "https://" + (USE_TESTNET ? 'testnet.' : '') + "xchain.io/address/" + dataID;
-    //format multisig addresses
-    if (dataTitle.indexOf("_") > -1) {
-      var parts = dataTitle.split('_');
-      dataTitle = "multisig " + parts[0] + " of " + parts[parts.length - 1];
-      //remove first and last elements
-      parts.shift();
-      parts.pop();
-      dataTitle += " (" + parts.join(', ') + ")";
-    }
-  } else if (type == 'tx') { //generic TX
-    url = "https://" + (USE_TESTNET ? 'testnet.' : '') + "xchain.io/tx/" + dataID;
-  } else {
-    assert(false, "Unknown type of " + type);
-  }
+  // var url = null;
+  // if (type == 'address') { //dataID is an address
+  //   url = "https://" + (USE_TESTNET ? 'testnet.' : '') + "xchain.io/address/" + dataID;
+  //   //format multisig addresses
+  //   if (dataTitle.indexOf("_") > -1) {
+  //     var parts = dataTitle.split('_');
+  //     dataTitle = "multisig " + parts[0] + " of " + parts[parts.length - 1];
+  //     //remove first and last elements
+  //     parts.shift();
+  //     parts.pop();
+  //     dataTitle += " (" + parts.join(', ') + ")";
+  //   }
+  // } else if (type == 'tx') { //generic TX
+  //   url = "https://" + (USE_TESTNET ? 'testnet.' : '') + "xchain.io/tx/" + dataID;
+  // } else {
+  //   assert(false, "Unknown type of " + type);
+  // }
 
-  return htmlize ? ('<a href="' + url + '" target="_blank">' + dataTitle + '</a>') : url;
+  // return htmlize ? ('<a href="' + url + '" target="_blank">' + dataTitle + '</a>') : url;
+  return htmlize ? dataTitle : url;
 }
 
 function getTxHashLink(hash) {
@@ -173,8 +174,9 @@ function getTxHashLink(hash) {
 function getLinkForBlock(blockIndex, dataTitle, htmlize) {
   if (typeof(dataTitle) === 'undefined' || dataTitle === null) dataTitle = blockIndex;
   if (typeof(htmlize) === 'undefined' || htmlize === null) htmlize = true;
-  var url = BLOCKEXPLORER_URL + '/block/' + blockIndex;
-  return htmlize ? '<a href="' + url + '" target="_blank">' + dataTitle + '</a>' : url;
+  // var url = BLOCKEXPLORER_URL + '/block/' + blockIndex;
+  // return htmlize ? '<a href="' + url + '" target="_blank">' + dataTitle + '</a>' : url;
+  return htmlize ? dataTitle : url;
 }
 
 function getAddressLabel(address) {
