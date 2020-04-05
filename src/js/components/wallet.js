@@ -310,6 +310,21 @@ function WalletViewModel() {
           }
         }
 
+        failoverAPI("get_assets_info", {'assetsList': assets}, function(assetsInfo, endpoint) {
+
+          for (i = 0; i < assetsInfo.length; i++) {
+            for (j = 0; j < balancesData.length; j++) {
+              if (balancesData[j]['asset'] != assetsInfo[i]['asset']) continue;
+              var address = balancesData[j]['address'];
+              var asset = assetsInfo[i]['asset'];
+              WALLET.getAddressObj(address).addOrUpdateAsset(asset, assetsInfo[i], balancesData[j]['quantity'], 0);
+            }
+          }
+          if (onSuccess) return onSuccess();
+        });
+
+        $.jqlog.debug("Compiled assets from balances: " + JSON.stringify(assets));
+
         if (onSuccess) return onSuccess();
       });
   }
