@@ -710,7 +710,8 @@
           </section>
 
         </fieldset></form>
-        <p class="formPadded" style="text-align:center" data-bind="visible: tokenNameType== 'alphabetic', locale: 'asset_creation_fee_xcp', localeArgs: ASSET_CREATION_FEE_XCP"></p>
+        <p class="formPadded" style="text-align:center" data-bind="visible: tokenNameType != 'alphabetic', locale: 'asset_creation_fee_xcp', localeArgs: STANDARD_ASSET_FEE_ASP"></p>
+        <p class="formPadded" style="text-align:center" data-bind="visible: tokenNameType == 'alphabetic', locale: 'asset_creation_fee_xcp', localeArgs: ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-bind="click: hide, locale: 'cancel'"></button>

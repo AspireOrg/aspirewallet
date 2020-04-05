@@ -63,10 +63,10 @@ function CreateAssetModalViewModel() {
   });
 
   self.hasXCPForNamedAsset = ko.computed(function() {
-    return self.xcpBalance() >= ASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
   self.hasXCPForSubAsset = ko.computed(function() {
-    return self.xcpBalance() >= SUBASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (SUBASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
 
   self.ownedNamedAssets = ko.computed(function() { //stores BuySellAddressInDropdownItemModel objects
@@ -136,9 +136,9 @@ function CreateAssetModalViewModel() {
         }
         message += "<br/><br/>";
         if (self.tokenNameType() == 'alphabetic') {
-          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), ASSET_CREATION_FEE_XCP);
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
         } else {
-          message += i18n.t("free_issuance_end_message");
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), STANDARD_ASSET_FEE_ASP);
         }
         WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
       }

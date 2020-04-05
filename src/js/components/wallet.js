@@ -323,8 +323,6 @@ function WalletViewModel() {
           if (onSuccess) return onSuccess();
         });
 
-        $.jqlog.debug("Compiled assets from balances: " + JSON.stringify(assets));
-
         if (onSuccess) return onSuccess();
       });
   }
