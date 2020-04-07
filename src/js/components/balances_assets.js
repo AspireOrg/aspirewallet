@@ -137,6 +137,8 @@ function CreateAssetModalViewModel() {
         message += "<br/><br/>";
         if (self.tokenNameType() == 'alphabetic') {
           message += i18n.t("issuance_end_message", getAddressLabel(self.address()), ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
+        } else if(self.selectedParentAsset()) {
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), SUBASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
         } else {
           message += i18n.t("issuance_end_message", getAddressLabel(self.address()), STANDARD_ASSET_FEE_ASP);
         }
