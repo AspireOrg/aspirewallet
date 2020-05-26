@@ -29,7 +29,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.withMovement = ko.observable(false);
 
   self.assets = ko.observableArray([
-    new AssetViewModel({address: address, asset: "GASP"}), // will be updated with data loaded from aspiregas insight
+    new AssetViewModel({address: address, asset: "GASP"}), // will be updated with data loaded from gasp insight
     new AssetViewModel({address: address, asset: "ASP"})  // will be updated with data loaded from aspire
   ]);
 

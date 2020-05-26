@@ -7,7 +7,7 @@ var bitcoreMessage = require('bitcore-message'); // this also binds itself to bi
 // var NETWORK = USE_TESTNET ? bitcore.Networks.testnet : bitcore.Networks.livenet;
 
 bitcore.Networks.add({
-  name: 'aspiregas',
+  name: 'gasp',
   alias: 'gasp-mainnet',
   pubkeyhash: 0x09,
   privatekey: 0x0f,
@@ -20,7 +20,7 @@ bitcore.Networks.add({
 });
 
 bitcore.Networks.add({
-  name: 'aspiregas-testnet',
+  name: 'gasp-testnet',
   alias: 'gasp-testnet',
   pubkeyhash: 0x25,
   privatekey: 0x2a,
@@ -32,7 +32,7 @@ bitcore.Networks.add({
   dnsSeeds: []
 });
 
-var NETWORK = USE_TESTNET ? bitcore.Networks.get('aspiregas-testnet') : bitcore.Networks.get('aspiregas');
+var NETWORK = USE_TESTNET ? bitcore.Networks.get('gasp-testnet') : bitcore.Networks.get('gasp');
 
 var CWHierarchicalKey = function(passphrase, password) {
   checkArgType(passphrase, "string");
@@ -482,7 +482,7 @@ CWBitcore.signRawTransaction = function(unsignedHex, cwPrivateKey, disableIsFull
 
         // async.nextTick to avoid parent trycatch
         async.nextTick(function() {
-          cb(null, tx.serialize(opts));
+          cb(null, tx.uncheckedSerialize(opts));
         });
       }
     );
