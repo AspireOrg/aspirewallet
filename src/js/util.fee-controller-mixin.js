@@ -39,7 +39,7 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
   }
 
   // "0.00007999"
-  exports.getFeeInBTC = function() {
+  exports.getFeeInGasp = function() {
     var args = getObs('feeDetailsLocaleArgs')
     return args[0];
   }
@@ -52,7 +52,7 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
 
   exports.getFeeText = function() {
     var args = getObs('feeDetailsLocaleArgs')
-    return args[0]+' GASP ($'+args[1]+' USD)';
+    return args[0] + ' GASP'; // ($'+args[1]+' USD)';
   }
 
   // local variables
@@ -82,11 +82,11 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
     }
     obsObj('customFee').subscribe(feeParametersChanged)
 
-    obsObj('feeSlider').subscribe(function(sliderOffset) {
-      CWBitcoinFees.getFeeByOffset(sliderOffset, function(fee) {
-        obsObj('customFee')(fee.fee);
-      })
-    })
+    // obsObj('feeSlider').subscribe(function(sliderOffset) {
+    //   CWBitcoinFees.getFeeByOffset(sliderOffset, function(fee) {
+    //     obsObj('customFee')(fee.fee);
+    //   })
+    // })
 
     // setup functions
     setFeeDefaults()
@@ -115,18 +115,25 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
     clearGeneratedTransaction();
 
     // update fee information display
-    CWBitcoinFees.getFeeByOffset(getObs('feeSlider'), function(fee) {
-      if (fee.maxDelay == 0) {
-        setObs('feePriorityLocaleName', 'fee_priority_details_no_wait');
-        setObs('feePriorityLocaleArgs', [fee.fee]);
-      } else if (fee.minDelay == 0) {
-        setObs('feePriorityLocaleName', 'fee_priority_details_up_to');
-        setObs('feePriorityLocaleArgs', [fee.maxDelay, fee.fee]);
-      } else {
-        setObs('feePriorityLocaleName', 'fee_priority_details_between');
-        setObs('feePriorityLocaleArgs', [fee.minDelay, fee.maxDelay, fee.fee]);
-      }
-    })
+    // CWBitcoinFees.getFeeByOffset(getObs('feeSlider'), function(fee) {
+    //   if (fee.maxDelay == 0) {
+    //     setObs('feePriorityLocaleName', 'fee_priority_details_no_wait');
+    //     setObs('feePriorityLocaleArgs', [fee.fee]);
+    //   } else if (fee.minDelay == 0) {
+    //     setObs('feePriorityLocaleName', 'fee_priority_details_up_to');
+    //     setObs('feePriorityLocaleArgs', [fee.maxDelay, fee.fee]);
+    //   } else {
+    //     setObs('feePriorityLocaleName', 'fee_priority_details_between');
+    //     setObs('feePriorityLocaleArgs', [fee.minDelay, fee.maxDelay, fee.fee]);
+    //   }
+    // })
+
+    setObs('feeDetailsLocaleName', 'fee_details');
+    if(getObs('_unsignedTx') !== null) {
+      setObs('feeDetailsLocaleArgs', [formatCryptoFloat(getObs('_unsignedTx').length), '']);
+    } else {
+      setObs('feeDetailsLocaleArgs', [1000, '']);
+    }
 
     debouncedFeeParametersChanged();
   }
@@ -152,29 +159,25 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
           return;
         }
 
+        console.log('extendedTxInfo', extendedTxInfo);
+
         setObs('_unsignedTx', extendedTxInfo.tx_hex);
-        var feeFloat = extendedTxInfo.btc_fee / UNIT
+        var feeFloat = extendedTxInfo.btc_fee / UNIT;
 
-        CWBitcoinQuote.getQuote(function(quote) {
-          var fiatString = formatFiat(feeFloat * quote, 2, 2)
+        var hasBTCOut = extendedTxInfo.btc_out > 0;
+        var isBTCSend = false;
+        if (hasBTCOut && opts.action == "create_send" && tx_data.asset == 'GASP') {
+          isBTCSend = true;
+        }
 
-          var hasBTCOut = extendedTxInfo.btc_out > 0;
-          var isBTCSend = false;
-          if (hasBTCOut && opts.action == "create_send" && tx_data.asset == 'GASP') {
-            isBTCSend = true;
-          }
-
-          if (hasBTCOut && !isBTCSend) {
-            var dustFloat = extendedTxInfo.btc_out / UNIT
-            setObs('feeDetailsLocaleName', 'fee_details_with_btc_out');
-            setObs('feeDetailsLocaleArgs', [formatCryptoFloat(feeFloat + dustFloat), fiatString, formatCryptoFloat(feeFloat), formatCryptoFloat(dustFloat)]);
-          } else {
-            setObs('feeDetailsLocaleName', 'fee_details');
-            setObs('feeDetailsLocaleArgs', [formatCryptoFloat(feeFloat), fiatString]);
-          }
-
-
-        })
+        if (hasBTCOut && !isBTCSend) {
+          var dustFloat = extendedTxInfo.btc_out / UNIT
+          setObs('feeDetailsLocaleName', 'fee_details_with_btc_out');
+          setObs('feeDetailsLocaleArgs', [formatCryptoFloat(feeFloat + dustFloat), formatCryptoFloat(feeFloat), formatCryptoFloat(dustFloat)]);
+        } else {
+          setObs('feeDetailsLocaleName', 'fee_details');
+          setObs('feeDetailsLocaleArgs', [formatCryptoFloat(feeFloat)]);
+        }
       },
       _currentTransactionCallbackOffset
     );

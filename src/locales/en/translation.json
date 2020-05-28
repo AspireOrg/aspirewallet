@@ -815,8 +815,8 @@
   "fee_priority_details_no_wait": "Estimated wait: next block (%s Satoshis/Byte)",
   "fee_priority_details_up_to": "Estimated wait: up to %s blocks (%s Satoshis/Byte)",
   "fee_priority_details_between": "Estimated wait: between %s - %s blocks (%s Satoshis/Byte)",
-  "fee_details": "Transaction fee: %s GASP ($%s USD)",
-  "fee_details_with_btc_out": "Transaction fee: %s GASP ($%s USD, %s fees and %s dust)",
+  "fee_details": "Transaction fee: %s GASP",
+  "fee_details_with_btc_out": "Transaction fee: %s GASP (%s fees and %s dust)",
   "fee_details_calculating": "Transaction fee: <span class=\"processing\">calculating...</span>",
 
   "memo_type": "Memo Type",

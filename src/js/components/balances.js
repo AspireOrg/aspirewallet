@@ -577,10 +577,11 @@ function SendModalViewModel() {
 
   self.dispNormalizedBalRemaining = ko.computed(function() {
     return smartFormat(self.normalizedBalRemaining(), null, 8);
+    // return smartFormat(self.normalizedBalRemaining() - self.feeController.getFeeInGasp(), null, 8);
   }, self);
 
   self.normalizedBalRemainingIsSet = ko.computed(function() {
-    return self.normalizedBalRemaining() !== null;
+    return self.normalizedBalRemaining() !== null && self.feeController !== null;
   }, self);
 
   // memo

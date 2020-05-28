@@ -650,24 +650,29 @@ function WalletViewModel() {
     //Determine the fee to use
     provideOptimalFeeFn(
       function(fee_per_kb) {
-        // default to optimal if it exists
-        if (fee_per_kb != null && fee_per_kb['optimal'] != null) {
-          data['fee_per_kb'] = fee_per_kb['optimal'];
-        }
+        data['fee_per_kb'] = 1000;
 
-        // check for an explicit fee option
-        if (data.hasOwnProperty('_fee_option')) {
-          if (data['_fee_option'] === 'low_priority') {
-            data['fee_per_kb'] = fee_per_kb['low_priority'];
-          }
-          else if (data['_fee_option'] === 'custom') {
-            assert(data.hasOwnProperty('_custom_fee'));
-            data['fee_per_kb'] = data['_custom_fee'] * 1024;
-          }
-          delete data['_fee_option'];
-        }
+        // // default to optimal if it exists
+        // if (fee_per_kb != null && fee_per_kb['optimal'] != null) {
+        //   data['fee_per_kb'] = fee_per_kb['optimal'];
+        // }
+
+        // // check for an explicit fee option
+        // if (data.hasOwnProperty('_fee_option')) {
+        //   if (data['_fee_option'] === 'low_priority') {
+        //     data['fee_per_kb'] = fee_per_kb['low_priority'];
+        //   }
+        //   else if (data['_fee_option'] === 'custom') {
+        //     assert(data.hasOwnProperty('_custom_fee'));
+        //     data['fee_per_kb'] = data['_custom_fee'] * 1024;
+        //   }
+        //   delete data['_fee_option'];
+        // }
         if (data.hasOwnProperty('_custom_fee')) {
           delete data['_custom_fee'];
+        }
+        if (data.hasOwnProperty('_fee_option')) {
+          delete data['_fee_option'];
         }
 
         //Do the transaction

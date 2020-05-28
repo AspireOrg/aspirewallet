@@ -2,27 +2,15 @@ var CWBitcoinQuote = (function() {
   var exports = {};
 
   var quoteCache = null
-  var defaultQuote = 0
+  var defaultQuote = 1
 
   exports.getQuote = function(cb) {
-    cb("0.5")
+    cb(1)
     return
-    // getCache(function() {
-    //   if (quoteCache !== null) {
-    //     cb(quoteCache)
-    //     return
-    //   }
-    //   cb(defaultQuote)
-    // })
   }
 
   function getCache(cb) {
-    if (quoteCache === null) {
-      refreshCache(cb)
-      return
-    }
-
-    cb(quoteCache)
+    cb(defaultQuote)
     return
   }
 
@@ -69,8 +57,8 @@ var CWBitcoinQuote = (function() {
   }
 
   // init
-  setInterval(refreshCache, 900000); // refresh once every 15 minutes
-  setTimeout(refreshCache, 1000); // first time 1 sec. after load
+  // setInterval(refreshCache, 900000); // refresh once every 15 minutes
+  // setTimeout(refreshCache, 1000); // first time 1 sec. after load
 
   return exports;
 })();
