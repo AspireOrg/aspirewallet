@@ -37,56 +37,54 @@ function expireDate(expire_index) {
 }
 
 function checkCountry(action, callback) {
-  // Dont disallow anything rn
-  callback();
-  // if (RESTRICTED_AREA[action] && RESTRICTED_AREA[action].indexOf(USER_COUNTRY) != -1) {
-  //   var message = i18n.t('forbiden_country');
+  if (RESTRICTED_AREA[action] && RESTRICTED_AREA[action].indexOf(USER_COUNTRY) != -1) {
+    var message = i18n.t('forbiden_country');
 
-  //   if (action in RESTRICTED_AREA_MESSAGE) {
-  //     message += '<br />' + i18n.t(RESTRICTED_AREA_MESSAGE[action]);
-  //   }
+    if (action in RESTRICTED_AREA_MESSAGE) {
+      message += '<br />' + i18n.t(RESTRICTED_AREA_MESSAGE[action]);
+    }
 
-  //   if (USE_TESTNET) { //allow the user to bust on through this alert on testnet
-  //     bootbox.dialog({
-  //       title: i18n.t("country_warning"),
-  //       message: message + "<br/><br/>" + i18n.t("testnet_proceed_anyway"),
-  //       buttons: {
-  //         "success": {
-  //           label: i18n.t("proceed_anyway"),
-  //           className: "btn-success",
-  //           callback: function() {
-  //             callback();
-  //           }
-  //         },
-  //         "cancel": {
-  //           label: i18n.t("close"),
-  //           className: "btn-danger",
-  //           callback: function() {
-  //             bootbox.hideAll();
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //     });
-  //   } else {
-  //     bootbox.dialog({
-  //       title: i18n.t("country_warning"),
-  //       message: message,
-  //       buttons: {
-  //         "cancel": {
-  //           label: i18n.t("close"),
-  //           className: "btn-danger",
-  //           callback: function() {
-  //             bootbox.hideAll();
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  // } else {
-  //   callback();
-  // }
+    if (USE_TESTNET) { //allow the user to bust on through this alert on testnet
+      bootbox.dialog({
+        title: i18n.t("country_warning"),
+        message: message + "<br/><br/>" + i18n.t("testnet_proceed_anyway"),
+        buttons: {
+          "success": {
+            label: i18n.t("proceed_anyway"),
+            className: "btn-success",
+            callback: function() {
+              callback();
+            }
+          },
+          "cancel": {
+            label: i18n.t("close"),
+            className: "btn-danger",
+            callback: function() {
+              bootbox.hideAll();
+              return false;
+            }
+          }
+        }
+      });
+    } else {
+      bootbox.dialog({
+        title: i18n.t("country_warning"),
+        message: message,
+        buttons: {
+          "cancel": {
+            label: i18n.t("close"),
+            className: "btn-danger",
+            callback: function() {
+              bootbox.hideAll();
+              return false;
+            }
+          }
+        }
+      });
+    }
+  } else {
+    callback();
+  }
 }
 
 function orderMultisigAddress(address) {

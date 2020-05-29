@@ -759,9 +759,7 @@ function PayDividendModalViewModel() {
 
   self.show = function(address, resetForm) {
     trackDialogShow('PayDividendAttempt');
-    checkCountry("dividend", function() {
-      self.showModal(address, resetForm);
-    });
+    self.showModal(address, resetForm);
   }
 
   self.hide = function() {

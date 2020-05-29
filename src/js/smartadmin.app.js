@@ -1328,11 +1328,7 @@ function loadPage(url, container) {
 
 //COUNTERWALLET: START MOD
 function loadURL(url, container) {
-
-  checkCountry(url, function() {
-    loadPage(url, container);
-  });
-
+  loadPage(url, container);
 }
 //COUNTERWALLET: END MOD
 
