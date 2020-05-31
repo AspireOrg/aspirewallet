@@ -9,9 +9,9 @@ var bitcoreMessage = require('bitcore-message'); // this also binds itself to bi
 bitcore.Networks.add({
   name: 'gasp',
   alias: 'gasp-mainnet',
-  pubkeyhash: 0x09,
+  pubkeyhash: 0x26,
   privatekey: 0x0f,
-  scripthash: 0x0a,
+  scripthash: 0x61,
   xpubkey: 0x0488b21e,
   xprivkey: 0x0488ade4,
   networkMagic: 0xe4cfcce2,
