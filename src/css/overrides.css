@@ -67,20 +67,23 @@ p.formPaddedBot, div.formPaddedBot {
 /* Fix notification windows "nipples" */
 .ajax-dropdown:after,
 .ajax-dropdown:before {
-  left: 165px !important;
+  /*left: 165px !important;*/
+  display: none !important;
 }
 
 @media only screen and (max-width : 479px) {
   .ajax-dropdown:after,
   .ajax-dropdown:before {
-    left: 34px !important;
+    /*left: 34px !important;*/
+    display: none !important;
   }
 }
 
 @media only screen and (min-width : 480px) and (max-width : 665px) {
   .ajax-dropdown:after,
   .ajax-dropdown:before {
-    left: 28px !important;
+    /*left: 28px !important;*/
+    display: none !important;
   }
 }
 
@@ -137,20 +140,6 @@ p.formPaddedBot, div.formPaddedBot {
   -webkit-box-shadow: inset 0px 0px 4px 1px rgba(0, 0, 0, 0.08);
   box-shadow: inset 0px 0px 4px 1px rgba(0, 0, 0, 0.08);
 }
-
-#notificationFeed .ajax-dropdown {
-    left: 61px;
-}
-#pendingActionFeed .ajax-dropdown {
-    left: 101px;
-}
-#openOrderFeed .ajax-dropdown {
-    left: 141px;
-}
-#btcPayFeed .ajax-dropdown {
-    left: 181px;
-}
-
 
 /* LEFT AND CONTENT PANEL INTERFACE MODIFICATIONS
  * (the goal is to make the interface a bit more compact)
@@ -560,7 +549,6 @@ div.showSupport {
   background-image:none;
   background-color: white;
   box-shadow: inset -1px 0 0 0 #e5e5e5;
-  min-height: 100vh !important;
 }
 
 .menu-border-bottom {
@@ -579,7 +567,14 @@ div.showSupport {
 
 #header {
   position: relative !important;
-  display: none !important;
+  height: 4rem;
+  margin-left: 20rem !important;
+  width: calc(100% - 20rem - 1px) !important;
+  min-height: 0 !important;
+}
+
+.fa-signout {
+  margin-right: 1rem;
 }
 
 #main {
@@ -590,10 +585,6 @@ div.showSupport {
 
 .page-title {
   margin-bottom: 0;
-}
-
-#notificationFeed {
-  margin-left: 25px !important;
 }
 
 #logo-group {

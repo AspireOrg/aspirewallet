@@ -75,12 +75,12 @@
     </div>
 
     <!-- HEADER -->
-    <header id="header">
+    <header id="header" style="display: none">
       <div id="logo-group">
 
-        <span id="logo" style="background: none; height: 0px;"></span>
+        <!-- <span id="logo" style="background: none; height: 0px;"></span> -->
 
-        <span id="notificationFeed" class="activity-parent" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
+        <span id="notificationFeed" class="activity-parent notificationFeed" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
             <span class="activity-dropdown">
                 <i class="fa fa-check"></i><b data-bind="fadeVisible: unackedCount() > 0, text: unackedCount" class="badge"></b>
             </span>
@@ -91,7 +91,7 @@
             </div> <!-- .ajax-dropdown -->
         </span>
 
-        <span id="pendingActionFeed" class="activity-parent" data-contenturl="pages/feed_pending_actions.html">
+        <span id="pendingActionFeed" class="activity-parent pendingActionFeed" data-contenturl="pages/feed_pending_actions.html">
             <span class="activity-dropdown">
                 <i class="fa fa-clock-o"></i><b data-bind="visible: dispCount() > 0, text: dispCount" class="badge"></b>
             </span>
@@ -109,13 +109,13 @@
           <span> <a href="pages/logon.html" title="Sign Out"><i class="fa fa-sign-out"></i></a> </span>
         </div> <!-- end logout button -->
 
-        <div id="support" class="btn-header transparent pull-right"> <!-- help button -->
+        <!-- <div id="support" class="btn-header transparent pull-right">
           <span> <a href="#" title="Support"><i class="fa fa-question" style="color:#739e73"></i></a> </span>
-        </div> <!-- end help button -->
+        </div> -->
 
-        <div id="fullscreen" class="btn-header transparent pull-right"> <!-- fullscreen button -->
+        <!-- <div id="fullscreen" class="btn-header transparent pull-right">
             <span> <a href="#" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
-        </div> <!-- end fullscreen button -->
+        </div> -->
 
         <!-- <div id="showOptions" class="btn-header transparent pull-right"> --> <!-- options button -->
             <!-- <span> <a href="#" title="Show Options"><i class="fa fa-gear"></i></a> </span> -->
