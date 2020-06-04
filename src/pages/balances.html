@@ -75,6 +75,7 @@
                 <div data-bind="visible: IS_ARMORY_OFFLINE" class="label label-success margin-left-5"><i class="fa fa-lock"></i>  <span data-bind="locale: 'armory_offline'"></span></div>
                 <div data-bind="visible: IS_MULTISIG_ADDRESS" class="label label-success margin-left-5"><i class="fa fa-lock"></i>  <span data-bind="locale: 'multisig_address'"></span> <span data-bind="text: multisigType"></span></div>
             </h3>
+            <div class="widget-toolbar display-address"><span id="" data-bind="attr: {'id': 'address-text-' + ADDRESS}, click: selectAddressText, text: dispAddress"></span></div>
             <div class="widget-toolbar">
               <div class="btn-group btn-group-dropup">
                 <button class="btn dropdown-toggle btn-xs btn-primary" data-toggle="dropdown">
@@ -95,6 +96,7 @@
                           <li><a data-bind="click: sortAssetsByBalance, locale: 'balance'" href="#"></a></li>
                         </ul>
                   </li>
+
                   <li class="menu-item dropdown dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-bind="locale: 'filter_by'"></a>
                         <ul class="dropdown-menu">
@@ -114,7 +116,6 @@
                 </ul>
               </div>
             </div>
-            <div class="widget-toolbar display-address"><span id="" data-bind="attr: {'id': 'address-text-' + ADDRESS}, click: selectAddressText, text: dispAddress"></span></div>
             <div class="clearfix"></div>
           </header>
           <div> <!-- widget div-->
