@@ -161,22 +161,19 @@ function getLinkForCPData(type, dataID, dataTitle, htmlize) {
 }
 
 function getTxHashLink(hash) {
-  // TODO: add link to blockscan when possible
   var shortHash = hash.substr(hash.length - 5);
   if (hash.length == 128) {
     shortHash += '...' + hash.substr(64, 5);
   }
-  var link = '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash">' + shortHash + '</span>';
-
-  return link;
+  return '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash"><a href="' + BLOCKEXPLORER_URL + '/tx/' + hash + '" target="_blank">' + shortHash + '</a></span>';;
 }
 
 function getLinkForBlock(blockIndex, dataTitle, htmlize) {
   if (typeof(dataTitle) === 'undefined' || dataTitle === null) dataTitle = blockIndex;
   if (typeof(htmlize) === 'undefined' || htmlize === null) htmlize = true;
-  // var url = BLOCKEXPLORER_URL + '/block/' + blockIndex;
-  // return htmlize ? '<a href="' + url + '" target="_blank">' + dataTitle + '</a>' : url;
-  return htmlize ? dataTitle : url;
+  var url = BLOCKEXPLORER_URL + '/block/' + blockIndex;
+  return htmlize ? '<a href="' + url + '" target="_blank">' + dataTitle + '</a>' : url;
+  // return htmlize ? dataTitle : url;
 }
 
 function getAddressLabel(address) {

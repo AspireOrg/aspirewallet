@@ -146,13 +146,13 @@ var USE_TESTNET = (   (((location.pathname == "/" || location.pathname == "/src/
   || location.hostname.indexOf('testnet') != -1) ? true : false
 );
 
-var BLOCKEXPLORER_URL = USE_TESTNET ? "http://testnet.aspirewallet.com" : "http://aspirewallet.com";
+var BLOCKEXPLORER_URL = USE_TESTNET ? "https://testnet.aspireexplorer.com" : "https://aspireexplorer.com";
 var GOOGLE_ANALYTICS_UAID = null; //will be set in counterwallet.js
 var ROLLBAR_ACCESS_TOKEN = null; //will be set in counterwallet.js
 
 var TRANSACTION_DELAY = 5000; // delay between transaction to avoid error -22 (vin reused)
 var TRANSACTION_MAX_RETRY = 5; // max retry when transaction failed (don't include first transaction, so 3 retry means 4 queries)
 
-var DONATION_ADDRESS = USE_TESTNET ? 'n4MGGJBkW9RjRKBbZfBAceHDndhywvVPV9' : '19U6MmLLumsqxXSBMB5FgYXbezgXYC6Gpe';
+var DONATION_ADDRESS = USE_TESTNET ? 'FvzKvSF9ZNLbtFW5SS8R4xHeFArue9hBuT' : 'GZE6P3gyiyNdWdozuVJDZjAiEAGe2u8AWR';
 
 var APPROX_SECONDS_PER_BLOCK = USE_TESTNET ? 20 * 60 : 8 * 60; //a *rough* estimate on how many seconds per each block (used for estimating open order time left until expiration, etc)

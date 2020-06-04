@@ -141,6 +141,7 @@ function TransactionHistoryItemViewModel(data) {
   self.SOURCE = self.DATA['source'] || self.DATA['address'] || self.DATA['issuer'] || '';
 
   self.dispTXHash = function() {
+    console.log('transaction data: ', self.DATA);
     return getTxHashLink(self.TX_HASH);
   }
 
