@@ -650,7 +650,7 @@ function WalletViewModel() {
     //Determine the fee to use
     provideOptimalFeeFn(
       function(fee_per_kb) {
-        data['fee_per_kb'] = 1000;
+        data['fee_per_kb'] = 1100;
 
         // // default to optimal if it exists
         // if (fee_per_kb != null && fee_per_kb['optimal'] != null) {
