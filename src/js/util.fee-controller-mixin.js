@@ -131,7 +131,7 @@ var CWFeeModelMixin = function(modalDialogModel, opts) {
     setObs('feeDetailsLocaleName', 'fee_details');
     if(getObs('_unsignedTx') !== null) {
       // Default fees are the 1sat per byte. Estimate 10% more here just incase.
-      setObs('feeDetailsLocaleArgs', [formatCryptoFloat(getObs('_unsignedTx').length + (getObs('_unsignedTx').length * 0.1)), '']);
+      setObs('feeDetailsLocaleArgs', [formatCryptoFloat(getObs('_unsignedTx').length + (getObs('_unsignedTx').length * 0.3)), '']);
     } else {
       setObs('feeDetailsLocaleArgs', [1000, '']);
     }
