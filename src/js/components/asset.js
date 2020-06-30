@@ -54,7 +54,7 @@ function AssetViewModel(props) {
   }, self);
 
   self.assetType = ko.computed(function() {
-    if(_.startsWith(self.ASSET, 'A') && !self.ASSET_LONGNAME) {
+    if(_.startsWith(self.ASSET, 'ASP') && !self.ASSET_LONGNAME) {
       return 'numeric';
     } else if(self.ASSET_LONGNAME) {
       return 'subasset';

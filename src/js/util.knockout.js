@@ -245,9 +245,9 @@ function createSharedKnockoutValidators() {
         var patt = new RegExp("^[A-Za-z0-9.\\-_@!]{1,250}$");
         return patt.test(val);
       } else if (self.tokenNameType() == 'numeric') {
-        var patt = new RegExp("^A[0-9]{17,}$");
+        var patt = new RegExp("^ASP[0-9]{17,}$");
         if (patt.test(val)) {
-          var id = bigInt(val.substr(1));
+          var id = bigInt(val.substr(3));
           return id.geq(NUMERIC_ASSET_ID_MIN) && id.leq(NUMERIC_ASSET_ID_MAX);
         } else {
           return false;

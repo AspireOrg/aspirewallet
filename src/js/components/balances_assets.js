@@ -95,7 +95,7 @@ function CreateAssetModalViewModel() {
 
   self.generateRandomId = function() {
     var r = bigInt.randBetween(NUMERIC_ASSET_ID_MIN, NUMERIC_ASSET_ID_MAX);
-    self.name('A' + r);
+    self.name('ASP' + r);
   }
 
   self.resetForm = function() {

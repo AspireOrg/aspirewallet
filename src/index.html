@@ -256,10 +256,7 @@
 
     <!-- Logged out cover div -->
     <div id="logon">
-      <h1>
-        <span data-bind="locale: 'welcome'"></span>
-        <span data-bind="visible: USE_TESTNET, locale: 'testnet'"></span>
-      </h1>
+      <div class="welcome_image"></div>
       <!-- <h2 data-bind="locale: 'powered_by_aspire'"></h2> -->
       <div id="form-well">
         <div class="panel panel-danger">
@@ -268,10 +265,10 @@
               <b data-bind="visible: USE_TESTNET, locale: 'log_into_your_testnet_wallet'"></b>
               <b data-bind="visible: !USE_TESTNET, locale: 'log_into_your_wallet'"></b>
               <span data-bind="fadeVisibleInOnly: IS_DEV" class="label label-warning pull-right margin-left-5 padding-5 display-none">
-                <i class="fa-fw fa fa-warning"></i> <span data-bind="locale: 'dev_mode_enabled'"></span>
+                <i class="fa fa-warning"></i> <span data-bind="locale: 'dev_mode_enabled'"></span>
               </span>
               <span data-bind="fadeVisibleInOnly: USE_TESTNET" class="label label-danger pull-right margin-left-5 padding-5 display-none">
-                <i class="fa-fw fa fa-danger"></i> <b data-bind="locale: 'testnet_in_use'"></b>
+                <i class="fa fa-danger"></i> <b data-bind="locale: 'testnet_in_use'"></b>
               </span>
             </h3>
           </div>
