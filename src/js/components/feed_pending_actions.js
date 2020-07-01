@@ -76,7 +76,7 @@ PendingActionViewModel.calcText = function(category, data) {
       }
     }
   } else if (category == 'broadcasts') {
-    desc = i18n.t("pend_or_unconf_broadcast", pending, data['text'], data['value']);
+    desc = i18n.t("pend_or_unconf_broadcast", pending, data['text']);
   } else if (category == 'dividends') {
     var divUnitDivisible;
     if (WALLET.getAddressObj(data['source'])) {

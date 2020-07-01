@@ -184,7 +184,7 @@ function TransactionHistoryItemViewModel(data) {
           self.DATA['_asset_longname'] || self.DATA['asset']);
       }
     } else if (self.RAW_TX_TYPE == 'broadcasts') {
-      desc = i18n.t("hist_broadcast", self.DATA['text'], self.DATA['value']);
+      desc = i18n.t("hist_broadcast", self.DATA['text']);
     } else if (self.RAW_TX_TYPE == 'dividends') {
       desc = i18n.t("hist_dividend", smartFormat(normalizeQuantity(self.DATA['quantity_per_unit'])),
         self.DATA['_dividend_asset_longname'] || self.DATA['dividend_asset'], self.DATA['_asset_longname'] || self.DATA['asset']);

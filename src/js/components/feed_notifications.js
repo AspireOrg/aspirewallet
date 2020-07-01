@@ -94,7 +94,7 @@ NotificationViewModel.calcText = function(category, message) {
     if (message['locked']) {
       desc = i18n.t("notif_feed_locked", getAddressLabel(message['source']));
     } else {
-      desc = i18n.t("notif_value_broadcasted", message['value'], getAddressLabel(message['source']));
+      desc = i18n.t("notif_value_broadcasted", getAddressLabel(message['source']), message['text']);
     }
   } else {
     console.log('feed_notifications.js:146 - unknown category "', category, '"');
