@@ -623,8 +623,7 @@ function PayDividendModalViewModel() {
   }, self);
 
   self.totalFee = ko.computed(function() {
-    if (!self.holderCount() || !isNumber(self.quantityPerUnit()) || !parseFloat(self.quantityPerUnit())) return null;
-    return mulFloat(self.holderCount(), DIVIDEND_FEE_PER_HOLDER);
+    return 10;
   });
 
   self.dispTotalPay = ko.computed(function() {
