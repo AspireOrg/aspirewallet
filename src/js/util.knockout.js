@@ -236,7 +236,7 @@ function createSharedKnockoutValidators() {
   ko.validation.rules['isValidAssetName'] = {
     validator: function(val, self) {
       if (self.tokenNameType() == 'alphabetic') {
-        var patt = new RegExp("^[B-Z][A-Z]{3,11}$");
+        var patt = new RegExp("^(?!ASP)[A-Z]{3,11}$");
         return patt.test(val);
       } else if (self.tokenNameType() == 'subasset') {
         if(_.startsWith(val, '.') || _.endsWith(val, '.') || val.includes('..')) {
