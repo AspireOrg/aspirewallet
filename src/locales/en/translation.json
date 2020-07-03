@@ -108,9 +108,9 @@
 
   "having_issue": "Having Issues?",
   "page_common_questions": "Common Questions",
-  "try_the_following": "If you are having issues using Aspire Web Wallet, please try the following:",
-  "support_2": "",
-  "support_3": "",
+  "try_the_following": "If you are having issues using AspireWallet, please try the following:",
+  "support_2": "Check out our forums where you can post questions or issues in the support area.  <a href=\"https://aspirecrypto.com/forum/\">https://aspirecrypto.com/forum/</a>",
+  "support_3": "Send a private message to our support team on Telegram. <a href=\"https://t.me/AspireCommunity\">https://t.me/AspireCommunity</a>",
   "answers_to_common_questions": "Answers to common questions. Just click the one you're interested in:",
   "answer_1": "I logged in and my address is different, and I have no balance! Help!",
   "answer_2": "I sent assets to a crowdsale vending machine, why didn’t they show up?",
