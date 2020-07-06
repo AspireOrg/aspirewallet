@@ -59,7 +59,19 @@ p.formPaddedBot, div.formPaddedBot {
 
 .welcome_image {
     background: url(../images/Aspire.svg) no-repeat center;
+}
+@media only screen and (max-width: 479px) {
+  .welcome_image {
+    height: 18rem;
+  }
+  #logon {
+    padding-top:80px !important;
+  }
+}
+@media only screen and (min-width: 479px) {
+  .welcome_image {
     height: 25rem;
+  }
 }
 
 /* Make Aspirewallet word invisible in black top bar for low resolution */
