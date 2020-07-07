@@ -166,7 +166,7 @@ p.formPaddedBot, div.formPaddedBot {
 }
 
 .fixed-ribbon #content {
-    padding-top: 10px;
+    padding-top: 0;
 }
 
 
@@ -300,7 +300,6 @@ body.smart-style-3 .jarviswidget>header { /* google skin = darkBlue (night sky) 
   div.pull-right.sectionHeaderButtonBar {
     clear: both !important;
     float: left !important;
-    padding: 0 0 14px 14px !important;
   }
 }
 /* otherwise just pad it off the right of the screen a bit */
@@ -585,9 +584,6 @@ div.showSupport {
 #header {
   position: relative !important;
   height: 4rem;
-  margin-left: 20rem !important;
-  width: calc(100% - 20rem - 1px) !important;
-  min-height: 0 !important;
 }
 
 .fa-signout {
@@ -595,17 +591,65 @@ div.showSupport {
 }
 
 #main {
-  width: calc(100% - 20rem - 1px);
-  margin: 0 !important;
-  margin-left: 20rem !important;
+  margin: 0;
+}
+.fixed-header #main {
+  margin-top: 0;
+}
+@media only screen and (max-width: 479px) {
+  #main {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0 !important;
+  }
+  #header {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .ONLY_BIG {
+    display: none;
+  }
+  .ONLY_SMALL {
+    display: block;
+  }
+
+  .center_mobile {
+    text-align: -webkit-center;
+    width: 100%;
+  }
+
+  .sectionHeaderButtonBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 0 !important;
+    margin-top: 1rem;
+  }
+}
+@media only screen and (min-width: 479px) {
+  #main {
+    width: calc(100% - 20rem - 1px);
+    margin-left: 20rem !important;
+  }
+  #header {
+    width: calc(100% - 20rem - 1px);
+    margin-left: 20rem !important;
+  }
+
+  .ONLY_BIG {
+    display: block;
+  }
+  .ONLY_SMALL {
+    display: none;
+  }
 }
 
 .page-title {
   margin-bottom: 0;
-}
-
-#logo-group {
-  margin-left: 1.3rem !important;
 }
 
 #logo {
@@ -618,4 +662,24 @@ div.showSupport {
 nav ul li.active>a:before {
   color: #c70000;
   right: -20px;
+}
+
+.widget-toolbar {
+  border-left: none;
+}
+
+
+.aspage-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+@media only screen and (max-width: 479px) {
+  .aspage-header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
