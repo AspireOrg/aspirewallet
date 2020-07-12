@@ -396,7 +396,7 @@ function multiAPIConsensus(method, params, onSuccess, onConsensusError, onSysErr
 
         message = '<b class="errorColor">' + textStatus.substr(noBtcPos, endMessage - noBtcPos)
           + '</b>. You must have a small amount of GASP in this address to pay the GASP miner fees. Please fund this address and try again.<br/><br/>'
-          + '<a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142" target="_blank">More information on why this is necessary.</a>';
+          + '<a href="https://aspirecrypto.com/aspirewallet/#aw13" target="_blank">More information on why this is necessary.</a>';
 
       } else {
         message = describeError(jqXHR, textStatus, errorThrown);
