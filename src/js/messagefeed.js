@@ -94,9 +94,9 @@ function MessageFeed() {
     // payload) -- especially if the backend server reloads. Just ignore it.
     // Also, a message may be sent over as None if it is a stub message conterblock uses to initialize the sequence count
 
-    //NOTE: we use the message sequence that the counterblock counterwallet module generates, as it takes into account mempool transactions
-    // (which come across the counterblock counterwallet feed like any other message)
-    // the message_index created by the counterparty-server message feed DOES NOT generate message_indexes for mempool transactions
+    //NOTE: we use the message sequence that the aspireblock aspirewallet module generates, as it takes into account mempool transactions
+    // (which come across the aspireblock aspirewallet feed like any other message)
+    // the message_index created by the aspire-server message feed DOES NOT generate message_indexes for mempool transactions
     assert(self.lastMessageIndexReceived(), "lastMessageIndexReceived is not defined!");
 
     $.jqlog.info("feed:receive IDX=" + message['_message_index']);

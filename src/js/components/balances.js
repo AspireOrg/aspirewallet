@@ -926,7 +926,7 @@ function SweepModalViewModel() {
         WALLET.retrieveBTCAddrsInfo([address], function(data) {
           self.btcBalanceForPrivateKey(0);
           self.txoutsCountForPrivateKey = 0;
-          //TODO: counterblockd return unconfirmedRawBal==0, after fixing we need use unconfirmedRawBal
+          //TODO: aspireblockd return unconfirmedRawBal==0, after fixing we need use unconfirmedRawBal
           var unconfirmedRawBal = data[0]['confirmedRawBal'];
           if (unconfirmedRawBal > 0) {
             //We don't need to supply asset info to the SweepAssetInDropdownItemModel constructor for BTC

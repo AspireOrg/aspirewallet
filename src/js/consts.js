@@ -96,9 +96,6 @@ var ENTITY_NOTO_COLORS = {
 };
 var LEVERAGE_UNIT = 5040;
 
-var MAINNET_UNSPENDABLE = '1CounterpartyXXXXXXXXXXXXXXXUWLpVr';
-var TESTNET_UNSPENDABLE = 'mvCounterpartyXXXXXXXXXXXXXXW24Hef';
-
 /***********
  * DYNAMICALLY SET
  ***********/
@@ -117,7 +114,7 @@ var CURRENT_PAGE_URL = ''; // set in loadUrl()
 
 //selective disablement
 var DISABLED_FEATURES_SUPPORTED = ['dividend', 'leaderboard', 'portfolio', 'stats', 'history']; //what can be disabled
-var DISABLED_FEATURES = []; //set in counterwallet.js
+var DISABLED_FEATURES = []; //set in aspirewallet.js
 
 // restricted action
 var RESTRICTED_AREA = {
@@ -128,7 +125,7 @@ var RESTRICTED_AREA_MESSAGE = {
 }
 
 var MAX_SUPPORT_CASE_PROBLEM_LEN = 4096;
-var QUOTE_ASSETS = []; // initalized with counterblock is_ready()
+var QUOTE_ASSETS = []; // initalized with aspireblock is_ready()
 
 function qs(key) {
   //http://stackoverflow.com/a/7732379
@@ -146,8 +143,8 @@ var USE_TESTNET = (   (((location.pathname == "/" || location.pathname == "/src/
 );
 
 var BLOCKEXPLORER_URL = USE_TESTNET ? "https://testnet.aspireexplorer.com" : "https://aspireexplorer.com";
-var GOOGLE_ANALYTICS_UAID = null; //will be set in counterwallet.js
-var ROLLBAR_ACCESS_TOKEN = null; //will be set in counterwallet.js
+var GOOGLE_ANALYTICS_UAID = null; //will be set in aspirewallet.js
+var ROLLBAR_ACCESS_TOKEN = null; //will be set in aspirewallet.js
 
 var TRANSACTION_DELAY = 5000; // delay between transaction to avoid error -22 (vin reused)
 var TRANSACTION_MAX_RETRY = 5; // max retry when transaction failed (don't include first transaction, so 3 retry means 4 queries)

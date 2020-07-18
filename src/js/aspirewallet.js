@@ -178,7 +178,7 @@ function initRollbar() {
   }
 }
 
-function loadCounterwalletConfigFromServer() {
+function loadAspirewalletConfigFromServer() {
   //Request for the servers.json file, which should contain an array of API backends for us to use
   $.getJSON(COUNTERWALLET_CONF_LOCATION, function(data) {
     assert(data && typeof data == "object" && data.hasOwnProperty("servers"), "Returned servers.json file does not contain valid JSON object");
@@ -363,6 +363,6 @@ $(document).ready(function() {
 
   autoDropUpDropdowns();
 
-  loadCounterwalletConfigFromServer();
+  loadAspirewalletConfigFromServer();
 
 });
