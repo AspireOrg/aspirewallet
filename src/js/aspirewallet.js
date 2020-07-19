@@ -254,112 +254,113 @@ function autoDropUpDropdowns() {
 $(document).ready(function() {
   //Reject browsers that don't support the features we need (especially CSP 1.0 and window.crypto)
   // See http://caniuse.com/contentsecuritypolicy and https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
-  $.reject({
-    reject: {
-      msie1: true,
-      msie2: true,
-      msie3: true,
-      msie4: true,
-      msie5: true,
-      msie6: true, //kill it with fire
-      msie7: true, //kill it with fire
-      msie8: true, //kill it with fire
-      msie9: true, //DOES NOT SUPPORT FULL Content-Security-Policy, as well as Window.msCrypto
-      msie10: true, //DOES NOT SUPPORT FULL Content-Security-Policy
-      msie11: true, //this is IE11, which, yes, DOES NOT SUPPORT FULL Content-Security-Policy (fuuuckkkkkk)
-      firefox1: true,
-      firefox2: true,
-      firefox3: true,
-      firefox4: true,
-      firefox5: true,
-      firefox6: true,
-      firefox7: true,
-      firefox8: true,
-      firefox9: true,
-      firefox10: true,
-      firefox11: true,
-      firefox12: true,
-      firefox13: true,
-      firefox14: true,
-      firefox15: true,
-      firefox16: true,
-      firefox17: true,
-      firefox18: true,
-      firefox19: true,
-      firefox20: true,
-      firefox21: true,
-      firefox22: true,
-      chrome1: true,
-      chrome2: true,
-      chrome3: true,
-      chrome4: true,
-      chrome5: true,
-      chrome6: true,
-      chrome7: true,
-      chrome8: true,
-      chrome9: true,
-      chrome10: true,
-      chrome11: true,
-      chrome12: true,
-      chrome13: true,
-      chrome14: true,
-      chrome15: true,
-      chrome16: true,
-      chrome17: true,
-      chrome18: true,
-      chrome19: true,
-      chrome20: true,
-      chrome21: true,
-      chrome22: true,
-      chrome23: true,
-      chrome24: true,
-      opera1: true,
-      opera2: true,
-      opera3: true,
-      opera4: true,
-      opera5: true,
-      opera6: true,
-      opera7: true,
-      opera8: true,
-      opera9: true,
-      opera10: true,
-      opera11: true,
-      opera12: true,
-      opera13: true,
-      opera14: true,
-      safari1: true,
-      safari2: true,
-      safari3: true,
-      safari4: true,
-      safari5: true,
-      safari5: true,
-      safari6: true
-    },
-    imagePath: 'assets/', // Path where images are located
-    display: ['chrome', 'firefox', 'safari'],
-    browserInfo: { // Settings for which browsers to display
-      chrome: {
-        text: 'Chrome',
-        url: 'https://www.google.com/intl/en/chrome/browser/'
-      },
-      firefox: {
-        text: 'Firefox',
-        url: 'http://www.mozilla.org/'
-      },
-      safari: {
-        text: 'Safari (Mac Users)',
-        url: 'http://www.apple.com/safari/download/'
-      },
-      opera: {
-        text: 'Opera',
-        url: 'http://www.opera.com/download/'
-      }
-    },
-    header: i18n.t('brower_not_supported_header'),
-    paragraph1: i18n.t("brower_not_supported_text"),
-    close: false,
-    closeESC: false
-  });
+
+  // $.reject({
+  //   reject: {
+  //     msie1: true,
+  //     msie2: true,
+  //     msie3: true,
+  //     msie4: true,
+  //     msie5: true,
+  //     msie6: true, // kill it with fire
+  //     msie7: true, // kill it with fire
+  //     msie8: true, // kill it with fire
+  //     msie9: true, // DOES NOT SUPPORT FULL Content-Security-Policy, as well as Window.msCrypto
+  //     msie10: true, // DOES NOT SUPPORT FULL Content-Security-Policy
+  //     msie11: true, // this is IE11, which, yes, DOES NOT SUPPORT FULL Content-Security-Policy (fuuuckkkkkk)
+  //     firefox1: true,
+  //     firefox2: true,
+  //     firefox3: true,
+  //     firefox4: true,
+  //     firefox5: true,
+  //     firefox6: true,
+  //     firefox7: true,
+  //     firefox8: true,
+  //     firefox9: true,
+  //     firefox10: true,
+  //     firefox11: true,
+  //     firefox12: true,
+  //     firefox13: true,
+  //     firefox14: true,
+  //     firefox15: true,
+  //     firefox16: true,
+  //     firefox17: true,
+  //     firefox18: true,
+  //     firefox19: true,
+  //     firefox20: true,
+  //     firefox21: true,
+  //     firefox22: true,
+  //     chrome1: true,
+  //     chrome2: true,
+  //     chrome3: true,
+  //     chrome4: true,
+  //     chrome5: true,
+  //     chrome6: true,
+  //     chrome7: true,
+  //     chrome8: true,
+  //     chrome9: true,
+  //     chrome10: true,
+  //     chrome11: true,
+  //     chrome12: true,
+  //     chrome13: true,
+  //     chrome14: true,
+  //     chrome15: true,
+  //     chrome16: true,
+  //     chrome17: true,
+  //     chrome18: true,
+  //     chrome19: true,
+  //     chrome20: true,
+  //     chrome21: true,
+  //     chrome22: true,
+  //     chrome23: true,
+  //     chrome24: true,
+  //     opera1: true,
+  //     opera2: true,
+  //     opera3: true,
+  //     opera4: true,
+  //     opera5: true,
+  //     opera6: true,
+  //     opera7: true,
+  //     opera8: true,
+  //     opera9: true,
+  //     opera10: true,
+  //     opera11: true,
+  //     opera12: true,
+  //     opera13: true,
+  //     opera14: true,
+  //     safari1: true,
+  //     safari2: true,
+  //     safari3: true,
+  //     safari4: true,
+  //     safari5: true,
+  //     safari5: true,
+  //     safari6: true
+  //   },
+  //   imagePath: 'assets/', // Path where images are located
+  //   display: ['chrome', 'firefox', 'safari'],
+  //   browserInfo: { // Settings for which browsers to display
+  //     chrome: {
+  //       text: 'Chrome',
+  //       url: 'https://www.google.com/intl/en/chrome/browser/'
+  //     },
+  //     firefox: {
+  //       text: 'Firefox',
+  //       url: 'http://www.mozilla.org/'
+  //     },
+  //     safari: {
+  //       text: 'Safari (Mac Users)',
+  //       url: 'http://www.apple.com/safari/download/'
+  //     },
+  //     opera: {
+  //       text: 'Opera',
+  //       url: 'http://www.opera.com/download/'
+  //     }
+  //   },
+  //   header: i18n.t('brower_not_supported_header'),
+  //   paragraph1: i18n.t("brower_not_supported_text"),
+  //   close: false,
+  //   closeESC: false
+  // });
 
   autoDropUpDropdowns();
 
