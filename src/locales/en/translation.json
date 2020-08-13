@@ -679,7 +679,6 @@
   "deadline_note_cfd": "when this bet will be liquidated.",
   "expiration": "Expiration",
   "blocks": "blocks",
-  "expiration_note": "how many blocks a aspire has to take the other side of the bet.",
   "show_advanced_options": "Show advanced options",
   "for_every_xcp": "ASP for every 1 ASP you bet",
   "winnings": "Winnings",
