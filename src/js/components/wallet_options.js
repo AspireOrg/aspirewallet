@@ -26,12 +26,21 @@ function WalletOptionsModalViewModel() {
     max: 100
   }
 
+  self.orderDefaultExpiration = ko.observable(ORDER_DEFAULT_EXPIRATION).extend({
+    required: true,
+    isValidPositiveInteger: self
+  });
+
   self.showAdvancedOptions = ko.observable(false);
   self.urlPassword = ko.observable('');
   self.walletUrl = ko.computed(function() {
     if (self.urlPassword().length > 0 && WALLET.BITCOIN_WALLET) {
       return WALLET.BITCOIN_WALLET.getQuickUrl(self.urlPassword());
     }
+  });
+
+  self.advancedOptionValidation = ko.validatedObservable({
+    orderDefaultExpiration: self.orderDefaultExpiration
   });
 
   self.dispMyCookiePresent = ko.computed(function() {

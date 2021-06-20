@@ -149,6 +149,56 @@
             </a>
           </li>          
 
+          <li class="">
+            <a href="#">
+              <i class="fa fa-lg fa-fw fa-exchange"></i> <span class="menu-item-parent" data-bind="locale: 'exchange'"></span>
+            </a>
+            <ul>
+              <li>
+                <a href="pages/exchange.html">
+                  <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span data-bind="locale: 'markets'"></span>
+                </a>
+              </li>
+              <li>
+                <a href="pages/openorders.html">
+                  <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_orders'"></span>
+                </a>
+              </li>
+              <li>
+                <a href="pages/ordermatches.html">
+                  <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_order_history'"></span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li data-bind="visible: QUICK_BUY_ENABLE">
+            <a href="pages/simplebuy.html">
+              <i class="fa fa-lg fa-fw fa-rocket"></i> <span data-bind="locale: 'quick_buy'"></span>
+            </a>
+          </li>
+          <li class="" data-bind="visible: FEATURE_BETTING && BETTING_ENABLE">
+            <a href="#">
+              <i class="fa fa-lg fa-fw fa-bullseye"></i> <span class="menu-item-parent" data-bind="locale: 'betting'"></span>
+            </a>
+            <ul>
+              <li>
+                <a href="pages/betting.html">
+                  <i class="fa fa-lg fa-fw fa-share"></i> <span data-bind="locale: 'make_a_bet'"></span>
+                </a>
+              </li>
+              <li>
+                <a href="pages/openbets.html">
+                  <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_bets'"></span>
+                </a>
+              </li>
+              <li>
+                <a href="pages/matchedbets.html">
+                  <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_bet_history'"></span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li class="" data-bind="visible: FEATURE_HISTORY">
             <a href="pages/history.html">
               <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
@@ -821,11 +871,14 @@
     <script src="js/components/feed_pending_actions.js"></script>
     <script src="js/components/balances.js"></script>
     <script src="js/components/balances_assets.js"></script>
+    <script src="js/components/exchange.js"></script>
     <script src="js/components/history.js"></script>
     <script src="js/components/leaderboard.js"></script>
     <script src="js/components/portfolio.js"></script>
     <script src="js/components/stats.js"></script>
+    <script src="js/components/betting.js"></script>
     <script src="js/components/donate.js"></script>
+    <script src="js/components/simplebuy.js"></script>
 
     <script src="js/smartadmin.app.js"></script> <!-- custom app.js -->
     <!-- ^ unfortunately we have to mod the file itself, instead of dynamically override o_O -->

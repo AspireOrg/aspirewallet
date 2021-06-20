@@ -9,6 +9,10 @@ var DEFAULT_NUM_ADDRESSES = 1; //default number of addresses to generate. Go wit
 var MAX_ADDRESSES = 20; //arbitrary (but will generate more on login if they have activity...this just prevents
                         //additional addresses from being generated via the GUI)
 
+//Order expiration
+var ORDER_DEFAULT_EXPIRATION = 1000; //num blocks until expiration (at ~9 min per block this is ~6.75 days)
+var ORDER_MAX_EXPIRATION = 3000; //max expiration for order
+
 var STATS_MAX_NUM_TRANSACTIONS = 100; //max # transactions to show in the table
 var VIEW_PRICES_NUM_ASSET_PAIRS = 50; //show market info for this many pairs
 var VIEW_PRICES_ASSET_PAIRS_REFRESH_EVERY = 5 * 60 * 1000; //refresh asset pair market info every 5 minutes
@@ -58,6 +62,7 @@ var MAX_ASSET_DESC_LENGTH = 41; // 42, minus a null term character
 var FEE_FRACTION_REQUIRED_DEFAULT_PCT = 1;   // 0.90% of total order
 var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   // 1.00% of total order
 var FEE_FRACTION_DEFAULT_FILTER = 1;
+var BTC_ORDER_MIN_AMOUNT = 0.00001000;
 var B26_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var ORIG_REFERER = document.referrer;
 
@@ -70,6 +75,16 @@ var ENTITY_NAMES = {
   'broadcasts': 'Broadcast',
   'dividends': 'Distribution',
   'callbacks': 'Callback',
+  'orders': 'Order',
+  'order_matches': 'Order Match',
+  'btcpays': 'GASPay',
+  'bets': 'Bet',
+  'bet_matches': 'Bet Match',
+  'cancels': 'Cancel',
+  'bet_expirations': 'Bet Expired',
+  'order_expirations': 'Order Expired',
+  'bet_match_expirations': 'Bet Match Exp',
+  'order_match_expirations': 'Order Match Exp',
 };
 
 var ENTITY_ICONS = {
@@ -82,6 +97,15 @@ var ENTITY_ICONS = {
   'broadcasts': 'fa-rss',
   'dividends': 'fa-ticket',
   'callbacks': 'fa-retweet',
+  'orders': 'fa-bar-chart-o',
+  'order_matches': 'fa-exchange',
+  'bets': 'fa-bullseye',
+  'bet_matches': 'fa-exchange',
+  'cancels': 'fa-times',
+  'bet_expirations': 'fa-clock-o',
+  'order_expirations': 'fa-clock-o',
+  'bet_match_expirations': 'fa-clock-o',
+  'order_match_expirations': 'fa-clock-o',
 };
 
 var ENTITY_NOTO_COLORS = {
@@ -93,7 +117,50 @@ var ENTITY_NOTO_COLORS = {
   'broadcasts': 'bg-color-magenta',
   'dividends': 'bg-color-pink',
   'callbacks': 'bg-color-pink',
+  'orders': 'bg-color-blue',
+  'order_matches': 'bg-color-blueLight',
+  'btcpays': 'bg-color-orange',
+  'bets': 'bg-color-teal',
+  'bet_matches': 'bg-color-teal',
+  'bet_expirations': 'bg-color-grayDark',
+  'order_expirations': 'bg-color-grayDark',
+  'bet_match_expirations': 'bg-color-grayDark',
+  'order_match_expirations': 'bg-color-grayDark',
 };
+var BET_TYPES = {
+  0: "Bullish CFD",
+  1: "Bearish CFD",
+  2: "Equal",
+  3: "Not Equal"
+};
+
+var BET_TYPES_SHORT = {
+  0: "BullCFD",
+  1: "BearCFD",
+  2: "Equal",
+  3: "NotEqual"
+}
+
+var BET_TYPES_ID = {
+  "BullCFD": 0,
+  "BearCFD": 1,
+  "Equal": 2,
+  "NotEqual": 3
+}
+
+var COUNTER_BET = {
+  "Equal": 3,
+  "NotEqual": 2,
+  "BullCFD": 1,
+  "BearCFD": 0
+}
+
+var BET_MATCHES_STATUS = {
+  "settled: liquidated for bear": 0,
+  "settled: liquidated for bull": 1,
+  "settled: for equal": 2,
+  "settled: for notequal": 3
+}
 var LEVERAGE_UNIT = 5040;
 
 /***********
@@ -113,11 +180,15 @@ var USER_COUNTRY = ''; //set in logon.js
 var CURRENT_PAGE_URL = ''; // set in loadUrl()
 
 //selective disablement
-var DISABLED_FEATURES_SUPPORTED = ['dividend', 'leaderboard', 'portfolio', 'stats', 'history']; //what can be disabled
+var DISABLED_FEATURES_SUPPORTED = ['betting', 'dividend', 'exchange', 'leaderboard', 'portfolio', 'stats', 'history']; //what can be disabled
 var DISABLED_FEATURES = []; //set in aspirewallet.js
 
 // restricted action
 var RESTRICTED_AREA = {
+  'pages/betting.html': ['US'],
+  'pages/openbets.html': ['US'],
+  'pages/matchedbets.html': ['US'],
+  'pages/simplebuy.html': ['US'],
   'dividend': ['US'],
 }
 
@@ -126,6 +197,10 @@ var RESTRICTED_AREA_MESSAGE = {
 
 var MAX_SUPPORT_CASE_PROBLEM_LEN = 4096;
 var QUOTE_ASSETS = []; // initalized with aspireblock is_ready()
+
+var QUICK_BUY_ENABLE = false;
+var BETTING_ENABLE = true;
+var GAMING_ENABLE = true;
 
 function qs(key) {
   //http://stackoverflow.com/a/7732379

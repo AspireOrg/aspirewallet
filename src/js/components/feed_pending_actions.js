@@ -45,6 +45,10 @@ PendingActionViewModel.calcText = function(category, data) {
       asset_longname || data['asset'],
       getLinkForCPData('address', data['source'], getAddressLabel(data['source'])),
       getLinkForCPData('address', data['destination'], getAddressLabel(data['destination'])));
+  } else if (category == 'orders') {
+    desc = i18n.t("pend_or_unconf_order", pending, numberWithCommas(normalizeQuantity(data['give_quantity'], data['_give_asset_divisible'])),
+      data['_give_asset_longname'] || data['give_asset'], numberWithCommas(normalizeQuantity(data['get_quantity'], data['_get_asset_divisible'])),
+      data['_get_asset_longname'] || data['get_asset']);
   } else if (category == 'issuances') {
     if (data['transfer_destination']) {
       desc = i18n.t("pend_or_unconf_transfer", pending,
@@ -75,6 +79,10 @@ PendingActionViewModel.calcText = function(category, data) {
           numberWithCommas(normalizeQuantity(data['quantity'], data['divisible'])));
       }
     }
+  } else if (category == 'bets') {
+    desc = i18n.t("pend_or_unconf_bet", pending, data['bet_type'], getLinkForCPData('address', data['feed_address'], getAddressLabel(data['feed_address'])),
+      numberWithCommas(normalizeQuantity(data['wager_quantity'])),
+      numberWithCommas(normalizeQuantity(data['counterwager_quantity'])));
   } else if (category == 'broadcasts') {
     desc = i18n.t("pend_or_unconf_broadcast", pending, data['text']);
   } else if (category == 'dividends') {
@@ -88,6 +96,17 @@ PendingActionViewModel.calcText = function(category, data) {
       divUnitDivisible = data['dividend_asset_divisible'];
       desc = i18n.t("pend_or_unconf_dividend_reception", pending, numberWithCommas(normalizeQuantity(data['quantity_per_unit'], divUnitDivisible)),
         divLongname || data['dividend_asset'], asset_longname || data['asset']);
+    }
+  } else if (category == 'cancels') {
+    desc = i18n.t("pend_or_unconf_cancellation", pending, data['_type'], data['_tx_index']);
+  } else if (category == 'btcpays') {
+    desc = i18n.t("pend_or_unconf_btcpay", pending, getAddressLabel(data['source']));
+  } else if (category == 'order_matches') {
+
+    if (WALLET.getAddressObj(data['tx1_address']) && data['forward_asset'] == 'GASP' && data['_status'] == 'pending') {
+      desc = i18n.t("pend_or_unconf_wait_btcpay", numberWithCommas(normalizeQuantity(data['forward_quantity'])), getAddressLabel(data['tx0_address']));
+    } else if (WALLET.getAddressObj(data['tx0_address']) && data['backward_asset'] == 'GASP' && data['_status'] == 'pending') {
+      desc = i18n.t("pend_or_unconf_wait_btcpay", numberWithCommas(normalizeQuantity(data['backward_quantity'])), getAddressLabel(data['tx1_address']));
     }
   } else {
     desc = i18n.t("pend_or_unconf_unhandled");
@@ -105,7 +124,7 @@ function PendingActionFeedViewModel() {
   self.entries = ko.observableArray([]); //pending actions beyond pending BTCpays
   self.lastUpdated = ko.observable(new Date());
   self.ALLOWED_CATEGORIES = [
-    'sends', 'issuances', 'broadcasts', 'dividends', 'proofofwork',
+    'sends', 'orders', 'issuances', 'broadcasts', 'bets', 'dividends', 'proofofwork', 'cancels', 'btcpays', 'order_matches',
     //^ pending actions are only allowed for these categories
   ];
 
@@ -305,7 +324,17 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
     updateUnconfirmedBalance(data['source'], data['dividend_asset'], data['quantity_per_unit'], 'source');
     updateUnconfirmedBalance(data['destination'], data['dividend_asset'], data['quantity_per_unit'], 'destination');
 
-  } 
+  } else if (category == 'orders') {
+
+    if (data['give_asset'] != 'GASP') {
+      updateUnconfirmedBalance(data['source'], data['give_asset'], data['give_quantity'] * -1);
+    }
+
+  } else if (category == 'bets') {
+
+    updateUnconfirmedBalance(data['source'], 'ASP', data['wager_quantity'] * -1);
+
+  }
 }
 
 /*NOTE: Any code here is only triggered the first time the page is visited. Put JS that needs to run on the

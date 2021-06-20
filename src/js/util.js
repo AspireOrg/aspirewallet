@@ -31,6 +31,52 @@ function getCurrentPage() {
   return (window.location.hash.replace('#', '/'));
 }
 
+function decodeJsonBet(jsonBetBase64) {
+  var jsonBet;
+  try {
+    $.jqlog.debug(atob(jsonBetBase64));
+    jsonBet = JSON.parse(atob(jsonBetBase64));
+
+  } catch (e) {
+    return false;
+  }
+  if (typeof(jsonBet) != 'object') {
+    return false;
+  }
+  if (jsonBet.command == undefined || jsonBet.command != 'bet') {
+    return false;
+  }
+  var numbers = {'wager': 1, 'counterwager': 1, 'target_value': 1, 'expiration': 1, 'leverage': 1, 'bet_type': 1};
+  for (var e in numbers) {
+    if (jsonBet[e] == undefined || isNaN(jsonBet[e])) {
+      return false;
+    }
+  }
+  if (BET_TYPES_SHORT[jsonBet.bet_type] == undefined) {
+    return false;
+  }
+  if (jsonBet.deadline == undefined || !moment(jsonBet.deadline).isValid()) {
+    return false;
+  }
+  if (jsonBet.feed_address == undefined || !CWBitcore.isValidAddress(jsonBet.feed_address)) {
+    return false;
+  }
+  if (jsonBet.source == undefined) {
+    return false;
+  }
+  var addresses = WALLET.getAddressesList(true);
+  var isMine = false;
+  for (var i = 0; i < addresses.length; i++) {
+    if (addresses[i][0] == jsonBet.source) {
+      isMine = true;
+    }
+  }
+  if (!isMine) {
+    return false;
+  }
+  return jsonBet;
+}
+
 function expireDate(expire_index) {
   var expire_in = expire_index - WALLET.networkBlockHeight();
   return new Date((new Date()).getTime() + (expire_in * APPROX_SECONDS_PER_BLOCK * 1000));

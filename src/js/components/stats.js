@@ -183,6 +183,9 @@ function StatsTransactionHistoryViewModel() {
         //Filter out credits, debits
         if (data[i]['_category'] === 'credits' || data[i]['_category'] === 'debits')
           continue;
+        //Filter out orders where the asset field is not defined
+        if (data[i]['_category'] === 'order' && (!data[i]['give_asset'] || !data[i]['get_asset']))
+          continue;
         self.transactions.push(new TransactionHistoryItemViewModel(data[i]));
       }
     });
