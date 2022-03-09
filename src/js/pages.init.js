@@ -36,7 +36,7 @@ function initIndex() { //main page
     ko.applyBindings(CREATE_SUPPORT_CASE_VIEW_MODEL, document.getElementById("createSupportCaseModal"));
 
     //so that knockout is run on the DOM sections and global context is accessible...
-    ko.applyBindings({}, document.getElementById("noticeTestnet"));
+    // ko.applyBindings({}, document.getElementById("noticeTestnet"));
     ko.applyBindings({}, document.getElementById("noticeDevMode"));
     ko.applyBindings({}, document.getElementById("donate"));
     ko.applyBindings({}, document.getElementById("logo"));
@@ -182,9 +182,9 @@ function initBalances() {
     $('#sweepOldWallet').click(function() {
       SWEEP_MODAL.show(true, true);
     });
-    $('#balanceHelp').click(function() {
-      SUPPORT_MODAL.show('balancesPage');
-    });
+    // $('#balanceHelp').click(function() {
+    //   SUPPORT_MODAL.show('balancesPage');
+    // });
 
     //temporary
     if (WALLET.BITCOIN_WALLET.useOldHierarchicalKey) {
@@ -224,13 +224,7 @@ function initBalances() {
       //setTimeout(_detectOldWallet, 300);
 
     } else {
-      WALLET.refreshBTCBalances(false);
-    }
-
-    if (WALLET.isSegwitEnabled) {
-      $("#createSegwitAddress").show();
-    } else {
-      $("#createSegwitAddress").hide();
+      WALLET.refreshGASPBalances(false);
     }
 
     // FIX: replace buggy smartadmin dropdown menu for assets menu

@@ -238,7 +238,7 @@ function createSharedKnockoutValidators() {
   ko.validation.rules['isValidAssetName'] = {
     validator: function(val, self) {
       if (self.tokenNameType() == 'alphabetic') {
-        var patt = new RegExp("^[B-Z][A-Z]{3,11}$");
+        var patt = new RegExp("^(?!ASP)[A-Z]{3,11}$");
         return patt.test(val);
       } else if (self.tokenNameType() == 'subasset') {
         if(_.startsWith(val, '.') || _.endsWith(val, '.') || val.includes('..')) {
@@ -247,9 +247,9 @@ function createSharedKnockoutValidators() {
         var patt = new RegExp("^[A-Za-z0-9.\\-_@!]{1,250}$");
         return patt.test(val);
       } else if (self.tokenNameType() == 'numeric') {
-        var patt = new RegExp("^A[0-9]{17,}$");
+        var patt = new RegExp("^ASP[0-9]{17,}$");
         if (patt.test(val)) {
-          var id = bigInt(val.substr(1));
+          var id = bigInt(val.substr(3));
           return id.geq(NUMERIC_ASSET_ID_MIN) && id.leq(NUMERIC_ASSET_ID_MAX);
         } else {
           return false;

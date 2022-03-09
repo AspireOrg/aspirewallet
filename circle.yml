@@ -6,4 +6,4 @@ dependencies:
         - grunt build --dontcheckdeps
 test:
     override:
-        - mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with counterwallet.io SSL cert
+        - mocha-phantomjs-core test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with counterwallet.io SSL cert

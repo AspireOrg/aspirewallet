@@ -30,8 +30,8 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.withMovement = ko.observable(false);
 
   self.assets = ko.observableArray([
-    new AssetViewModel({address: address, asset: KEY_ASSET.BTC}), //will be updated with data loaded from insight
-    new AssetViewModel({address: address, asset: KEY_ASSET.XCP})  //will be updated with data loaded from counterpartyd
+    new AssetViewModel({address: address, asset: "GASP"}), // will be updated with data loaded from gasp insight
+    new AssetViewModel({address: address, asset: "ASP"})  // will be updated with data loaded from aspire
   ]);
 
   self.dispensers = ko.observableArray([]);
@@ -42,7 +42,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return self.assets();
     } else if (self.assetFilter() == 'base') {
       return ko.utils.arrayFilter(self.assets(), function(asset) {
-        return asset.ASSET === KEY_ASSET.BTC || asset.ASSET === KEY_ASSET.XCP;
+        return asset.ASSET === 'GASP' || asset.ASSET === 'ASP';
       });
 
     } else if (self.assetFilter() == 'mine') {
@@ -171,7 +171,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return item.ASSET === asset;
     });
 
-    if (asset === KEY_ASSET.BTC || asset === KEY_ASSET.XCP) { //special case update
+    if (asset === 'GASP' || asset === 'ASP') { //special case update
       assert(match, 'was created when the address viewmodel was initialized...');
       match.rawBalance(initialRawBalance);
       match.escrowedBalance(escrowedBalance);
@@ -182,7 +182,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     if (!match) {
       //add the asset if it doesn't exist. this can be triggered on login (from get_asset_info API results)
       // OR via the message feed (through receiving an asset send or ownership transfer for an asset not in the address yet)
-      $.jqlog.debug("Adding token " + asset + " to address " + self.ADDRESS + " with raw bal "
+      $.jqlog.debug("Adding asset " + asset + " to address " + self.ADDRESS + " with raw bal "
         + initialRawBalance + " (divisible: " + assetInfo['divisible'] + ")");
       var assetProps = {
         address: self.ADDRESS,
@@ -213,17 +213,17 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
       if (assetInfo['description'] != match.description()) {
         //when the description changes, the balance will get 0 passed into it to note this. obviously, don't take that as the literal balance :)
-        $.jqlog.debug("Updating token " + asset + " @ " + self.ADDRESS + " description to '" + assetInfo['description'] + "'");
+        $.jqlog.debug("Updating asset " + asset + " @ " + self.ADDRESS + " description to '" + assetInfo['description'] + "'");
         match.description(assetInfo['description']);
       } else if (assetInfo['transfer']) {
         //transfer come in through the messages feed only (get_asset_info results doesn't have a transfer field passed in)
-        $.jqlog.debug("Token " + asset + " @ " + self.ADDRESS + " transferred to '" + assetInfo['issuer'] + "'");
+        $.jqlog.debug("Asset " + asset + " @ " + self.ADDRESS + " transferred to '" + assetInfo['issuer'] + "'");
         //like with a description change, the balance is passed as 0
         match.owner(assetInfo['issuer']);
         if (match.isMine() === false && match.rawBalance() == 0)
           self.assets.remove(match); //i.e. remove the asset if it was owned by this address (and no longer is), and had a zero balance
       } else if (assetInfo['locked']) { //only add locking (do not change from locked back to unlocked, as that is not valid)
-        $.jqlog.debug("Token " + asset + " @ " + self.ADDRESS + " locked");
+        $.jqlog.debug("Asset " + asset + " @ " + self.ADDRESS + " locked");
         match.locked(assetInfo['locked']);
       } else {
         //handle issuance increases
@@ -231,7 +231,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
         //assert(match.owner() == (assetInfo['issuer'])); //transfer change was handled earlier
         //assert(!assetInfo['locked']); //lock change was handled earlier
         //assert(match.rawSupply() != assetInfo['quantity']);
-        $.jqlog.debug("Updating token " + asset + " @ " + self.ADDRESS + " # issued units. Orig #: "
+        $.jqlog.debug("Updating asset " + asset + " @ " + self.ADDRESS + " # issued units. Orig #: "
           + match.rawSupply() + ", new #: " + assetInfo['quantity'] + ", unconfirmed bal #: " + match.unconfirmedBalance());
         match.rawSupply(assetInfo['quantity']);
       }
@@ -335,7 +335,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.createAsset = function() {
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
 
-    var xcpBalance = WALLET.getBalance(self.ADDRESS, KEY_ASSET.XCP);
+    var xcpBalance = WALLET.getBalance(self.ADDRESS, 'ASP');
     CREATE_ASSET_MODAL.show(self.ADDRESS, xcpBalance, true);
   }
 
@@ -394,20 +394,20 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   }
 
   self.showBaseAssetsOnly = function() {
-    self.assetFilter('base'); //Show XCP and BTC only
+    self.assetFilter('base'); // Show ASP and GASP only
   }
 
   self.showMyAssetsOnly = function() {
-    self.assetFilter('mine'); //Show all my own assets
+    self.assetFilter('mine'); // Show all my own assets
   }
 
   self.showOthersAssetsOnly = function() {
-    self.assetFilter('others'); //Show other's (foreign) assets only
+    self.assetFilter('others'); // Show other's (foreign) assets only
   }
 
   self.getXCPBalance = function() {
     var xcpAsset = $.grep(self.assets(), function(value) {
-      return value.ASSET === KEY_ASSET.XCP;
+      return value.ASSET === 'ASP';
     });
     return xcpAsset[0].normalizedBalance();
   }

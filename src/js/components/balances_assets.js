@@ -74,10 +74,10 @@ function CreateAssetModalViewModel() {
   });
 
   self.hasXCPForNamedAsset = ko.computed(function() {
-    return self.xcpBalance() >= ASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
   self.hasXCPForSubAsset = ko.computed(function() {
-    return self.xcpBalance() >= SUBASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (SUBASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
 
   self.ownedNamedAssets = ko.computed(function() { //stores BuySellAddressInDropdownItemModel objects
@@ -106,10 +106,10 @@ function CreateAssetModalViewModel() {
   });
 
   self.hasXCPForNamedAsset = ko.computed(function() {
-    return self.xcpBalance() >= ASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
   self.hasXCPForSubAsset = ko.computed(function() {
-    return self.xcpBalance() >= SUBASSET_CREATION_FEE_XCP;
+    return self.xcpBalance() >= (SUBASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
   });
 
   self.ownedNamedAssets = ko.computed(function() { //stores BuySellAddressInDropdownItemModel objects
@@ -139,7 +139,7 @@ function CreateAssetModalViewModel() {
 
   self.generateRandomId = function() {
     var r = bigInt.randBetween(NUMERIC_ASSET_ID_MIN, NUMERIC_ASSET_ID_MAX);
-    self.name('A' + r);
+    self.name('ASP' + r);
   }
 
   self.resetForm = function() {
@@ -172,32 +172,6 @@ function CreateAssetModalViewModel() {
 
   self.doAction = function() {
     WALLET.doTransactionWithTxHex(self.address(), "create_issuance", self.buildCreateAssetTransactionData(), self.feeController.getUnsignedTx(),
-
-/* // this was on a conflict merge
-    var quantity = parseFloat(self.quantity());
-    var rawQuantity = denormalizeQuantity(quantity, self.divisible());
-
-    if (rawQuantity > MAX_INT) {
-      bootbox.alert(i18n.t("issuance_quantity_too_high"));
-      return false;
-    }
-
-    var name = self.name();
-    if(self.tokenNameType() === 'subasset' && self.selectedParentAsset()) {
-      name = self.selectedParentAsset() + '.' + self.name();
-    }
-    WALLET.doTransaction(self.address(), "create_issuance",
-      {
-        source: self.address(),
-        asset: name,
-        quantity: rawQuantity,
-        divisible: self.divisible(),
-        description: self.description(),
-        transfer_destination: null,
-        _fee_option: self.feeOption(),
-        _custom_fee: self.customFee()
-      },*/
-
       function(txHash, data, endpoint, addressType, armoryUTx) {
         var message = "";
         var name = data.asset;
@@ -208,9 +182,11 @@ function CreateAssetModalViewModel() {
         }
         message += "<br/><br/>";
         if (self.tokenNameType() == 'alphabetic') {
-          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), ASSET_CREATION_FEE_XCP);
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), ASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
+        } else if(self.selectedParentAsset()) {
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), SUBASSET_CREATION_FEE_XCP + STANDARD_ASSET_FEE_ASP);
         } else {
-          message += i18n.t("free_issuance_end_message");
+          message += i18n.t("issuance_end_message", getAddressLabel(self.address()), STANDARD_ASSET_FEE_ASP);
         }
         WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
       }
@@ -694,8 +670,7 @@ function PayDividendModalViewModel() {
   }, self);
 
   self.totalFee = ko.computed(function() {
-    if (!self.holderCount() || !isNumber(self.quantityPerUnit()) || !parseFloat(self.quantityPerUnit())) return null;
-    return mulFloat(self.holderCount(), DIVIDEND_FEE_PER_HOLDER);
+    return 10;
   });
 
   self.dispTotalPay = ko.computed(function() {
@@ -745,7 +720,7 @@ function PayDividendModalViewModel() {
     }
 
     // fetch shareholders to check transaction dest.
-    if (self.selectedDividendAsset() === KEY_ASSET.BTC) {
+    if (self.selectedDividendAsset() === 'GASP') {
       var params = {
         'filters': [
           {'field': 'asset', 'op': '=', 'value': self.assetData().asset},
@@ -823,7 +798,7 @@ function PayDividendModalViewModel() {
       //Also get the BTC balance at this address and put at head of the list
       WALLET.retrieveBTCBalance(address.ADDRESS, function(balance) {
         if (balance) {
-          self.availableDividendAssets.unshift(new DividendAssetInDropdownItemModel(KEY_ASSET.BTC, KEY_ASSET.BTC, balance, normalizeQuantity(balance)));
+          self.availableDividendAssets.unshift(new DividendAssetInDropdownItemModel('GASP', 'GASP', balance, normalizeQuantity(balance)));
         }
       });
     });

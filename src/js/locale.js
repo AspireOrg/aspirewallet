@@ -63,7 +63,7 @@ function localeInit(callback) {
 }
 
 function loadLocaleConfig(callback) {
-  $.getJSON(COUNTERWALLET_CONF_LOCATION, function(data) {
+  $.getJSON(ASPIREWALLET_CONF_LOCATION, function(data) {
 
     if ($.isArray(data["AVAILABLE_LANGUAGES"]))
       AVAILABLE_LANGUAGES = data["AVAILABLE_LANGUAGES"];
@@ -120,7 +120,7 @@ function altnize(str) {
     .replace(/BTC/g, KEY_ASSET.BTC)
     .replace(/XCP/g, KEY_ASSET.XCP)
     .replace(/Bitcoin/g, KEY_ASSET.Bitcoin)
-    .replace(/XCP/g, KEY_ASSET.Counterparty);
+    .replace(/XCP/g, KEY_ASSET.Aspireparty);
 }
 
 ko.bindingHandlers['locale'] = {

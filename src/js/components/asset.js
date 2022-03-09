@@ -1,8 +1,8 @@
 function AssetViewModel(props) {
-  //An address has 2 or more assets (BTC, XCP, and any others)
+  //An address has 2 or more assets (GASP, ASP, and any others)
   var self = this;
   self.ADDRESS = props['address']; //will not change
-  self.ASSET = props['asset']; //assetID (asset name), will not change.
+  self.ASSET = props['asset']; //assetID (asset name), will not change. 
   self.ASSET_LONGNAME = props['asset_longname']; //for subassets, this is the entire asset name (asset_longname). for everything else, this is == .ASSET
 
   self.ASSET_DISP_FULL = self.ASSET_LONGNAME || self.ASSET; //the human readable name of the asset
@@ -11,8 +11,8 @@ function AssetViewModel(props) {
   self.DIVISIBLE = props['divisible'] !== undefined ? props['divisible'] : true;
   self.owner = ko.observable(props['owner']);
   self.locked = ko.observable(props['locked'] !== undefined ? props['locked'] : false);
-  self.rawBalance = ko.observable(props['rawBalance'] || (self.ASSET === KEY_ASSET.BTC ? null : 0));
-  //^ raw (not normalized) (for BTC/XCP, default to null to show '??' instead of 0, until the balance is populated)
+  self.rawBalance = ko.observable(props['rawBalance'] || (self.ASSET === 'GASP' ? null : 0));
+  //^ raw (not normalized) (for GASP/ASP, default to null to show '??' instead of 0, until the balance is populated)
   self.rawSupply = ko.observable(props['rawSupply'] || 0); //raw
   self.SUPPLY = normalizeQuantity(self.rawSupply(), self.DIVISIBLE);
   self.holdersSupply = self.rawSupply() - self.rawBalance();
@@ -36,11 +36,11 @@ function AssetViewModel(props) {
   }
 
   self.isBTC = ko.computed(function() {
-    return self.ASSET === KEY_ASSET.BTC;
+    return self.ASSET === 'GASP';
   }, self);
 
   self.isXCP = ko.computed(function() {
-    return self.ASSET === KEY_ASSET.XCP;
+    return self.ASSET === 'ASP';
   }, self);
 
   self.isMine = ko.computed(function() {
@@ -62,7 +62,7 @@ function AssetViewModel(props) {
   }, self);
 
   self.assetType = ko.computed(function() {
-    if(_.startsWith(self.ASSET, 'A') && !self.ASSET_LONGNAME) {
+    if(_.startsWith(self.ASSET, 'ASP') && !self.ASSET_LONGNAME) {
       return 'numeric';
     } else if(self.ASSET_LONGNAME) {
       return 'subasset';

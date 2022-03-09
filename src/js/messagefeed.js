@@ -90,7 +90,7 @@ function MessageFeed() {
     if (displayTx) {
       PENDING_ACTION_FEED.add(txHash, category, message['bindings']);
 
-      /*var asset1 = message['bindings']['asset'] || 'BTC';
+      var asset1 = message['bindings']['asset'] || 'GASP';
       WALLET.getAssetsDivisibility([asset1], function(divisibility) {
 
         message['bindings']['divisible'] = divisibility[asset1];
@@ -108,7 +108,7 @@ function MessageFeed() {
           PENDING_ACTION_FEED.add(txHash, category, message['bindings']);
         }
 
-      });*/
+      });
     }
 
   }
@@ -160,7 +160,7 @@ function MessageFeed() {
       self.lastMessageIndexReceived(message['_last_message_index']);
       $.jqlog.warn("feed:Blockchain reorganization at block " + message['block_index']
         + "; last message idx reset to " + self.lastMessageIndexReceived());
-      setTimeout(function() { WALLET.refreshCounterpartyBalances(WALLET.getAddressesList(), checkURL); }, randomIntFromInterval(1, 5) * 1000);
+      setTimeout(function() { WALLET.refreshAspirepartyBalances(WALLET.getAddressesList(), checkURL); }, randomIntFromInterval(1, 5) * 1000);
       //^ refresh the current page to regrab the fresh data (give cwd a second to sync up though)
       // also, wait a random interval to do this between 1 and 5 seconds, to avoid dog-piling the server
       //TODO/BUG??: do we need to "roll back" old messages on the bad chain???
@@ -231,6 +231,7 @@ function MessageFeed() {
         refreshEscrowedBalance.push(message['source']);
       }
 
+    } else if (category == "proofofwork") {
     } else if (category == "dividends") {
     } else if (category == "issuances") {
       //the 'asset' field is == asset_longname for subassets

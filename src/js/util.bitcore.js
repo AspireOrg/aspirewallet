@@ -4,7 +4,35 @@ var bitcore = require('bitcore-lib');
 var bitcoreMessage = require('bitcore-message'); // this also binds itself to bitcore.Message as soon as it's require'd
 
 // this 'global' is overwritten by tests!
-var NETWORK = (USE_TESTNET || USE_REGTEST) ? bitcore.Networks.testnet : bitcore.Networks.livenet;
+// var NETWORK = USE_TESTNET ? bitcore.Networks.testnet : bitcore.Networks.livenet;
+
+bitcore.Networks.add({
+  name: 'gasp',
+  alias: 'gasp-mainnet',
+  pubkeyhash: 0x26,
+  privatekey: 0x0f,
+  scripthash: 0x61,
+  xpubkey: 0x0488b21e,
+  xprivkey: 0x0488ade4,
+  networkMagic: 0xe4cfcce2,
+  port: 11374,
+  dnsSeeds: []
+});
+
+bitcore.Networks.add({
+  name: 'gasp-testnet',
+  alias: 'gasp-testnet',
+  pubkeyhash: 0x25,
+  privatekey: 0x2a,
+  scripthash: 0x26,
+  xpubkey: 0x043587cf,
+  xprivkey: 0x04358394,
+  networkMagic: 0xe4cfcce3,
+  port: 21374,
+  dnsSeeds: []
+});
+
+var NETWORK = USE_TESTNET ? bitcore.Networks.get('gasp-testnet') : bitcore.Networks.get('gasp');
 
 var CWHierarchicalKey = function(passphrase, password) {
   checkArgType(passphrase, "string");
@@ -63,7 +91,7 @@ CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
     cwkeys[address] = cwk;
   }
 
-  Counterblock.getBalances(addresses, cwkeys, callback);
+  Aspireblock.getBalances(addresses, cwkeys, callback);
 }
 
 CWHierarchicalKey.prototype.getAddressKey = function(index) {
@@ -224,14 +252,7 @@ CWBitcore.isOutScript = function(script) {
 
 CWBitcore.isValidAddress = function(val) {
   try {
-    var p2pkh = bitcore.Address.isValid(val, NETWORK, bitcore.Address.Pay2PubKeyHash);
-    if (!p2pkh) {
-      var bech32 = bitcoinjs.address.fromBech32(val);
-
-      return typeof(bech32) !== 'undefined';
-    }
-
-    return p2pkh;
+    return bitcore.Address.isValid(val, NETWORK, bitcore.Address.Pay2PubKeyHash);
   } catch (err) {
     return false;
   }

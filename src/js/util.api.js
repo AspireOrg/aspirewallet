@@ -176,12 +176,12 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
   if (typeof(httpMethod) === 'undefined') httpMethod = "POST"; //default to POST
   assert(httpMethod == "POST" || httpMethod == "GET", "Invalid HTTP method");
 
-  //make JSON API call to counterblockd
-  if (destType == "counterblockd") {
+  //make JSON API call to aspireblockd
+  if (destType == "aspireblockd") {
     makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError);
-  } else if (destType == "counterpartyd") {
-    //make JSON API call to counterblockd, which will proxy it to counterpartyd
-    makeJSONRPCCall(endpoints, "proxy_to_counterpartyd", {
+  } else if (destType == "aspired") {
+    //make JSON API call to aspireblockd, which will proxy it to aspired
+    makeJSONRPCCall(endpoints, "proxy_to_aspired", {
       "method": method,
       "params": params
     }, timeout, onSuccess, onError);
@@ -190,7 +190,7 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
 
 function _getDestTypeFromMethod(method) {
   //based on the method, determine the endpoints list to use
-  var destType = "counterpartyd";
+  var destType = "aspired";
   if (['is_ready', 'get_reflected_host_info', 'is_chat_handle_in_use', 'record_btc_open_order',
       'get_messagefeed_messages_by_index', 'get_normalized_balances', 'get_required_btcpays',
       'get_chain_address_info', 'get_chain_block_height', 'get_chain_txns_status',
@@ -205,13 +205,13 @@ function _getDestTypeFromMethod(method) {
       'get_pubkey_for_address', 'create_armory_utx', 'convert_armory_signedtx_to_raw_hex', 'create_support_case',
       'get_escrowed_balances', 'proxy_to_autobtcescrow', 'get_vennd_machine', 'get_script_pub_key', 'get_assets_info', 'broadcast_tx',
       'get_latest_wallet_messages', 'get_optimal_fee_per_kb', 'get_assets_names_and_longnames'].indexOf(method) >= 0) {
-    destType = "counterblockd";
+    destType = "aspireblockd";
   }
   return destType;
 }
 
 function supportUnconfirmedChangeParam(method) {
-  return method.split("_").shift() == "create" && _getDestTypeFromMethod(method) == "counterpartyd";
+  return method.split("_").shift() == "create" && _getDestTypeFromMethod(method) == "aspired";
 }
 
 function _multiAPIPrimative(method, params, onFinished) {
@@ -394,13 +394,13 @@ function multiAPIConsensus(method, params, onSuccess, onConsensusError, onSysErr
     onSysError = function(jqXHR, textStatus, errorThrown, endpoint) {
       $.jqlog.debug(textStatus);
       var message = textStatus;
-      var noBtcPos = textStatus.indexOf("Insufficient " + KEY_ASSET.BTC);
+      var noBtcPos = textStatus.indexOf("Insufficient GASP");
       if (noBtcPos != -1) {
         var endMessage = textStatus.indexOf(")", noBtcPos) + 1;
 
         message = '<b class="errorColor">' + textStatus.substr(noBtcPos, endMessage - noBtcPos)
-          + '</b>. You must have a small amount of ' + KEY_ASSET.BTC + ' in this address to pay the Bitcoin miner fees. Please fund this address and try again.<br/><br/>'
-          + '<a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142" target="_blank" rel="noopener noreferrer">More information on why this is necessary.</a>';
+          + '</b>. You must have a small amount of GASP in this address to pay the GASP miner fees. Please fund this address and try again.<br/><br/>'
+          + '<a href="https://aspirecrypto.com/aspirewallet/#aw13" target="_blank">More information on why this is necessary.</a>';
 
       } else {
         message = describeError(jqXHR, textStatus, errorThrown);
@@ -421,48 +421,6 @@ function multiAPIConsensus(method, params, onSuccess, onConsensusError, onSysErr
     }
   }
 
-  /*function sw_compareOutputs(source, apiResponses) {
-  // TODO: This should be enabled when we get support for segwit multisig and P2WSH
-    var t;
-
-    // apiResponse might be a plain transaction hex
-    //   or it might be a container with transaction info
-    var responseIsTxInfo = (typeof apiResponses[0] == 'object')
-    var resolveTxHex = function(apiResponse) {
-      return (responseIsTxInfo ? apiResponse.tx_hex : apiResponse);
-    }
-
-    var tx0 = bitcoinjs.Transaction.fromHex(resolveTxHex(apiResponses[0]));
-
-    var txHexesValid = apiResponses.map(function(apiResponse, idx) {
-      if (idx === 0) {
-        return true;
-      }
-
-      var txHex = resolveTxHex(apiResponse);
-      var tx1 = bitcore.Transaction(txHex);
-
-      if (tx0.outputs.length != tx1.outputs.length) {
-        return false;
-      }
-
-      var outputsValid = tx0.outs.map(function(output, idx) {
-        var addresses0 = CWBitcore.extractAddressFromTxOut(output).split(',').sort().join(',');
-        var addresses1 = CWBitcore.extractAddressFromTxOut(tx1.outputs[idx]).split(',').sort().join(',');
-        var amount0 = output.satoshis;
-        var amount1 = tx1.outputs[idx].satoshis;
-
-        // addresses need to be the same and values need to be the same
-        //  except for the change output
-        return addresses0 == addresses1 && (amount0 == amount1 || addresses0.indexOf(source) != -1);
-      });
-
-      return outputsValid.filter(function(v) { return !v; }).length === 0;
-    })
-
-    return txHexesValid.filter(function(v) { return !v; }).length === 0;
-  }*/
-
   _multiAPIPrimative(method, params, function(results) {
     var successResults = [];
     var i = 0;
@@ -476,16 +434,8 @@ function multiAPIConsensus(method, params, onSuccess, onConsensusError, onSysErr
       return onSysError(results[i - 1]['jqXHR'], results[i - 1]['textStatus'], results[i - 1]['errorThrown'], results[i - 1]['endpoint']);
     }
 
-    if (isBech32(params['source'])) {
-      /*// TODO: This should be enabled when we get support for segwit multisig and P2WSH
-      if (!sw_compareOutputs(params['source'], successResults)) {
-        return onConsensusError(successResults); //not all consensus data matches
-      }*/
-
-    } else {
-      if (!CWBitcore.compareOutputs(params['source'], successResults)) {
-        return onConsensusError(successResults); //not all consensus data matches
-      }
+    if (!CWBitcore.compareOutputs(params['source'], successResults)) {
+      return onConsensusError(successResults); //not all consensus data matches
     }
 
     //if here, all is well

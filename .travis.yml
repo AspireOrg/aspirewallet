@@ -37,20 +37,16 @@ before_install:
 
 install:
 # build docker image
-- docker build -t counterparty/counterwallet:$DOCKER_TAG --no-cache --build-arg TRANSIFEX_USER="$TRANSIFEX_USER" --build-arg TRANSIFEX_PASSWORD="$TRANSIFEX_PASSWORD" .
+- docker build -t aspireorg/aspirewallet:$DOCKER_TAG --no-cache --build-arg TRANSIFEX_USER="$TRANSIFEX_USER" --build-arg TRANSIFEX_PASSWORD="$TRANSIFEX_PASSWORD" .
 
 script:
 # run the test suite in the docker container we just made
-- docker run --entrypoint=/bin/bash counterparty/counterwallet:$DOCKER_TAG -c "cd /counterwallet; mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any"
+- docker run --entrypoint=/bin/bash aspireorg/aspirewallet:$DOCKER_TAG -c "cd /aspirewallet; mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any"
 
 after_success:
 # if it's master or develop, then push the appropirately tagged docker image (otherwise don't push anything)
 - |
   if [ "$DOCKER_TAG" != "nopush" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push counterparty/counterwallet:$DOCKER_TAG;
+    docker push aspireorg/aspirewallet:$DOCKER_TAG;
   fi
-
-notifications:
-  slack:
-    secure: Y1SVxKmUV6srsFy1J3zmSf79zTO/i81DQpzXBVd3Hb4nseyUS7Lml38tvFuMfEdHNP5I1fMgkUDIYWEZn9Wmy5QLGapEKk0JW2f6jih9JUg1OqyjnGqcK3H8jriEIRsw0yngeaWlIhtPJCgXvYEw7M2P8z8L6SpXFx6aaz0rGys=

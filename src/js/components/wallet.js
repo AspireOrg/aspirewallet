@@ -29,7 +29,7 @@ function WalletViewModel() {
   }
 
   self.networkBlockHeight.subscribe(function(newBlockIndex) {
-    self.isSegwitEnabled = newBlockIndex >= 557236 // should be synced up to "segwit_support" entry from counterparty-lib/counterpartylib/protocol_changes.json
+    self.isSegwitEnabled = false;
 
     updateSegwitGenerationVisibility()
 
@@ -168,7 +168,7 @@ function WalletViewModel() {
     assert(addressObj);
     var assetObj = addressObj.getAssetObj(asset);
     if (!assetObj) return 0; //asset not in wallet
-    if (asset !== KEY_ASSET.BTC) {
+    if (asset != 'GASP') {
       return normalized ? assetObj.availableBalance() : assetObj.rawAvailableBalance();
     } else {
       var bal = assetObj.normalizedBalance() + assetObj.unconfirmedBalance();
@@ -189,7 +189,7 @@ function WalletViewModel() {
     assert(addressObj);
     var assetObj = addressObj.getAssetObj(asset);
     if (!assetObj) {
-      assert(asset !== KEY_ASSET.XCP && asset !== KEY_ASSET.BTC, [KEY_ASSET.BTC, 'or', KEY_ASSET.XCP, 'not present in the address?'].join(' ')); //these should be already in each address
+      assert(asset !== 'ASP' && asset !== 'GASP', ['GASP', 'or', 'ASP', 'not present in the address?'].join(' ')); //these should be already in each address
       //we're trying to update the balance of an asset that doesn't yet exist at this address
       //fetch the asset info from the server, and then use that in a call to addressObj.addOrUpdateAsset
       failoverAPI("get_assets_info", {'assetsList': [asset]}, function(assetsInfo, endpoint) {
@@ -197,11 +197,11 @@ function WalletViewModel() {
       });
     } else {
       assetObj.rawBalance(rawBalance);
-      if (asset === KEY_ASSET.BTC && unconfirmedRawBal) {
+      if (asset === 'GASP' && unconfirmedRawBal) {
         assetObj.unconfirmedBalance(normalizeQuantity(unconfirmedRawBal));
         assetObj.balanceChangePending(true);
         addressObj.addOrUpdateAsset(asset, {}, rawBalance);
-      } else if (asset === KEY_ASSET.BTC) {
+      } else if (asset === 'GASP') {
         assetObj.unconfirmedBalance(0);
         assetObj.balanceChangePending(false);
         addressObj.addOrUpdateAsset(asset, {}, rawBalance);
@@ -327,7 +327,7 @@ function WalletViewModel() {
     // check if the wallet have the information
     for (var a in assets) {
       var asset = assets[a];
-      if (asset === KEY_ASSET.XCP || asset === KEY_ASSET.BTC) {
+      if (asset === 'ASP' || asset === 'GASP') {
         assetsDivisibility[asset] = true;
       } else {
         var divisible = self.isAssetDivisibilityAvailable(asset);
@@ -369,7 +369,7 @@ function WalletViewModel() {
     return _.uniq(assets);
   }
 
-  self.refreshCounterpartyBalances = function(addresses, onSuccess) {
+  self.refreshAspirepartyBalances = function(addresses, onSuccess) {
     //update all counterparty asset balances for the specified address (including XCP)
     //Note: after login, this normally never needs to be called (except when adding a watch address),
     // as counterparty asset balances are updated automatically via the messages feed
@@ -382,7 +382,7 @@ function WalletViewModel() {
 
         if (!balancesData.length) {
           for (var i in addresses) {
-            WALLET.getAddressObj(addresses[i]).addOrUpdateAsset(KEY_ASSET.XCP, {}, 0, 0);
+            WALLET.getAddressObj(addresses[i]).addOrUpdateAsset('ASP', {}, 0, 0);
           }
           if (onSuccess) return onSuccess(); //user has no balance (i.e. first time logging in)
           else return;
@@ -458,7 +458,7 @@ function WalletViewModel() {
     //See if we have any pending BTC send transactions listed in Pending Actions, and if so, enable some extra functionality
     // to clear them out if we sense the txn as processed
     var pendingActionsHasBTCSend = ko.utils.arrayFirst(PENDING_ACTION_FEED.entries(), function(item) {
-      return item.CATEGORY === 'sends' && item.DATA['asset'] === KEY_ASSET.BTC; //there is a pending BTC send
+      return item.CATEGORY === 'sends' && item.DATA['asset'] === 'GASP'; //there is a pending BTC send
     });
 
     self.retrieveBTCAddrsInfo(addresses, function(data) {
@@ -471,11 +471,11 @@ function WalletViewModel() {
         // the (confirmed) balance will be decreased by the ENTIRE quantity of that txout, even though they may be getting
         // some/most of it back as change. To avoid people being confused over this, with BTC in particular, we should
         // display the unconfirmed portion of the balance in addition to the confirmed balance, as it will include the change output
-        self.updateBalance(data[i]['addr'], KEY_ASSET.BTC, data[i]['confirmedRawBal'], data[i]['unconfirmedRawBal']);
+        self.updateBalance(data[i]['addr'], 'GASP', data[i]['confirmedRawBal'], data[i]['unconfirmedRawBal']);
         self.updateDispensers(data[i]['addr'])
 
         addressObj = self.getAddressObj(data[i]['addr']);
-        assert(addressObj, 'Cannot find address in wallet for refreshing ' + KEY_ASSET.BTC + ' balances!');
+        assert(addressObj, 'Cannot find address in wallet for refreshing ' + 'GASP' + ' balances!');
 
         if (data[i]['confirmedRawBal'] > 0 || data[i]['unconfirmedRawBal'] > 0 ||
           data[i]['numPrimedTxoutsIncl0Confirms'] > 0 || data[i]['numPrimedTxouts'] > 0 ||
@@ -519,7 +519,7 @@ function WalletViewModel() {
       //system down or spazzing, set all BTC balances out to null
       var addressObj = null;
       for (var i = 0; i < addresses.length; i++) {
-        self.updateBalance(addresses[i], KEY_ASSET.BTC, null, null); //null = UNKNOWN
+        self.updateBalance(addresses[i], 'GASP', null, null); //null = UNKNOWN
         addressObj = self.getAddressObj(addresses[i]);
         addressObj.numPrimedTxouts(null); //null = UNKNOWN
         addressObj.numPrimedTxoutsIncl0Confirms(null); //null = UNKNOWN
@@ -736,13 +736,13 @@ function WalletViewModel() {
   }
 
   /////////////////////////
-  //Counterparty transaction-related
+  //Aspireparty transaction-related
   self.canDoTransaction = function(address) {
     /* ensures that the specified address can perform a counterparty transaction */
     var addressObj = self.getAddressObj(address);
     assert(!addressObj.IS_WATCH_ONLY, "Cannot perform this action on a watch only address!");
 
-    if (self.getBalance(address, KEY_ASSET.BTC, false) < MIN_BALANCE_FOR_ACTION) {
+    if (self.getBalance(address, 'GASP', false) < MIN_BALANCE_FOR_ACTION) {
       bootbox.alert(i18n.t("insufficient_btc", normalizeQuantity(MIN_BALANCE_FOR_ACTION), getAddressLabel(address)));
       return false;
     }
@@ -839,7 +839,7 @@ function WalletViewModel() {
     delete data['destBtcPay'];
     if (action == "create_burn") {
       verifyDestAddr = TESTNET_UNSPENDABLE;
-    } else if (action === 'create_dividend' && data['dividend_asset'] == KEY_ASSET.BTC) {
+    } else if (action === 'create_dividend' && data['dividend_asset'] == 'GASP') {
       verifyDestAddr = data['_btc_dividend_dests'];
       delete data['_btc_dividend_dests'];
     }
@@ -879,24 +879,13 @@ function WalletViewModel() {
     //Determine the fee to use
     provideOptimalFeeFn(
       function(fee_per_kb) {
-        // default to optimal if it exists
-        if (fee_per_kb != null && fee_per_kb['optimal'] != null) {
-          data['fee_per_kb'] = fee_per_kb['optimal'];
-        }
+        data['fee_per_kb'] = 1100;
 
-        // check for an explicit fee option
-        if (data.hasOwnProperty('_fee_option')) {
-          if (data['_fee_option'] === 'low_priority') {
-            data['fee_per_kb'] = fee_per_kb['low_priority'];
-          }
-          else if (data['_fee_option'] === 'custom') {
-            assert(data.hasOwnProperty('_custom_fee'));
-            data['fee_per_kb'] = data['_custom_fee'] * 1024;
-          }
-          delete data['_fee_option'];
-        }
         if (data.hasOwnProperty('_custom_fee')) {
           delete data['_custom_fee'];
+        }
+        if (data.hasOwnProperty('_fee_option')) {
+          delete data['_fee_option'];
         }
 
         //Do the transaction

@@ -1,4 +1,4 @@
-upstream counterblock_api_server {
+upstream aspireblock_api_server {
   server ${DEV_REMOTE_HOST}:${DEV_REMOTE_PORT};
   keepalive 30;
 }
@@ -19,20 +19,20 @@ server {
   location /_asset_img/ {
     access_log off;
     expires 1h;
-    alias /counterblock_data/asset_img;
+    alias /aspireblock_data/asset_img;
   }
   location /_t_asset_img/  {
     access_log off;
     expires 1h;
-    alias /counterblock_data/asset_img.testnet/;
+    alias /aspireblock_data/asset_img.testnet/;
   }
   location /src  {
     #For dev/testing (uses unminified resources)
     expires off;
     alias ${DEV_CODE_PATH}/src/;
   }
-  location /counterwallet.conf.json  {
-    alias ${DEV_CODE_PATH}/counterwallet.conf.json;
+  location /aspirewallet.conf.json  {
+    alias ${DEV_CODE_PATH}/aspirewallet.conf.json;
   }
   location /  {
     access_log off;
@@ -56,18 +56,18 @@ server {
   }
   # PROXY TO COUNTERBLOCK API BACKEND (WSGI)
   location @wsgi_api {
-    include includes/counterblock_api.inc;
+    include includes/aspireblock_api.inc;
     rewrite ^/_api/?$ /api/?  break;
-    proxy_pass   http://counterblock_api_server;
+    proxy_pass   http://aspireblock_api_server;
   }
   # PROXY TO COUNTERBLOCK FEED BACKEND (socket.io)
   location ^~ /_feed {
-    include includes/counterblock_socketio.inc;
-    proxy_pass   http://counterblock_api_server/socket.io;
+    include includes/aspireblock_socketio.inc;
+    proxy_pass   http://aspireblock_api_server/socket.io;
   }
   # PROXY TO COUNTERBLOCK CHAT BACKEND (socket.io)
   location ^~ /_chat {
-    proxy_pass   http://counterblock_api_server/socket.io;
+    proxy_pass   http://aspireblock_api_server/socket.io;
   }
 
   #####
@@ -85,17 +85,17 @@ server {
   }
   # PROXY TO COUNTERBLOCK API BACKEND (WSGI)
   location @t_wsgi_api {
-    include includes/counterblock_api.inc;
-    proxy_pass   https://counterblock_api_server;
+    include includes/aspireblock_api.inc;
+    proxy_pass   https://aspireblock_api_server;
   }
   # PROXY TO COUNTERBLOCK FEED BACKEND (socket.io)
   location ^~ /_t_feed {
-    include includes/counterblock_socketio.inc;
-    proxy_pass   http://counterblock_api_server/socket.io;
+    include includes/aspireblock_socketio.inc;
+    proxy_pass   http://aspireblock_api_server/socket.io;
   }
   # PROXY TO COUNTERBLOCK CHAT BACKEND (socket.io)
   location ^~ /_t_chat {
-    proxy_pass   http://counterblock_api_server/socket.io;
+    proxy_pass   http://aspireblock_api_server/socket.io;
   }
 
 }

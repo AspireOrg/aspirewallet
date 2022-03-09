@@ -2,32 +2,32 @@
 <html lang="en-us" style="background-color:#FFF">
   <head>
     <meta charset="utf-8">
-    <title>Counterwallet - Free Web Wallet for Bitcoin and Counterparty</title>
-    <meta content="Open-source and client-side web wallet for Counterparty (XCP) and Bitcoin (BTC)" name="description">
-    <meta content="Counterparty Developers" name="author">
+    <title>Aspire - Web Wallet</title>
+    <meta content="Open-source and client-side web wallet for Aspire and gAsp" name="description">
+    <meta content="Aspire Developers" name="author">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <noscript>
       [EN] This site requires Javascript. Please enable it, and then try loading the page again.<br />
       [FR] Ce site requiert Javascript. Veuillez l'activer et recharcher la page.
     </noscript>
 
-    <!-- build:css css/counterwallet-deps-min.css -->
+    <!-- build:css css/aspirewallet-deps-min.css -->
     <link rel="stylesheet" type="text/css" media="screen" href="vendors/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="vendors/font-awesome/css/font-awesome.min.css">
     <!-- SmartAdmin Styles -->
     <link rel="stylesheet" type="text/css" media="screen" href="vendors/smartadmin/css/smartadmin-production.css">
     <link rel="stylesheet" type="text/css" media="screen" href="vendors/smartadmin/css/smartadmin-skins.css">
-    <!-- Counterwallet plugin styles -->
+    <!-- Aspirewallet plugin styles -->
     <link rel="stylesheet" type="text/css" href="vendors/jReject/css/jquery.reject.css">
     <link rel="stylesheet" type="text/css" href="vendors/keyboard/css/keyboard.css">
     <link rel="stylesheet" type="text/css" href="vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="vendors/select2/select2-bootstrap.css">
     <!-- endbuild -->
 
-    <!-- Counterwallet custom styles -->
-    <!-- build:css css/counterwallet-min.css -->
+    <!-- Aspirewallet custom styles -->
+    <!-- build:css css/aspirewallet-min.css -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/default.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/overrides.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/misc.css">
@@ -48,6 +48,13 @@
     <!-- Specifying a Webpage Icon for Web Clip
          Ref: https://webhint.io/docs/user-guide/hints/hint-apple-touch-icons/ -->
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-touch-icon-152x152.png" />
 
     <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -74,9 +81,9 @@
     <header id="header" style="display: none">
       <div id="logo-group">
 
-        <span id="logo"><span class="logoText" data-bind="locale: 'counterwallet'"></span></span>
+        <!-- <span id="logo" style="background: none; height: 0px;"></span> -->
 
-        <span id="notificationFeed" class="activity-parent" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
+        <span id="notificationFeed" class="activity-parent notificationFeed" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
             <span class="activity-dropdown">
                 <i class="fa fa-check"></i><b data-bind="fadeVisible: unackedCount() > 0, text: unackedCount" class="badge"></b>
             </span>
@@ -87,7 +94,7 @@
             </div> <!-- .ajax-dropdown -->
         </span>
 
-        <span id="pendingActionFeed" class="activity-parent" data-contenturl="pages/feed_pending_actions.html">
+        <span id="pendingActionFeed" class="activity-parent pendingActionFeed" data-contenturl="pages/feed_pending_actions.html">
             <span class="activity-dropdown">
                 <i class="fa fa-clock-o"></i><b data-bind="visible: dispCount() > 0, text: dispCount" class="badge"></b>
             </span>
@@ -99,9 +106,6 @@
         </span>
 
       </div> <!-- logo-group -->
-
-      <span id="noticeTestnet" data-bind="visible: USE_TESTNET, locale: 'testnet_in_use'"></span>
-      <span id="noticeRegtest" data-bind="visible: USE_REGTEST">REGTEST</span>
 
       <div class="pull-right" id="headerBtsRight"> <!-- pulled right: nav area -->
         <div id="logout" class="btn-header transparent pull-right"> <!-- logout button -->
@@ -140,6 +144,8 @@
         traditional href="" links. See documentation for details.
         -->
         <ul>
+          <li><span id="logo"></span> </li>
+
           <li class="">
             <a href="pages/balances.html">
               <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
@@ -200,6 +206,7 @@
               <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
             </a>
           </li>
+
           <!-- disable these for now -->
           <!-- <li data-bind="visible: FEATURE_PORTFOLIO">
             <a href="pages/portfolio.html">
@@ -292,18 +299,12 @@
 
     <!-- Logged out cover div -->
     <div id="logon">
-      <h1>
-        <span data-bind="locale: 'welcome'"></span>
-        <span data-bind="visible: USE_TESTNET, locale: 'testnet'"></span>
-        <span data-bind="visible: USE_REGTEST, locale: 'regtest'"></span>
-      </h1>
-      <h2 data-bind="locale: 'powered_by_counterparty'"></h2>
+      <div class="welcome_image"></div>
+      <!-- <h2 data-bind="locale: 'powered_by_aspire'"></h2> -->
       <div id="form-well">
-
         <div id="createNewAcctBtnPane">
           <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-success btn-lg"></button>
         </div>
-
         <div class="panel panel-info">
           <div class="panel-heading">
             <h3 class="panel-title">
@@ -348,28 +349,28 @@
       </div> <!-- form-well -->
 
        <div id="extra-info" class="container">
-        <h3 class="sales-title margin-bottom-10" data-bind="locale: 'counterwallet_desc_1'"></h3>
+        <h3 class="sales-title margin-bottom-10" data-bind="locale: 'aspirewallet_desc_1'"></h3>
         <div class="row">
           <div class="col-sm-4 col-md-4">
             <h4 class="margin-bottom-10">
-              <i class="fa fa-lock"></i> <span data-bind="locale: 'counterwallet_desc_3'"></span>
+              <i class="fa fa-lock"></i> <span data-bind="locale: 'aspirewallet_desc_3'"></span>
             </h4>
-            <p data-bind="locale: 'counterwallet_desc_4'"></p>
-            <p data-bind="locale: 'counterwallet_desc_5'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_4'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_5'"></p>
           </div>
           <div class="col-sm-4 col-md-4">
             <h4 class="margin-bottom-10">
-              <i class="fa fa-cloud"></i> <span data-bind="locale: 'counterwallet_desc_6'"></span>
+              <i class="fa fa-cloud"></i> <span data-bind="locale: 'aspirewallet_desc_6'"></span>
             </h4>
-            <p data-bind="locale: 'counterwallet_desc_7'"></p>
-            <p data-bind="locale: 'counterwallet_desc_8'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_7'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_8'"></p>
           </div>
           <div class="col-sm-4 col-md-4">
             <h4 class="margin-bottom-10">
-              <i class="fa fa-globe"></i>  <span data-bind="locale: 'counterwallet_desc_9'"></span>
+              <i class="fa fa-globe"></i>  <span data-bind="locale: 'aspirewallet_desc_9'"></span>
             </h4>
-            <p data-bind="locale: 'counterwallet_desc_10'"></p>
-            <p data-bind="locale: 'counterwallet_desc_11'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_10'"></p>
+            <p data-bind="locale: 'aspirewallet_desc_11'"></p>
           </div>
         </div>
       </div>
@@ -592,44 +593,15 @@
             <div data-bind="visible: type == 'balancesPage'">
                 <h5 data-bind="locale: 'answers_to_common_questions'"></h5>
                 <ul>
-                    <li><a href="https://counterpartytalk.org/t/i-logged-in-and-my-address-is-different-and-i-have-no-balance-help/1684" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_1'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/how-do-i-participate-in-crowdfunding-of-projects-issued-on-counterparty/1153" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_2'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/i-sent-btc-xcp-token-a-while-ago-but-the-transaction-hasnt-gone-through-why/1854" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_3'"></a></li>
-                    <br/>
-                    <li><a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142/1" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_4'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/my-address-in-counterwallet-disappeared/1222" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_5'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/does-counterwallet-have-two-factor-authentication-2fa/2071" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_6'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/about-the-counterwallet-support-category/29" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_8'"></a></li>
                 </ul>
                 <h5 class="margin-bottom-0">
-                  <span data-bind="locale: 'for_other_questions'"></span>
-                  <a href="https://counterpartytalk.org/c/support" target="_blank" rel="noopener noreferrer" data-bind="locale: 'counterparty_forums'"></a>.
+                  <span data-bind="locale: 'for_other_questions'"></span> 
                 </h5>
                 <h5>
                   <span data-bind="locale: 'for_bugs'"></span>
                   <a href="#" class="showCreateSupportCase" data-bind="locale: 'open_a_ticket'"></a>.
                 </h5>
             </div>
-            <div data-bind="visible: type == 'exchangePage'">
-                <h5 data-bind="locale: 'answers_to_common_questions'"></h5>
-                <ul>
-                    <li><a href="https://counterpartytalk.org/t/how-to-read-the-combined-asset-token-currency-pairs-such-as-btcxcp-in-dex/2072" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_9'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/when-is-a-dex-order-considered-active-and-how-can-i-cancel-it/1180" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_11'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/why-do-i-need-small-amounts-of-bitcoin-to-do-things/1142/1" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_12'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/what-is-the-difference-between-miners-fee-and-redeemable-fee/1188" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_13'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/what-btc-sellers-on-the-counterparty-distributed-exchange-need-to-know/1183" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_14'"></a></li>
-                    <li><a href="https://counterpartytalk.org/t/about-the-counterwallet-support-category/29" target="_blank" rel="noopener noreferrer" data-bind="locale: 'answer_8'"></a></li>
-                </ul>
-                <h5 class="margin-bottom-0">
-                  <span data-bind="locale: 'for_other_questions'"></span>
-                  <a href="https://counterpartytalk.org/c/support" target="_blank" rel="noopener noreferrer" data-bind="locale: 'counterparty_forums'"></a>.
-                </h5>
-                <h5>
-                  <span data-bind="locale: 'for_bugs'"></span>
-                  <a href="#" class="showCreateSupportCase" data-bind="locale: 'open_a_ticket'"></a>.
-                </h5>
-            </div>
-
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-bind="click: hide, locale: 'close'"></button>
@@ -671,11 +643,11 @@
                 </div>
                 <div class="col col-sm-4">
                   <div class="btn-group" data-toggle="buttons">
-                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'BTC' }">
-                      <input type="radio" name="donationCurrency" value="BTC" data-bind="btnGroupChecked: donationCurrency">BTC
+                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'GASP' }">
+                      <input type="radio" name="donationCurrency" value="GASP" data-bind="btnGroupChecked: donationCurrency">GASP
                     </label>
-                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'XCP' }">
-                      <input type="radio" name="donationCurrency" value="XCP" data-bind="btnGroupChecked: donationCurrency">XCP
+                    <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'ASP' }">
+                      <input type="radio" name="donationCurrency" value="ASP" data-bind="btnGroupChecked: donationCurrency">ASP
                     </label>
                   </div>
                 </div>
@@ -686,7 +658,7 @@
                   <span class="sellColor" data-bind="text: quantity"></span>
                   <span class="sellColor" data-bind="text: donationCurrency"></span>
                 </b>
-                <span data-bind="locale: 'to_support_counterparty'"></span>
+                <span data-bind="locale: 'to_support_aspire'"></span>
               </p>
             </fieldset></form>
             <p class="formPaddedBot">
@@ -769,7 +741,7 @@
 
     </div>
 
-    <!-- build:js js/counterwallet-deps-min.js -->
+    <!-- build:js js/aspirewallet-deps-min.js -->
     <script src="vendors/underscore/underscore.js"></script>
     <script src="vendors/underscore.string/lib/underscore.string.js"></script>
     <script src="vendors/jquery/jquery.min.js"></script><!-- Jquery -->
@@ -851,13 +823,12 @@
     <script src="vendors/i18next/i18next.min.js"></script>
 
     <script src="vendors/big-integer/BigInteger.min.js"></script>
-    <script src="vendors/bitcoinjs-lib/bitcoinjs.min.js"></script>
     <!-- endbuild -->
 
 
 
     <!-- COUNTERWALLET JS INCLUDES -->
-    <!-- build:js js/counterwallet-min.js -->
+    <!-- build:js js/aspirewallet-min.js -->
 
     <!-- counterwebdeps -->
     <script src="js/external/mnemonic.js"></script>
@@ -873,14 +844,14 @@
     <script src="js/util.fee-controller-mixin.js"></script>
     <!--script src="js/util.bitcoinjslib.js"></script-->
 
-    <!-- counterwallet-specific -->
+    <!-- aspirewallet-specific -->
     <script src="js/util.knockout.js"></script>
     <script src="js/jquery-timeago.i18n.js"></script>
-    <script src="js/locale.js"></script>
     <script src="js/consts.js"></script>
+    <script src="js/locale.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/counterwallet.js"></script>
-    <script src="js/counterblock.js"></script>
+    <script src="js/aspirewallet.js"></script>
+    <script src="js/aspireblock.js"></script>
     <script src="js/messagefeed.js"></script>
     <script src="js/components/wallet.js"></script>
     <script src="js/components/wallet_options.js"></script>

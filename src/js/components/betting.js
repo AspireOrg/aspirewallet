@@ -20,7 +20,7 @@ function FeedBrowserViewModel() {
   self.targetValue = ko.observable(0);
   self.targetValueText = ko.observable('');
   self.betType = ko.observable('');
-  self.betTypeCounter = ko.observable('');
+  self.betTypeAspire = ko.observable('');
   self.betTypeLabelBull = ko.observable(i18n.t('bullish_up'));
   self.betTypeLabelBear = ko.observable(i18n.t('bearish_down'));
   self.betTypeLabelEqual = ko.observable(i18n.t('equal'));
@@ -33,7 +33,7 @@ function FeedBrowserViewModel() {
   self.wager = ko.observable(null).extend(wagerValidator);
   self.odd = ko.observable(1);
   self.counterBets = ko.observableArray([]);
-  self.selectedCounterBetTx = ko.observable(null);
+  self.selectedAspireBetTx = ko.observable(null);
   self.matchingVolume = ko.observable(0);
   self.openingVolume = ko.observable(0);
   self.fee = ko.observable(0);
@@ -101,33 +101,33 @@ function FeedBrowserViewModel() {
       self.targetValueText(labelTargetValue);
     }
 
-    self.loadCounterBets();
+    self.loadAspireBets();
   });
 
   self.betType.subscribe(function(val) {
     if (val == '') return;
     if (val == 'Equal') {
       self.betTypeText(self.betTypeLabelEqual());
-      self.betTypeCounter(self.betTypeLabelNotEqual());
+      self.betTypeAspire(self.betTypeLabelNotEqual());
     } else if (val == 'NotEqual') {
       self.betTypeText(self.betTypeLabelNotEqual());
-      self.betTypeCounter(self.betTypeLabelEqual());
+      self.betTypeAspire(self.betTypeLabelEqual());
     } else if (val == 'BullCFD') {
       self.betTypeText(self.betTypeLabelBull());
-      self.betTypeCounter(self.betTypeLabelBear());
+      self.betTypeAspire(self.betTypeLabelBear());
     } else if (val == 'BearCFD') {
       self.betTypeText(self.betTypeLabelBear());
-      self.betTypeCounter(self.betTypeLabelBull());
+      self.betTypeAspire(self.betTypeLabelBull());
     }
-    self.loadCounterBets();
+    self.loadAspireBets();
   });
 
   self.leverage.subscribe(function(val) {
-    self.loadCounterBets();
+    self.loadAspireBets();
   });
 
   self.deadline.subscribe(function(val) {
-    self.loadCounterBets();
+    self.loadAspireBets();
   });
 
   self.wager.subscribe(function(value) {
@@ -250,7 +250,7 @@ function FeedBrowserViewModel() {
     for (var i = 0; i < addresses.length; i++) {
       options.push({
         address: addresses[i][0],
-        label: addresses[i][1] + ' (' + addresses[i][2] + ' ' + KEY_ASSET.XCP + ')'
+        label: addresses[i][1] + ' (' + addresses[i][2] + ' ' + 'ASP' + ')'
       });
       self.balances[addresses[i][0]] = addresses[i][2];
     }
@@ -314,8 +314,8 @@ function FeedBrowserViewModel() {
       'expired': i18n.t('expired')
     };
     for (var i in feed.counters.bets) {
-      feed.counters.bets[i].wager_quantity = normalizeQuantity(feed.counters.bets[i].wager_quantity) + ' ' + KEY_ASSET.XCP;
-      feed.counters.bets[i].wager_remaining = normalizeQuantity(feed.counters.bets[i].wager_remaining) + ' ' + KEY_ASSET.XCP;
+      feed.counters.bets[i].wager_quantity = normalizeQuantity(feed.counters.bets[i].wager_quantity) + ' ' + 'ASP';
+      feed.counters.bets[i].wager_remaining = normalizeQuantity(feed.counters.bets[i].wager_remaining) + ' ' + 'ASP';
       feed.counters.bets[i].status_html = '<span class="label label-' + classes[feed.counters.bets[i].status] + '">' + feed.counters.bets[i].status + '</span>';
 
     }
@@ -346,7 +346,7 @@ function FeedBrowserViewModel() {
     failoverAPI('get_feed', {'address_or_url': self.feedUrl()}, self.displayFeed)
   }
 
-  self.loadCounterBets = function() {
+  self.loadAspireBets = function() {
     if (!self.betType() || !self.feed() || !self.deadline() || (!self.targetValue() && self.feed().info_data.type == 'binary')) return false;
     var params = {
       'bet_type': COUNTER_BET[self.betType()],
@@ -357,7 +357,7 @@ function FeedBrowserViewModel() {
     if (self.feed().info_data.type == 'binary') {
       params['target_value'] = self.targetValue();
     }
-    var onCounterbetsLoaded = function(data) {
+    var onAspirebetsLoaded = function(data) {
       // prepare data for display. TODO: optimize, all in one loop
       var displayedData = []
       for (var b = data.length - 1; b >= 0; b--) {
@@ -414,7 +414,7 @@ function FeedBrowserViewModel() {
       }
     }
 
-    failoverAPI('get_bets', params, onCounterbetsLoaded);
+    failoverAPI('get_bets', params, onAspirebetsLoaded);
   }
 
   self.setDefaultOdds = function() {
@@ -448,7 +448,7 @@ function FeedBrowserViewModel() {
         self.odd(overrideOdds);
         self.operatorOdds(true);
       } else {
-        self.selectCounterbet(self.counterBets()[0]);
+        self.selectAspirebet(self.counterBets()[0]);
       }
     } else {
       if (defaultOdds) {
@@ -461,15 +461,15 @@ function FeedBrowserViewModel() {
 
   }
 
-  self.selectCounterbet = function(counterbet) {
+  self.selectAspirebet = function(counterbet) {
     var cw = mulFloat(self.wager(), counterbet.multiplier);
     cw = Math.floor(cw * 10000) / 10000;
 
     self.counterwager(cw);
     self.odd(counterbet.multiplier);
-    self.selectedCounterBetTx(counterbet.tx_index);
-    $('#betting #counterbets tr').removeClass('selectedCounterBet');
-    $('#cb_' + counterbet.tx_index).addClass('selectedCounterBet');
+    self.selectedAspireBetTx(counterbet.tx_index);
+    $('#betting #counterbets tr').removeClass('selectedAspireBet');
+    $('#cb_' + counterbet.tx_index).addClass('selectedAspireBet');
   }
 
   self.getVolumeFromOdd = function(value) {

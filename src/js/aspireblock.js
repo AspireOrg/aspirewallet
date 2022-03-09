@@ -1,9 +1,9 @@
-Counterblock = {};
+Aspireblock = {};
 
-Counterblock.getBalances = function(addresses, cwkeys, callback) {
+Aspireblock.getBalances = function(addresses, cwkeys, callback) {
 
   WALLET.retrieveBTCAddrsInfo(addresses, function(btcData) {
-    $.jqlog.debug('Updating normalized balances for a single addresses at counterblock ' + addresses)
+    $.jqlog.debug('Updating normalized balances for a single addresses at aspireblock ' + addresses)
     failoverAPI("get_normalized_balances", {'addresses': addresses}, function(assetsData, endpoint) {
       var data = {};
       // extracts all asset except BTC
@@ -20,12 +20,12 @@ Counterblock.getBalances = function(addresses, cwkeys, callback) {
         e = btcData[i];
         if (data[e.addr] || e.confirmedRawBal > 0) {
           data[e.addr] = data[e.addr] || {};
-          data[e.addr][KEY_ASSET.BTC] = {
+          data[e.addr]['GASP'] = {
             'balance': e.confirmedRawBal,
             'txouts': e.rawUtxoData.length
           };
           if (cwkeys[e.addr]) {
-            data[e.addr][KEY_ASSET.BTC]['privkey'] = cwkeys[e.addr].getWIF();
+            data[e.addr]['GASP']['privkey'] = cwkeys[e.addr].getWIF();
           }
         }
       }

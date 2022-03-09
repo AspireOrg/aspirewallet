@@ -1,21 +1,21 @@
 {
-  "name": "counterwallet",
-  "description": "Counterwallet",
-  "author": "Counterparty development team",
+  "name": "aspirewallet",
+  "description": "Aspirewallet",
+  "author": "The Aspire Developers",
   "license": "(CDDL-1.0)",
   "version": "1.8.0",
   "main": "build/index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CounterpartyXCP/counterwallet.git"
+    "url": "https://github.com/AspireOrg/aspirewallet.git"
   },
   "dependencies": {
     "cryptojs": "2.5.3",
-    "mocha": "1.18.2",
+    "mocha": "2.4.5",
     "transifex": "^1.5.0"
   },
   "devDependencies": {
-    "bower": "^1.8.2",
+    "bower": "^1.8.8",
     "chai": "=1.9.1",
     "clean-css": "2.1.8",
     "express": "^4.17.1",
@@ -24,7 +24,7 @@
     "grunt-chrome-compile": "0.2.2",
     "grunt-contrib-copy": "0.4.x",
     "grunt-usemin": "2.1.x",
-    "mocha-phantomjs": "4.x",
+    "mocha-phantomjs-core": "2.1.2",
     "serve": "^6.5.3",
     "uglify-js": "1.3.5"
   },
@@ -34,7 +34,7 @@
     "build": "grunt build --dontcheckdeps && cd ./src && bower --allow-root --config.interactive=false update",
     "dev": "grunt build --dontcheckdeps --dontminify",
     "q": "grunt build --dontcheckdeps",
-    "test": "./node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with counterwallet.io SSL cert"
+    "test": "./node_modules/mocha-phantomjs-core/mocha-phantomjs-core test/test.html --ignore-ssl-errors=true --ignore-resource-errors --ssl-protocol=any # phantomjs has issues with unowallet.io SSL cert"
   },
   "engine": "node >= 0.10"
 }

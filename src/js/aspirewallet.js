@@ -47,7 +47,7 @@ $.timeago.settings.allowFuture = true;
 
 
 /***********
- * COUNTERWALLET.CONF.JSON LOADING AND SERVICES INITIALIZATION
+ * SERVERS.JSON LOADING AND SERVICES INITIALIZATION
  ***********/
 var cwURLs = ko.observableArray([]);
 var cwBaseURLs = ko.observableArray([]);
@@ -87,7 +87,7 @@ function initGoogleAnalytics() {
 }
 
 function initRollbar() {
-  /* TODO: Try to load rollbar earlier, possibly... (However, as we get the accessToken from counterwallet.conf.json, we'd have
+  /* TODO: Try to load rollbar earlier, possibly... (However, as we get the accessToken from aspirewallet.conf.json, we'd have
    * to put all of that logic in <head> for instance to be able to do that. So this should hopefully work fine.)
    */
   if (!ROLLBAR_ACCESS_TOKEN) return;
@@ -181,11 +181,11 @@ function initRollbar() {
   }
 }
 
-function loadCounterwalletConfigFromServer() {
-  //Request for the counterwallet.conf.json file, which should contain an array of API backends for us to use
-  $.getJSON(COUNTERWALLET_CONF_LOCATION, function(data) {
-    assert(data && typeof data == "object" && data.hasOwnProperty("servers"), "Returned counterwallet.conf.json file does not contain valid JSON object");
-    assert(data['servers'] && data['servers'] instanceof Array, "'servers' field in returned counterwallet.conf.json file is not an array");
+function loadAspirewalletConfigFromServer() {
+  //Request for the aspirewallet.conf.json file, which should contain an array of API backends for us to use
+  $.getJSON(ASPIREWALLET_CONF_LOCATION, function(data) {
+    assert(data && typeof data == "object" && data.hasOwnProperty("servers"), "Returned aspirewallet.conf.json file does not contain valid JSON object");
+    assert(data['servers'] && data['servers'] instanceof Array, "'servers' field in returned aspirewallet.conf.json file is not an array");
     ROLLBAR_ACCESS_TOKEN = data['rollbarAccessToken'] || '';
     GOOGLE_ANALYTICS_UAID = (!USE_TESTNET ? data['googleAnalyticsUA'] : data['googleAnalyticsUA-testnet']) || '';
 
@@ -199,7 +199,7 @@ function loadCounterwalletConfigFromServer() {
 
     //Init list of disabled features
     if (data['disabledFeatures']) {
-      assert(data['disabledFeatures'] instanceof Array, "'disabledFeatures' field in returned counterwallet.conf.json file is not an array");
+      assert(data['disabledFeatures'] instanceof Array, "'disabledFeatures' field in returned aspirewallet.conf.json file is not an array");
       for (var i = 0; i < data['disabledFeatures']; i++) {
         if (DISABLED_FEATURES_SUPPORTED.indexOf(data['disabledFeatures'][i]) == -1) {
           assert(data['disabledFeatures'] instanceof Array, "'disabledFeatures' field has invalid entry '" + data['disabledFeatures'][i]
@@ -212,7 +212,7 @@ function loadCounterwalletConfigFromServer() {
 
     //Init list of restricted areas
     if (data['restrictedAreas']) {
-      assert(data['restrictedAreas'] instanceof Object, "'restrictedAreas' field in returned counterwallet.conf.json file is not an object");
+      assert(data['restrictedAreas'] instanceof Object, "'restrictedAreas' field in returned aspirewallet.conf.json file is not an object");
       $.jqlog.debug("Restricted Areas: " + data['restrictedAreas']);
     }
     restrictedAreas = data['restrictedAreas'] || {};
@@ -373,6 +373,6 @@ $(document).ready(function() {
 
   autoDropUpDropdowns();
 
-  loadCounterwalletConfigFromServer();
+  loadAspirewalletConfigFromServer();
 
 });

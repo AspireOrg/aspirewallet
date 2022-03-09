@@ -2,7 +2,7 @@ function BalanceHistoryViewModel() {
   //An address on a wallet
   var self = this;
   self.selectedAsset = ko.observable('');
-  self.availableAssets = !USE_TESTNET ? ko.observableArray([KEY_ASSET.XCP, KEY_ASSET.BTC]) : ko.observableArray([KEY_ASSET.XCP]);
+  self.availableAssets = !USE_TESTNET ? ko.observableArray(['ASP', 'GASP']) : ko.observableArray(['ASP']);
   //^ don't load BTC as an asset on testnet, since we can't show the data (since blockchain doesn't support testnet)
   self.graphData = null;
   self.ASSET_LASTCHANGE = null;
@@ -28,7 +28,7 @@ function BalanceHistoryViewModel() {
     self.ASSET_LASTCHANGE = self.selectedAsset();
     $.jqlog.debug("Balance history: Token changed: " + self.selectedAsset());
 
-    if (self.selectedAsset() === KEY_ASSET.BTC) { //mainnet only (as we use blockchain.info for this and they don't support testnet)
+    if (self.selectedAsset() == 'GASP') { //mainnet only (as we use blockchain.info for this and they don't support testnet)
       var addresses = WALLET.getAddressesList();
       self.graphData = [];
 
@@ -58,7 +58,7 @@ function BalanceHistoryViewModel() {
         }).error(function(jqXHR, textStatus, errorThrown) {
           var address = /address%3D([A-Za-z0-9]+)%22/g.exec(jqXHR.url)[1];
           var addressHash = hashToB64(address);
-          $.jqlog.debug('Could not get ' + KEY_ASSET.BTC + ' balance from blockchain for address ' + address + ': ' + errorThrown);
+          $.jqlog.debug('Could not get ' + 'GASP' + ' balance from blockchain for address ' + address + ': ' + errorThrown);
           var addressName = PREFERENCES['address_aliases'][addressHash] ? "<b>" + PREFERENCES['address_aliases'][addressHash] + "</b> (" + address + ")" : address;
           self.graphData.push({'name': addressName, 'data': []});
           if (self.graphData.length == addresses.length) {
@@ -166,7 +166,9 @@ function TransactionHistoryItemViewModel(data) {
   self.dispDescription = function() {
     //TODO: this display of data is very elementary and basic. IMPROVE greatly in the future...
     var desc = "";
-    if (self.RAW_TX_TYPE == 'burns') {
+    if (self.RAW_TX_TYPE == 'proofofwork') {
+      desc = i18n.t("hist_proofofwork", normalizeQuantity(self.DATA['mined']), smartFormat(normalizeQuantity(self.DATA['mined'])));
+    } else if (self.RAW_TX_TYPE == 'burns') {
       desc = i18n.t("hist_burn", normalizeQuantity(self.DATA['burned']), smartFormat(normalizeQuantity(self.DATA['earned'])));
     } else if (self.RAW_TX_TYPE == 'sends') {
       desc = i18n.t("hist_send", smartFormat(normalizeQuantity(self.DATA['quantity'],
@@ -183,7 +185,7 @@ function TransactionHistoryItemViewModel(data) {
         self.DATA['_forward_asset_longname'] || self.DATA['forward_asset'], getAddressLabel(self.DATA['tx1_address']),
         smartFormat(normalizeQuantity(self.DATA['backward_quantity'], self.DATA['_backward_asset_divisible'])),
         self.DATA['_backward_asset_longname'] || self.DATA['backward_asset']);
-      if (self.DATA['forward_asset'] === KEY_ASSET.BTC || self.DATA['backward_asset'] === KEY_ASSET.BTC) {
+      if (self.DATA['forward_asset'] == 'GASP' || self.DATA['backward_asset'] == 'GASP') {
         desc += " <b>(" + i18n.t("pending BTCpay") + ")</b>";
       }
     } else if (self.RAW_TX_TYPE == 'btcpays') {

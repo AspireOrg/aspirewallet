@@ -1,4 +1,4 @@
-//Counterwallet-specific utility functions
+//Aspirewallet-specific utility functions
 
 function formatHtmlPrice(price) {
   num = noExponents(parseFloat(price).toFixed(8));
@@ -90,7 +90,7 @@ function checkCountry(action, callback) {
       message += '<br />' + i18n.t(RESTRICTED_AREA_MESSAGE[action]);
     }
 
-    if (USE_TESTNET || USE_REGTEST) { //allow the user to bust on through this alert on testnet
+    if (USE_TESTNET) { //allow the user to bust on through this alert on testnet
       bootbox.dialog({
         title: i18n.t("country_warning"),
         message: message + "<br/><br/>" + i18n.t("testnet_proceed_anyway"),
@@ -211,9 +211,7 @@ function getTxHashLink(hash) {
   if (hash.length == 128) {
     shortHash += '...' + hash.substr(64, 5);
   }
-  var link = '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash">' + shortHash + '</span>';
-
-  return link;
+  return '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash"><a href="' + BLOCKEXPLORER_URL + '/tx/' + hash + '" target="_blank">' + shortHash + '</a></span>';;
 }
 
 function getLinkForBlock(blockIndex, dataTitle, htmlize) {

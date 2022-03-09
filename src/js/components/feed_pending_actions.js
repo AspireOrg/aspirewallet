@@ -38,7 +38,9 @@ PendingActionViewModel.calcText = function(category, data) {
     }
   }
 
-  if (category == 'burns') {
+  if (category == 'proofofwork') {
+    desc = i18n.t("pend_or_unconf_proofofwork", pending, normalizeQuantity(data['mined']));
+  } else if (category == 'burns') {
     desc = i18n.t("pend_or_unconf_burn", pending, normalizeQuantity(data['quantity']));
   } else if (category == 'sends') {
     desc = i18n.t("pend_or_unconf_send", pending, numberWithCommas(normalizeQuantity(data['quantity'], divisible)),
@@ -106,9 +108,9 @@ PendingActionViewModel.calcText = function(category, data) {
     desc = i18n.t("pend_or_unconf_btcpay", pending, getAddressLabel(data['source']));
   } else if (category == 'order_matches') {
 
-    if (WALLET.getAddressObj(data['tx1_address']) && data['forward_asset'] === KEY_ASSET.BTC && data['_status'] === 'pending') {
+    if (WALLET.getAddressObj(data['tx1_address']) && data['forward_asset'] == 'GASP' && data['_status'] === 'pending') {
       desc = i18n.t("pend_or_unconf_wait_btcpay", numberWithCommas(normalizeQuantity(data['forward_quantity'])), getAddressLabel(data['tx0_address']));
-    } else if (WALLET.getAddressObj(data['tx0_address']) && data['backward_asset'] === KEY_ASSET.BTC && data['_status'] === 'pending') {
+    } else if (WALLET.getAddressObj(data['tx0_address']) && data['backward_asset'] == 'GASP' && data['_status'] === 'pending') {
       desc = i18n.t("pend_or_unconf_wait_btcpay", numberWithCommas(normalizeQuantity(data['backward_quantity'])), getAddressLabel(data['tx1_address']));
     }
   } else if (category == 'dispensers') {
@@ -135,7 +137,7 @@ function PendingActionFeedViewModel() {
   self.entries = ko.observableArray([]); //pending actions beyond pending BTCpays
   self.lastUpdated = ko.observable(new Date());
   self.ALLOWED_CATEGORIES = [
-    'sends', 'dispensers', 'sweeps', 'orders', 'issuances', 'broadcasts', 'bets', 'dividends', 'burns', 'cancels', 'btcpays', 'order_matches'
+    'sends', 'dispensers', 'sweeps', 'orders', 'issuances', 'broadcasts', 'bets', 'dividends', 'proofofwork', 'burns', 'cancels', 'btcpays', 'order_matches'
     //^ pending actions are only allowed for these categories
   ];
 
@@ -196,7 +198,7 @@ function PendingActionFeedViewModel() {
       // routine should NOT be deleting. This hack is a consequence of managing BTC balances synchronously like we do)
       if (btcRefreshSpecialLogic) {
         assert(category === "sends");
-        if (match['CATEGORY'] !== category || match['DATA']['asset'] !== KEY_ASSET.BTC)
+        if (match['CATEGORY'] !== category || match['DATA']['asset'] != 'GASP')
           return;
 
         //Also, with this logic, since we found the entry as a pending action, add a completed send action
@@ -303,11 +305,11 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
   }
 
   var addressObj = null;
-  if (category == 'burns') {
+  if (category == 'burns' || category == 'proofofwork') {
 
     addressObj = WALLET.getAddressObj(data['source']);
-    addressObj.getAssetObj(KEY_ASSET.XCP).balanceChangePending(flagSetting);
-    updateUnconfirmedBalance(data['source'], KEY_ASSET.BTC, data['quantity'] * -1);
+    addressObj.getAssetObj('ASP').balanceChangePending(flagSetting);
+    updateUnconfirmedBalance(data['source'], 'GASP', data['quantity'] * -1);
 
 
   } else if (category == 'sends') {
@@ -325,8 +327,8 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
     } else if (!assetObj) {
       //updateUnconfirmedBalance(data['source'], data['asset'], data['quantity'], null, data);
       // issuance fee
-      if (data['asset'].substring(0, 1) != 'A') {
-        updateUnconfirmedBalance(data['source'], KEY_ASSET.XCP, -ASSET_CREATION_FEE_XCP * UNIT);
+      if (data['asset'].substring(0, 3) != 'ASP') {
+        updateUnconfirmedBalance(data['source'], 'ASP', -ASSET_CREATION_FEE_XCP * UNIT);
       }
     }
 
@@ -337,13 +339,13 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
 
   } else if (category == 'orders') {
 
-    if (data['give_asset'] !== KEY_ASSET.BTC) {
+    if (data['give_asset'] != 'GASP') {
       updateUnconfirmedBalance(data['source'], data['give_asset'], data['give_quantity'] * -1);
     }
 
   } else if (category == 'bets') {
 
-    updateUnconfirmedBalance(data['source'], KEY_ASSET.XCP, data['wager_quantity'] * -1);
+    updateUnconfirmedBalance(data['source'], 'ASP', data['wager_quantity'] * -1);
 
   }
 }

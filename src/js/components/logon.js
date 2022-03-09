@@ -177,7 +177,7 @@ function LogonViewModel() {
       },
       function(jqXHR, textStatus, errorThrown, endpoint) {
         var message = describeError(jqXHR, textStatus, errorThrown);
-        bootbox.alert(i18n.t("no_counterparty_error", message));
+        bootbox.alert(i18n.t("no_aspireblock_error", message));
       });
   }
 
@@ -381,7 +381,7 @@ function LogonViewModel() {
     //updates all balances for all addesses, creating the asset objects on the address if need be
     WALLET.refreshBTCBalances(true, additionalBTCAddresses, function() {
       //^ specify true here to start a recurring get BTC balances timer chain
-      WALLET.refreshCounterpartyBalances(WALLET.getAddressesList(), onSuccess);
+      WALLET.refreshAspirepartyBalances(WALLET.getAddressesList(), onSuccess);
     });
   }
 

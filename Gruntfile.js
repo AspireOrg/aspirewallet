@@ -41,7 +41,7 @@ module.exports = function (grunt) {
     }
     /*config['chrome-extension'] = {
         options: {
-            name: "counterwallet",
+            name: "aspirewallet",
             version: pkg.version,
             id: "00000000000000000000000000000000",
             //updateUrl: "http://example.com/extension/111111/",
