@@ -5,6 +5,8 @@ if [ ! -d /aspirewallet/build ]; then
     cd /aspirewallet/src; bower --allow-root --config.interactive=false update
     cd /aspirewallet; npm update
     grunt build --dontcheckdeps
+    npm run dev
+    npm run build
 fi
 if [ ! -f /aspirewallet/aspirewallet.conf.json ]; then
     cp -a /aspirewallet/aspirewallet.conf.json.example /aspirewallet/aspirewallet.conf.json

@@ -36,7 +36,7 @@ function initIndex() { //main page
     ko.applyBindings(CREATE_SUPPORT_CASE_VIEW_MODEL, document.getElementById("createSupportCaseModal"));
 
     //so that knockout is run on the DOM sections and global context is accessible...
-    // ko.applyBindings({}, document.getElementById("noticeTestnet"));
+    ko.applyBindings({}, document.getElementById("noticeTestnet"));
     ko.applyBindings({}, document.getElementById("noticeDevMode"));
     ko.applyBindings({}, document.getElementById("donate"));
     ko.applyBindings({}, document.getElementById("logo"));
@@ -112,26 +112,21 @@ function initBalances() {
   window.CHANGE_ADDRESS_LABEL_MODAL = new ChangeAddressLabelModalViewModel();
   window.CREATE_NEW_ADDRESS_MODAL = new CreateNewAddressModalViewModel();
   window.SEND_MODAL = new SendModalViewModel();
-  window.CREATE_DISPENSER_MODAL = new CreateDispenserModalViewModel();
   window.SWEEP_MODAL = new SweepModalViewModel();
   window.SIGN_MESSAGE_MODAL = new SignMessageModalViewModel();
-  window.TESTNET_BURN_MODAL = new TestnetBurnModalViewModel();
   window.DISPLAY_PRIVATE_KEY_MODAL = new DisplayPrivateKeyModalViewModel();
   window.BROADCAST_MODAL = new BroadcastModalViewModel();
   window.SIGN_TRANSACTION_MODAL = new SignTransactionModalViewModel();
   window.ARMORY_BROADCAST_TRANSACTION = new ArmoryBroadcastTransactionModalViewModel();
 
   ko.applyBindings({}, document.getElementById("balanceHeader"));
-  ko.applyBindings({}, document.getElementById("alertBuyXcp"));
   ko.applyBindings({}, document.getElementById("gettingStartedNotice"));
   ko.applyBindings({}, document.getElementById("oldWalletDetectedNotice"));
   ko.applyBindings(CHANGE_ADDRESS_LABEL_MODAL, document.getElementById("changeAddressLabelModal"));
   ko.applyBindings(CREATE_NEW_ADDRESS_MODAL, document.getElementById("createNewAddressModal"));
   ko.applyBindings(SEND_MODAL, document.getElementById("sendModal"));
-  ko.applyBindings(CREATE_DISPENSER_MODAL, document.getElementById("dispenserModal"));
   ko.applyBindings(SWEEP_MODAL, document.getElementById("sweepModal"));
   ko.applyBindings(SIGN_MESSAGE_MODAL, document.getElementById("signMessageModal"));
-  ko.applyBindings(TESTNET_BURN_MODAL, document.getElementById("testnetBurnModal"));
   ko.applyBindings(DISPLAY_PRIVATE_KEY_MODAL, document.getElementById("displayPrivateKeyModal"));
   ko.applyBindings(BROADCAST_MODAL, document.getElementById("broadcastModal"));
   ko.applyBindings(SIGN_TRANSACTION_MODAL, document.getElementById("signTransactionModal"));
@@ -182,9 +177,9 @@ function initBalances() {
     $('#sweepOldWallet').click(function() {
       SWEEP_MODAL.show(true, true);
     });
-    // $('#balanceHelp').click(function() {
-    //   SUPPORT_MODAL.show('balancesPage');
-    // });
+    $('#balanceHelp').click(function() {
+      SUPPORT_MODAL.show('balancesPage');
+    });
 
     //temporary
     if (WALLET.BITCOIN_WALLET.useOldHierarchicalKey) {

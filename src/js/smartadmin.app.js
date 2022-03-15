@@ -1470,8 +1470,12 @@ function runDataTables(specificTableID, destroyOption, extraProps) {
     "bDestroy": destroyOption,
     "sDom" : "<'dt-top-row'Tlf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
     "oTableTools" : {
-      "aButtons" : [],
-      "sSwfPath" : ""
+      "aButtons" : ["copy", {
+        "sExtends" : "collection",
+        "sButtonText" : i18n.t('save') + ' <span class="caret" />',
+        "aButtons" : ["csv", "xls", "pdf"]
+      }],
+      "sSwfPath" : "assets/copy_csv_xls_pdf.swf"
     },
     "fnInitComplete" : function(oSettings, json) {
       $(this).closest('#dt_table_tools_wrapper').find('.DTTT.btn-group').addClass('table_tools_group').children('a.btn').each(function() {

@@ -176,6 +176,8 @@ function _makeJSONAPICall(destType, endpoints, method, params, timeout, onSucces
   if (typeof(httpMethod) === 'undefined') httpMethod = "POST"; //default to POST
   assert(httpMethod == "POST" || httpMethod == "GET", "Invalid HTTP method");
 
+  console.log('destType ' + destType);
+
   //make JSON API call to aspireblockd
   if (destType == "aspireblockd") {
     makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError);

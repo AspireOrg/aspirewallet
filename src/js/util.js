@@ -211,7 +211,9 @@ function getTxHashLink(hash) {
   if (hash.length == 128) {
     shortHash += '...' + hash.substr(64, 5);
   }
-  return '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash"><a href="' + BLOCKEXPLORER_URL + '/tx/' + hash + '" target="_blank">' + shortHash + '</a></span>';;
+  var link = '<span rel="tooltip" title="' + hash + '" data-placement="top" data-container="body" class="shortHash">' + shortHash + '</span>';
+
+  return link;
 }
 
 function getLinkForBlock(blockIndex, dataTitle, htmlize) {

@@ -6,7 +6,7 @@
     <meta content="Open-source and client-side web wallet for Aspire and gAsp" name="description">
     <meta content="Aspire Developers" name="author">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
     <noscript>
       [EN] This site requires Javascript. Please enable it, and then try loading the page again.<br />
@@ -48,13 +48,6 @@
     <!-- Specifying a Webpage Icon for Web Clip
          Ref: https://webhint.io/docs/user-guide/hints/hint-apple-touch-icons/ -->
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-touch-icon-152x152.png" />
 
     <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,9 +74,9 @@
     <header id="header" style="display: none">
       <div id="logo-group">
 
-        <!-- <span id="logo" style="background: none; height: 0px;"></span> -->
+        <span id="logo"><span class="logoText" data-bind="locale: 'aspirewallet'"></span></span>
 
-        <span id="notificationFeed" class="activity-parent notificationFeed" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
+        <span id="notificationFeed" class="activity-parent" data-contenturl="pages/feed_notifications.html" data-bind="click: ack">
             <span class="activity-dropdown">
                 <i class="fa fa-check"></i><b data-bind="fadeVisible: unackedCount() > 0, text: unackedCount" class="badge"></b>
             </span>
@@ -94,7 +87,7 @@
             </div> <!-- .ajax-dropdown -->
         </span>
 
-        <span id="pendingActionFeed" class="activity-parent pendingActionFeed" data-contenturl="pages/feed_pending_actions.html">
+        <span id="pendingActionFeed" class="activity-parent" data-contenturl="pages/feed_pending_actions.html">
             <span class="activity-dropdown">
                 <i class="fa fa-clock-o"></i><b data-bind="visible: dispCount() > 0, text: dispCount" class="badge"></b>
             </span>
@@ -106,6 +99,9 @@
         </span>
 
       </div> <!-- logo-group -->
+
+      <span id="noticeTestnet" data-bind="visible: USE_TESTNET, locale: 'testnet_in_use'"></span>
+      <span id="noticeRegtest" data-bind="visible: USE_REGTEST">REGTEST</span>
 
       <div class="pull-right" id="headerBtsRight"> <!-- pulled right: nav area -->
         <div id="logout" class="btn-header transparent pull-right"> <!-- logout button -->
@@ -144,8 +140,6 @@
         traditional href="" links. See documentation for details.
         -->
         <ul>
-          <li><span id="logo"></span> </li>
-
           <li class="">
             <a href="pages/balances.html">
               <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
@@ -206,7 +200,6 @@
               <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
             </a>
           </li>
-
           <!-- disable these for now -->
           <!-- <li data-bind="visible: FEATURE_PORTFOLIO">
             <a href="pages/portfolio.html">
@@ -299,12 +292,18 @@
 
     <!-- Logged out cover div -->
     <div id="logon">
-      <div class="welcome_image"></div>
-      <!-- <h2 data-bind="locale: 'powered_by_aspire'"></h2> -->
+      <h1>
+        <span data-bind="locale: 'welcome'"></span>
+        <span data-bind="visible: USE_TESTNET, locale: 'testnet'"></span>
+        <span data-bind="visible: USE_REGTEST, locale: 'regtest'"></span>
+      </h1>
+      <h2 data-bind="locale: 'powered_by_aspire'"></h2>
       <div id="form-well">
+
         <div id="createNewAcctBtnPane">
           <button id="newWalletButton" data-bind="click: generatePassphrase, locale: 'create_new_wallet'" type="button" class="btn btn-success btn-lg"></button>
         </div>
+
         <div class="panel panel-info">
           <div class="panel-heading">
             <h3 class="panel-title">
@@ -847,8 +846,8 @@
     <!-- aspirewallet-specific -->
     <script src="js/util.knockout.js"></script>
     <script src="js/jquery-timeago.i18n.js"></script>
-    <script src="js/consts.js"></script>
     <script src="js/locale.js"></script>
+    <script src="js/consts.js"></script>
     <script src="js/util.js"></script>
     <script src="js/aspirewallet.js"></script>
     <script src="js/aspireblock.js"></script>
