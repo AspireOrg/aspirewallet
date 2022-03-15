@@ -114,6 +114,7 @@ function initBalances() {
   window.SEND_MODAL = new SendModalViewModel();
   window.SWEEP_MODAL = new SweepModalViewModel();
   window.SIGN_MESSAGE_MODAL = new SignMessageModalViewModel();
+  window.TESTNET_BURN_MODAL = new TestnetBurnModalViewModel();
   window.DISPLAY_PRIVATE_KEY_MODAL = new DisplayPrivateKeyModalViewModel();
   window.BROADCAST_MODAL = new BroadcastModalViewModel();
   window.SIGN_TRANSACTION_MODAL = new SignTransactionModalViewModel();
@@ -127,6 +128,7 @@ function initBalances() {
   ko.applyBindings(SEND_MODAL, document.getElementById("sendModal"));
   ko.applyBindings(SWEEP_MODAL, document.getElementById("sweepModal"));
   ko.applyBindings(SIGN_MESSAGE_MODAL, document.getElementById("signMessageModal"));
+  ko.applyBindings(TESTNET_BURN_MODAL, document.getElementById("testnetBurnModal"));
   ko.applyBindings(DISPLAY_PRIVATE_KEY_MODAL, document.getElementById("displayPrivateKeyModal"));
   ko.applyBindings(BROADCAST_MODAL, document.getElementById("broadcastModal"));
   ko.applyBindings(SIGN_TRANSACTION_MODAL, document.getElementById("signTransactionModal"));
