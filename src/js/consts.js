@@ -70,7 +70,6 @@ var ORIG_REFERER = document.referrer;
 
 var ENTITY_NAMES = {
   'proofofwork': 'Proof-of-Work',
-  'burns': 'Burn',
   'debits': 'Debit',
   'credits': 'Credit',
   'sends': 'Send',
@@ -97,7 +96,6 @@ var ENTITY_NAMES = {
 
 var ENTITY_ICONS = {
   'proofofwork': 'fa-fire',
-  'burns': 'fa-fire',
   'debits': 'fa-minus',
   'credits': 'fa-plus',
   'sends': 'fa-share',
@@ -124,7 +122,6 @@ var ENTITY_ICONS = {
 
 var ENTITY_NOTO_COLORS = {
   'proofofwork': 'bg-color-yellow',
-  'burns': 'bg-color-yellow',
   'debits': 'bg-color-red',
   'credits': 'bg-color-green',
   'sends': 'bg-color-orangeDark',
