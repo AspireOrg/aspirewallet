@@ -19,7 +19,7 @@ NotificationViewModel.calcIconClass = function(category) {
    * security: Security-related notification
    * 
    * Beyond this, any one of the valid message category types:
-   * credits, debits, broadcasts, etc
+   * credits, debits, orders, bets, broadcasts, etc
    */
   if (category == 'user') return 'fa-user';
   if (category == 'alert') return 'fa-exclamation';
@@ -49,9 +49,14 @@ NotificationViewModel.calcText = function(category, message) {
       desc = i18n.t("notif_you_received", smartFormat(normalizeQuantity(message['quantity'], message['_asset_divisible'])),
         message['_asset_longname'] || message['asset'], getAddressLabel(message['source']), getAddressLabel(message['destination']));
     }
+  } else if (category == "btcpays" && (WALLET.getAddressObj(message['source']) || WALLET.getAddressObj(message['destination']))) {
+    desc = i18n.t("notif_btcpay_from", getAddressLabel(message['source']), getAddressLabel(message['destination']),
+      smartFormat(normalizeQuantity(message['btc_amount'])));
   } else if (category == "proofofwork" && WALLET.getAddressObj(message['source'])) {
     desc = i18n.t("notif_proofofwork", getAddressLabel(message['source']), smartFormat(normalizeQuantity(message['mined'])),
       smartFormat(normalizeQuantity(message['earned'])));
+  } else if (category == "cancels" && WALLET.getAddressObj(message['source'])) {
+    desc = i18n.t("notif_order_cancelled", message['tx_index'], getAddressLabel(message['source']));
   } else if (category == "dividend") {
     //See if any of our addresses own any of the specified asset, and if so, notify them of the callback or dividend
     // NOTE that aspire has automatically already adusted the balances of all asset holders...we just need to notify
@@ -90,11 +95,50 @@ NotificationViewModel.calcText = function(category, message) {
         }
       }
     }
+  } else if (category == "orders" && WALLET.getAddressObj(message['source'])) {
+    desc = i18n.t("notif_order_buy_active", smartFormat(normalizeQuantity(message['get_quantity'], message['_get_asset_divisible'])),
+      message['_get_asset_longname'] || message['get_asset'], getAddressLabel(message['source']), smartFormat(normalizeQuantity(message['give_quantity'], message['_give_asset_divisible'])),
+      message['_give_asset_longname'] || message['give_asset']);
+  } else if (category == "order_matches" && (WALLET.getAddressObj(message['tx0_address']) || WALLET.getAddressObj(message['tx1_address']))) {
+    desc = i18n.t("notif_order_matched", getAddressLabel(message['tx0_address']), smartFormat(normalizeQuantity(message['forward_quantity'], message['_forward_asset_divisible'])),
+      message['_forward_asset_longname'] || message['forward_asset'], getAddressLabel(message['tx1_address']),
+      smartFormat(normalizeQuantity(message['backward_quantity'], message['_backward_asset_divisible'])),
+        message['_backward_asset_longname'] || message['backward_asset']);
+  } else if (category == "order_expirations" && WALLET.getAddressObj(message['source'])) {
+    desc = i18n.t("notif_order_expired", message['order_index'], getAddressLabel(message['source']));
+  } else if (category == "order_match_expirations") {
+    if (WALLET.getAddressObj(message['tx0_address']) && WALLET.getAddressObj(message['tx1_address'])) {
+      desc = i18n.t("notif_self_order_match_expired", getAddressLabel(message['tx0_address']), getAddressLabel(message['tx1_address']));
+    } else if (WALLET.getAddressObj(message['tx0_address'])) {
+      desc = i18n.t("notif_order_match_expired", getAddressLabel(message['tx0_address']), getAddressLabel(message['tx1_address']));
+    } else if (WALLET.getAddressObj(message['tx1_address'])) {
+      desc = i18n.t("notif_order_match_expired", getAddressLabel(message['tx1_address']), getAddressLabel(message['tx0_address']));
+    }
   } else if (category == "broadcasts" && WALLET.getAddressObj(message['source'])) {
     if (message['locked']) {
       desc = i18n.t("notif_feed_locked", getAddressLabel(message['source']));
     } else {
       desc = i18n.t("notif_value_broadcasted", getAddressLabel(message['source']), message['text']);
+    }
+  } else if (category == "bets" && WALLET.getAddressObj(message['source'])) {
+
+    desc = i18n.t("notif_bet", smartFormat(normalizeQuantity(message['wager_quantity'])), getAddressLabel(message['source']));
+
+  } else if (category == "bet_matches" && (WALLET.getAddressObj(message['tx0_address']) || WALLET.getAddressObj(message['tx1_address']))) {
+
+    desc = i18n.t("notif_bet_matched", message['feed_address'], getAddressLabel(message['tx0_address']),
+      smartFormat(normalizeQuantity(message['forward_quantity'])), getAddressLabel(message['tx1_address']),
+      smartFormat(normalizeQuantity(message['backward_quantity'])));
+
+  } else if (category == "bet_expirations" && WALLET.getAddressObj(message['source'])) {
+    desc = i18n.t("notif_bet_expired", message['bet_index'], getAddressLabel(message['source']));
+  } else if (category == "bet_match_expirations") {
+    if (WALLET.getAddressObj(message['tx0_address']) && WALLET.getAddressObj(message['tx1_address'])) {
+      desc = i18n.t("notif_self_bet_match_expired", getAddressLabel(message['tx0_address']), getAddressLabel(message['tx1_address']));
+    } else if (WALLET.getAddressObj(message['tx0_address'])) {
+      desc = i18n.t("notif_bet_match_expired", getAddressLabel(message['tx0_address']), getAddressLabel(message['tx1_address']));
+    } else if (WALLET.getAddressObj(message['tx1_address'])) {
+      desc = i18n.t("notif_bet_match_expired", getAddressLabel(message['tx1_address']), getAddressLabel(message['tx0_address']));
     }
   } else {
     console.log('feed_notifications.js:146 - unknown category "', category, '"');

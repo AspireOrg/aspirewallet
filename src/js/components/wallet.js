@@ -13,8 +13,18 @@ function WalletViewModel() {
   self.isSellingBTC = ko.observable(false); //updated by the btcpay feed
   self.isOldWallet = ko.observable(false);
 
+  self.cancelOrders = [];
+  var storedCancelOrders = localStorage.getObject("cancelOrders")
+  if (storedCancelOrders) {
+    self.cancelOrders = storedCancelOrders;
+  }
+
   self.networkBlockHeight.subscribe(function(newBlockIndex) {
-    // On new block
+    try {
+      if (CURRENT_PAGE_URL == 'pages/exchange.html') {
+        EXCHANGE.refresh();
+      }
+    } catch (e) {}
   });
 
   self.addAddress = function(type, address, pubKeys) {
@@ -577,6 +587,15 @@ function WalletViewModel() {
     assert(['sign_tx', 'broadcast_tx', 'convert_armory_signedtx_to_raw_hex'].indexOf(action) === -1,
       'Specified action not supported through this function. please use appropriate primitives');
 
+    if (action == 'create_cancel') {
+      if (self.cancelOrders.indexOf(data['offer_hash']) != -1) {
+        $.jqlog.debug(data['offer_hash'] + ' already cancelled.')
+        return;
+      } else {
+        $('#btcancel_' + data['offer_hash']).addClass('disabled');
+      }
+    }
+
     var addressObj = WALLET.getAddressObj(address);
 
     //should not ever be a watch only wallet
@@ -602,14 +621,29 @@ function WalletViewModel() {
     }
 
     //hacks for passing in some data that should be sent to PENDING_ACTION_FEED.add(), but not the create_ API call
-    // here we only have to worry about what we create a txn for (so not debits/credits, etc)
+    // here we only have to worry about what we create a txn for (so not order matches, debits/credits, etc)
     var extra = {};
-    if (action == 'create_send') {
+    if (action == 'create_order') {
+      extra['_give_asset_divisible'] = data['_give_asset_divisible'];
+      delete data['_give_asset_divisible'];
+      extra['_get_asset_divisible'] = data['_get_asset_divisible'];
+      delete data['_get_asset_divisible'];
+      extra['_give_asset_longname'] = data['_give_asset_longname'];
+      delete data['_give_asset_longname'];
+      extra['_get_asset_longname'] = data['_get_asset_longname'];
+      delete data['_get_asset_longname'];
+    } else if (action == 'create_cancel') {
+      extra['_type'] = data['_type'];
+      delete data['_type'];
+      extra['_tx_index'] = data['_tx_index'];
+      delete data['_tx_index'];
+    } else if (action == 'create_send') {
       extra['asset_divisible'] = data['_asset_divisible'];
       delete data['_asset_divisible'];
     }
 
-    var verifyDestAddr = data['destination'] || data['transfer_destination'] || data['feed_address'] || data['source'];
+    var verifyDestAddr = data['destination'] || data['transfer_destination'] || data['feed_address'] || data['destBtcPay'] || data['source'];
+    delete data['destBtcPay'];
     if (action == "create_dividend" && data['dividend_asset'] == 'GASP') {
       verifyDestAddr = data['_btc_dividend_dests'];
       delete data['_btc_dividend_dests'];
@@ -716,11 +750,17 @@ function WalletViewModel() {
                   return onSuccess ? onSuccess(null, data, null, 'armory', asciiUTx) : null;
                 }
               );
+              if (action == 'create_cancel') {
+                $('#btcancel_' + data['offer_hash']).removeClass('disabled');
+              }
               return;
 
             } else if (addressObj.IS_MULTISIG_ADDRESS) {
 
               self.showTransactionCompleteDialog("<b>" + i18n.t('mutisig_tx_read') + "</b>", null, null, unsignedTxHex);
+              if (action == 'create_cancel') {
+                $('#btcancel_' + data['offer_hash']).removeClass('disabled');
+              }
               return;
 
             } else {
@@ -729,12 +769,30 @@ function WalletViewModel() {
                 //register this as a pending transaction
                 var category = action.replace('create_', '') + 's'; //hack
                 if (data['source'] === undefined) data['source'] = address;
-                if (action == 'create_send') {
+                if (action == 'create_order') {
+                  data['_give_asset_divisible'] = extra['_give_asset_divisible'];
+                  data['_get_asset_divisible'] = extra['_get_asset_divisible'];
+                  data['_give_asset_longname'] = extra['_give_asset_longname'];
+                  data['_get_asset_longname'] = extra['_get_asset_longname'];
+                } else if (action == 'create_cancel') {
+                  data['_type'] = extra['_type'];
+                  data['_tx_index'] = extra['_tx_index'];
+                } else if (action == 'create_send') {
                   data['_asset_divisible'] = extra['_asset_divisible'];
                 }
                 PENDING_ACTION_FEED.add(txHash, category, data);
+
+                if (action == 'create_cancel') {
+                  $('#btcancel_' + data['offer_hash']).addClass('disabled');
+                  self.cancelOrders.push(data['offer_hash']);
+                  localStorage.setObject("cancelOrders", self.cancelOrders);
+                }
+
                 return onSuccess ? onSuccess(txHash, data, endpoint, 'normal', null) : null;
               }, function(jqXHR, textStatus, errorThrown) {
+                if (action == 'create_cancel') {
+                  $('#btcancel_' + data['offer_hash']).removeClass('disabled');
+                }
                 onError(jqXHR, textStatus, errorThrown);
               }, verifyDestAddr);
             }

@@ -1,3 +1,6 @@
+[![Build Status Travis](https://travis-ci.org/AspireOrg/aspirewallet.svg?branch=develop)](https://travis-ci.org/AspireOrg/aspirewallet)
+[![Build Status Circle](https://circleci.com/gh/AspireOrg/aspirewallet.svg?&style=shield)](https://circleci.com/gh/AspireOrg/aspirewallet)
+
 Aspire Wallet
 ================
 

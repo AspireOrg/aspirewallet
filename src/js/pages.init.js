@@ -134,6 +134,8 @@ function initBalances() {
 
   if (!isBound("left-panel")) {
     ko.applyBindings({
+      FEATURE_EXCHANGE: disabledFeatures.indexOf('exchange') == -1,
+      FEATURE_BETTING: disabledFeatures.indexOf('betting') == -1,
       FEATURE_HISTORY: disabledFeatures.indexOf('history') == -1,
       FEATURE_PORTFOLIO: disabledFeatures.indexOf('portfolio') == -1,
       FEATURE_LEADERBOARD: disabledFeatures.indexOf('leaderboard') == -1,
@@ -311,6 +313,29 @@ function initLeaderboard() {
 INIT_FUNC['pages/leaderboard.html'] = initLeaderboard;
 
 
+function initExchange() {
+  // Hack to resolve books widgets positions
+  localStorage.removeItem('Plugin_position_pages/exchange.html_widget-grid');
+
+  pageSetUp(); //init smartadmin featureset
+
+  //This code is run on each visit to the page
+  window.EXCHANGE = new ExchangeViewModel();
+  ko.applyBindings(EXCHANGE, document.getElementsByClassName("ordersGrid")[0]);
+
+  EXCHANGE.init(true);
+
+  $('#exchangeHelp').click(function() {
+    SUPPORT_MODAL.show('exchangePage');
+  });
+  $('#changeMarket').click(function() {
+    loadURL('pages/exchange.html', $('#content'));
+  });
+
+}
+INIT_FUNC['pages/exchange.html'] = initExchange;
+
+
 function initPortfolio() {
   pageSetUp(); //init smartadmin featureset
 
@@ -328,3 +353,70 @@ function initPortfolio() {
 }
 INIT_FUNC['pages/portfolio.html'] = initPortfolio;
 
+
+function initBetting() {
+  pageSetUp();
+  window.FEED_BROWSER = new FeedBrowserViewModel();
+  ko.applyBindings(FEED_BROWSER, document.getElementById("betting"));
+
+  FEED_BROWSER.init();
+}
+INIT_FUNC['pages/betting.html'] = initBetting;
+
+function initOpenBets() {
+  pageSetUp();
+  window.OPEN_BETS = new OpenBetsViewModel();
+  ko.applyBindings(OPEN_BETS, document.getElementById("openbets"));
+
+  OPEN_BETS.init();
+
+  $(window).bind("resize", OPEN_BETS.dataTableResponsive);
+  $(window).on('hashchange', function() {
+    $(window).off("resize", OPEN_BETS.dataTableResponsive);
+  });
+}
+INIT_FUNC['pages/openbets.html'] = initOpenBets;
+
+function initMatchedBets() {
+  pageSetUp();
+  window.MATCHED_BETS = new MatchedBetsViewModel();
+  ko.applyBindings(MATCHED_BETS, document.getElementById("matchedbets"));
+
+  MATCHED_BETS.init();
+
+  $(window).bind("resize", MATCHED_BETS.dataTableResponsive);
+  $(window).on('hashchange', function() {
+    $(window).off("resize", MATCHED_BETS.dataTableResponsive);
+  });
+}
+INIT_FUNC['pages/matchedbets.html'] = initMatchedBets;
+
+function initOpenOrders() {
+  pageSetUp();
+  window.OPEN_ORDERS = new OpenOrdersViewModel();
+  ko.applyBindings(OPEN_ORDERS, document.getElementById("openorders"));
+
+  OPEN_ORDERS.init();
+}
+INIT_FUNC['pages/openorders.html'] = initOpenOrders;
+
+function initOrderMatches() {
+  pageSetUp();
+  window.ORDER_MATCHES = new OrderMatchesViewModel();
+  ko.applyBindings(ORDER_MATCHES, document.getElementById("ordermatches"));
+
+  ORDER_MATCHES.init();
+}
+INIT_FUNC['pages/ordermatches.html'] = initOrderMatches;
+
+function initSimpleBuy() {
+  pageSetUp();
+  window.SIMPLE_BUY = new SimpleBuyViewModel();
+  window.VEND_MODAL = new VendingMachineViewModel();
+
+  ko.applyBindings(SIMPLE_BUY, document.getElementById("simplebuy"));
+  ko.applyBindings(VEND_MODAL, document.getElementById("vendModal"));
+
+  SIMPLE_BUY.init();
+}
+INIT_FUNC['pages/simplebuy.html'] = initSimpleBuy;

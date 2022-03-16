@@ -1,13 +1,17 @@
 /***********
  * GLOBAL CONSTANTS
  ***********/
-var VERSION = "2.0.0";
+var VERSION = "1.8.0";
 var PREFERENCES = {}; //set when logging in
 
 //Addresses
 var DEFAULT_NUM_ADDRESSES = 1; //default number of addresses to generate. Go with 1 for now to be more newbie friendly
 var MAX_ADDRESSES = 20; //arbitrary (but will generate more on login if they have activity...this just prevents
                         //additional addresses from being generated via the GUI)
+
+//Order expiration
+var ORDER_DEFAULT_EXPIRATION = 1000; //num blocks until expiration (at ~9 min per block this is ~6.75 days)
+var ORDER_MAX_EXPIRATION = 3000; //max expiration for order
 
 var STATS_MAX_NUM_TRANSACTIONS = 100; //max # transactions to show in the table
 var VIEW_PRICES_NUM_ASSET_PAIRS = 50; //show market info for this many pairs
@@ -58,6 +62,7 @@ var MAX_ASSET_DESC_LENGTH = 41; // 42, minus a null term character
 var FEE_FRACTION_REQUIRED_DEFAULT_PCT = 1;   // 0.90% of total order
 var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   // 1.00% of total order
 var FEE_FRACTION_DEFAULT_FILTER = 1;
+var BTC_ORDER_MIN_AMOUNT = 0.0001;
 var B26_DIGITS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var ORIG_REFERER = document.referrer;
 
@@ -66,10 +71,25 @@ var ENTITY_NAMES = {
   'debits': 'Debit',
   'credits': 'Credit',
   'sends': 'Send',
+  'orders': 'Order',
+  'order_matches': 'Order Match',
+  'btcpays': 'GASPay',
   'issuances': 'Issuance',
   'broadcasts': 'Broadcast',
+  'bets': 'Bet',
+  'bet_matches': 'Bet Match',
   'dividends': 'Distribution',
+  'cancels': 'Cancel',
   'callbacks': 'Callback',
+  'bet_expirations': 'Bet Expired',
+  'order_expirations': 'Order Expired',
+  'bet_match_expirations': 'Bet Match Exp',
+  'order_match_expirations': 'Order Match Exp',
+  'rps': 'Rock-Paper-Scissors',
+  'rps_matches': 'RPS Match',
+  'rpsresolves': 'RPS Confirmed',
+  'rps_expirations': 'RPS Expired',
+  'rps_match_expirations': 'RPS Match Expired'
 };
 
 var ENTITY_ICONS = {
@@ -77,11 +97,25 @@ var ENTITY_ICONS = {
   'debits': 'fa-minus',
   'credits': 'fa-plus',
   'sends': 'fa-share',
+  'orders': 'fa-bar-chart-o',
+  'order_matches': 'fa-exchange',
   'btcpays': 'fa-btc',
   'issuances': 'fa-magic',
   'broadcasts': 'fa-rss',
+  'bets': 'fa-bullseye',
+  'bet_matches': 'fa-exchange',
   'dividends': 'fa-ticket',
+  'cancels': 'fa-times',
   'callbacks': 'fa-retweet',
+  'bet_expirations': 'fa-clock-o',
+  'order_expirations': 'fa-clock-o',
+  'bet_match_expirations': 'fa-clock-o',
+  'order_match_expirations': 'fa-clock-o',
+  'rps': 'fa-trophy',
+  'rps_matches': 'fa-trophy',
+  'rpsresolves': 'fa-trophy',
+  'rps_expirations': 'fa-trophy',
+  'rps_match_expirations': 'fa-trophy'
 };
 
 var ENTITY_NOTO_COLORS = {
@@ -89,11 +123,62 @@ var ENTITY_NOTO_COLORS = {
   'debits': 'bg-color-red',
   'credits': 'bg-color-green',
   'sends': 'bg-color-orangeDark',
+  'orders': 'bg-color-blue',
+  'order_matches': 'bg-color-blueLight',
+  'btcpays': 'bg-color-orange',
   'issuances': 'bg-color-pinkDark',
   'broadcasts': 'bg-color-magenta',
+  'bets': 'bg-color-teal',
+  'bet_matches': 'bg-color-teal',
   'dividends': 'bg-color-pink',
+  'cancels': 'bg-color-red',
   'callbacks': 'bg-color-pink',
+  'bet_expirations': 'bg-color-grayDark',
+  'order_expirations': 'bg-color-grayDark',
+  'bet_match_expirations': 'bg-color-grayDark',
+  'order_match_expirations': 'bg-color-grayDark',
+  'rps': 'bg-color-blue',
+  'rps_matches': 'bg-color-blueLight',
+  'rpsresolves': 'bg-color-blue',
+  'rps_expirations': 'bg-color-blueLight',
+  'rps_match_expirations': 'bg-color-blueLight'
 };
+
+var BET_TYPES = {
+  0: "Bullish CFD",
+  1: "Bearish CFD",
+  2: "Equal",
+  3: "Not Equal"
+};
+
+var BET_TYPES_SHORT = {
+  0: "BullCFD",
+  1: "BearCFD",
+  2: "Equal",
+  3: "NotEqual"
+}
+
+var BET_TYPES_ID = {
+  "BullCFD": 0,
+  "BearCFD": 1,
+  "Equal": 2,
+  "NotEqual": 3
+}
+
+var COUNTER_BET = {
+  "Equal": 3,
+  "NotEqual": 2,
+  "BullCFD": 1,
+  "BearCFD": 0
+}
+
+var BET_MATCHES_STATUS = {
+  "settled: liquidated for bear": 0,
+  "settled: liquidated for bull": 1,
+  "settled: for equal": 2,
+  "settled: for notequal": 3
+}
+
 var LEVERAGE_UNIT = 5040;
 
 /***********
@@ -113,19 +198,28 @@ var USER_COUNTRY = ''; //set in logon.js
 var CURRENT_PAGE_URL = ''; // set in loadUrl()
 
 //selective disablement
-var DISABLED_FEATURES_SUPPORTED = ['dividend', 'leaderboard', 'portfolio', 'stats', 'history']; //what can be disabled
+var DISABLED_FEATURES_SUPPORTED = ['betting', 'dividend', 'exchange', 'leaderboard', 'portfolio', 'stats', 'history']; //what can be disabled
 var DISABLED_FEATURES = []; //set in aspirewallet.js
 
 // restricted action
 var RESTRICTED_AREA = {
+  'pages/betting.html': ['US'],
+  'pages/openbets.html': ['US'],
+  'pages/matchedbets.html': ['US'],
   'dividend': ['US'],
+  'pages/simplebuy.html': ['US']
 }
 
 var RESTRICTED_AREA_MESSAGE = {
+  'pages/simplebuy.html': 'buy_xcp_if_legal'
 }
 
 var MAX_SUPPORT_CASE_PROBLEM_LEN = 4096;
 var QUOTE_ASSETS = []; // initalized with aspireblock is_ready()
+
+var QUICK_BUY_ENABLE = false;
+var BETTING_ENABLE = true;
+var GAMING_ENABLE = true;
 
 function qs(key) {
   //http://stackoverflow.com/a/7732379
