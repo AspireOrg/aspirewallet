@@ -10,7 +10,7 @@ bitcore.Networks.add({
   name: 'gasp',
   alias: 'gasp-mainnet',
   pubkeyhash: 0x26,
-  privatekey: 0x0f,
+  privatekey: 0x89,
   scripthash: 0x61,
   xpubkey: 0x0488b21e,
   xprivkey: 0x0488ade4,
